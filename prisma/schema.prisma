@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id_usuario    String      @id @default(uuid())
+  nome          String
+  email         String      @unique
+  senha         String
+  telefone      String?
+  tipo          TipoUsuario
+  foto_perfil   String?
+  data_cadastro DateTime    @default(now())
+
+  negocios    Negocio[]
+  avaliacoes  Avaliacao[]
+  favoritos   Favorito[]
+  comentarios Comentario[]
+
+  @@map("usuario")
+}
+
+model Negocio {
+  id_negocio            String   @id @default(uuid())
+  nome                  String
+  descricao             String?  @db.Text
+  telefone              String?
+  horario_funcionamento String?  @db.Text
+  status                String?
+  data_criacao          DateTime @default(now())
+  media_avaliacao       Decimal  @default(0.0) @db.Decimal(2, 1)
+
+  id_usuario String
+  usuario    Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
+
+  endereco    Endereco?
+  fotos       Foto[]
+  produtos    Produto[]
+  avaliacoes  Avaliacao[]
+  favoritos   Favorito[]
+  comentarios Comentario[]
+
+  @@map("negocio")
+}
+
+model Endereco {
+  id_endereco String   @id @default(uuid())
+  rua         String?
+  numero      String?
+  bairro      String?
+  cidade      String?
+  estado      String?
+  cep         String?
+  latitude    Decimal? @db.Decimal(10, 8)
+  longitude   Decimal? @db.Decimal(11, 8)
+
+  id_negocio String  @unique
+  negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@map("endereco")
+}
+
+model Categoria {
+  id_categoria String  @id @default(uuid())
+  nome         String
+  descricao    String? @db.Text
+
+  @@map("categoria")
+}
+
+model Foto {
+  id_foto        String  @id @default(uuid())
+  url            String  @db.Text
+  descricao      String? @db.Text
+  foto_principal Boolean @default(false)
+
+  id_negocio String
+  negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@map("foto")
+}
+
+model Avaliacao {
+  id_avaliacao   String   @id @default(uuid())
+  nota           Int
+  comentario     String?  @db.Text
+  data_avaliacao DateTime @default(now())
+
+  id_usuario String
+  id_negocio String
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
+  negocio Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@map("avaliacao")
+}
+
+model Favorito {
+  id_favorito String @id @default(uuid())
+
+  id_usuario String
+  id_negocio String
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
+  negocio Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@unique([id_usuario, id_negocio])
+  @@map("favorito")
+}
+
+model Comentario {
+  id_comentario   String   @id @default(uuid())
+  texto           String   @db.Text
+  data_comentario DateTime @default(now())
+
+  id_usuario String
+  id_negocio String
+
+  usuario Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
+  negocio Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@map("comentario")
+}
+
+model Produto {
+  id_produto String   @id @default(uuid())
+  nome       String
+  descricao  String?  @db.Text
+  preco      Decimal? @db.Decimal(10, 2)
+  status     String?
+
+  id_negocio String
+  negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+
+  @@map("produto")
+}
+
+enum TipoUsuario {
+  cliente
+  empreendedor
+  admin
+}

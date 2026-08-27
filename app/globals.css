@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#eff6ff;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+a{
+  text-decoration:none;
+}
