@@ -8,21 +8,21 @@ datasource db {
 }
 
 model Usuario {
-  id_usuario    String      @id @default(uuid())
-  nome          String
-  email         String      @unique
-  senha         String
-  telefone      String?
-  tipo          TipoUsuario
-  foto_perfil   String?
-  data_cadastro DateTime    @default(now())
+  id_usuario         String            @id @default(uuid())
+  nome               String
+  email              String            @unique
+  senha              String
+  telefone           String?
+  tipo               TipoUsuario
+  cnpj               String?           @unique
+  status_verificacao StatusVerificacao @default(nao_solicitada)
+  foto_perfil        String?
+  data_cadastro      DateTime          @default(now())
 
   negocios    Negocio[]
   avaliacoes  Avaliacao[]
   favoritos   Favorito[]
   comentarios Comentario[]
-
-  @@map("usuario")
 }
 
 model Negocio {
@@ -49,15 +49,14 @@ model Negocio {
 }
 
 model Endereco {
-  id_endereco String   @id @default(uuid())
+  id_endereco String  @id @default(uuid())
+  cep         String?
   rua         String?
   numero      String?
+  complemento String?
   bairro      String?
   cidade      String?
   estado      String?
-  cep         String?
-  latitude    Decimal? @db.Decimal(10, 8)
-  longitude   Decimal? @db.Decimal(11, 8)
 
   id_negocio String  @unique
   negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
@@ -66,19 +65,15 @@ model Endereco {
 }
 
 model Categoria {
-  id_categoria String  @id @default(uuid())
-  nome         String
-  descricao    String? @db.Text
+  id_categoria String @id @default(uuid())
+  nome         String @unique
 
   @@map("categoria")
 }
 
 model Foto {
-  id_foto        String  @id @default(uuid())
-  url            String  @db.Text
-  descricao      String? @db.Text
-  foto_principal Boolean @default(false)
-
+  id_foto    String  @id @default(uuid())
+  url        String
   id_negocio String
   negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
 
@@ -86,10 +81,10 @@ model Foto {
 }
 
 model Avaliacao {
-  id_avaliacao   String   @id @default(uuid())
-  nota           Int
-  comentario     String?  @db.Text
-  data_avaliacao DateTime @default(now())
+  id_avaliacao String   @id @default(uuid())
+  nota         Int
+  comentario   String?  @db.Text
+  data         DateTime @default(now())
 
   id_usuario String
   id_negocio String
@@ -101,7 +96,8 @@ model Avaliacao {
 }
 
 model Favorito {
-  id_favorito String @id @default(uuid())
+  id_favorito String   @id @default(uuid())
+  data        DateTime @default(now())
 
   id_usuario String
   id_negocio String
@@ -114,9 +110,9 @@ model Favorito {
 }
 
 model Comentario {
-  id_comentario   String   @id @default(uuid())
-  texto           String   @db.Text
-  data_comentario DateTime @default(now())
+  id_comentario String   @id @default(uuid())
+  texto         String   @db.Text
+  data          DateTime @default(now())
 
   id_usuario String
   id_negocio String
@@ -128,11 +124,12 @@ model Comentario {
 }
 
 model Produto {
-  id_produto String   @id @default(uuid())
-  nome       String
-  descricao  String?  @db.Text
-  preco      Decimal? @db.Decimal(10, 2)
-  status     String?
+  id_produto   String   @id @default(uuid())
+  nome         String
+  descricao    String?  @db.Text
+  preco        Decimal  @db.Decimal(10, 2)
+  imagem       String?
+  data_criacao DateTime @default(now())
 
   id_negocio String
   negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
@@ -144,4 +141,11 @@ enum TipoUsuario {
   cliente
   empreendedor
   admin
+}
+
+enum StatusVerificacao {
+  nao_solicitada
+  pendente
+  aprovado
+  rejeitado
 }

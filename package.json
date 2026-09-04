@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "bcryptjs": "^3.0.3",
     "lucide-react": "^0.300.0",
     "next": "latest",
     "next-themes": "^0.2.1",
+    "prisma": "^6.19.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@types/node": "^20",

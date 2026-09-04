@@ -11,23 +11,19 @@ export async function GET(req: Request) {
         ? {
             OR: [
               { nome: { contains: busca } },
-              { descricao: { contains: busca } },
-              { categoria: { contains: busca } }
+              { descricao: { contains: busca } }
             ]
           }
         : {},
-
       include: {
         usuario: true
       },
-
       orderBy: {
         id_negocio: "desc"
       }
     })
 
     return NextResponse.json(negocios)
-
   } catch (error) {
     console.log("ERRO API NEGOCIOS:", error)
 
@@ -42,9 +38,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    const usuarioId = body.id_usuario || body.usuarioId
+    const id_usuario = body.id_usuario || body.usuarioId
 
-    if (!usuarioId) {
+    if (!id_usuario) {
       return NextResponse.json(
         { error: "Usuário não identificado" },
         { status: 401 }
@@ -54,21 +50,24 @@ export async function POST(req: Request) {
     const negocio = await prisma.negocio.create({
       data: {
         nome: body.nome,
-        descricao: body.descricao,
-        categoria: body.categoria || "Geral",
-        imagem: body.imagem || null,
-        usuarioId: usuarioId
+        descricao: body.descricao || null,
+        telefone: body.telefone || null,
+        horario_funcionamento: body.horario_funcionamento || null,
+        status: body.status || "ativo",
+        id_usuario: id_usuario
       },
       include: {
         usuario: true
       }
     })
 
-    return NextResponse.json({
-      message: "Negócio cadastrado",
-      negocio
-    })
-
+    return NextResponse.json(
+      {
+        message: "Negócio cadastrado",
+        negocio
+      },
+      { status: 201 }
+    )
   } catch (error) {
     console.log("ERRO CADASTRAR NEGOCIO:", error)
 
