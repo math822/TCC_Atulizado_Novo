@@ -49,7 +49,6 @@ export async function PUT(
         nome: body.nome,
         descricao: body.descricao,
         preco: Number(body.preco),
-        status: body.status
       }
     })
 
