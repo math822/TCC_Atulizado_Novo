@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     const busca = searchParams.get("busca") || ""
     const categoria = searchParams.get("categoria") || ""
     const ordenar = searchParams.get("ordenar") || "recentes"
+    const destaques = searchParams.get("destaques") === "true"
 
     const where: any = {}
 
@@ -34,6 +35,19 @@ export async function GET(req: Request) {
           ? [{ media_avaliacao: "desc" }, { data_criacao: "desc" }]
           : { data_criacao: "desc" }
     })
+
+    if (destaques) {
+      const categoriasIncluidas = new Set<string>()
+      const melhoresPorCategoria = negocios.filter((negocio) => {
+        if (!negocio.id_categoria || categoriasIncluidas.has(negocio.id_categoria)) {
+          return false
+        }
+        categoriasIncluidas.add(negocio.id_categoria)
+        return true
+      })
+
+      return NextResponse.json(melhoresPorCategoria)
+    }
 
     return NextResponse.json(negocios)
   } catch (error) {

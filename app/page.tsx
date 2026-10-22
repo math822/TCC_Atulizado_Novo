@@ -25,7 +25,7 @@ export default function Home() {
       setCarregando(true)
 
       const resposta = await fetch(
-        `/api/negocios?busca=${encodeURIComponent(busca)}&ordenar=avaliacao`
+        `/api/negocios?busca=${encodeURIComponent(busca)}&ordenar=avaliacao&destaques=true`
       )
 
       const dados = await resposta.json()

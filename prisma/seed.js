@@ -177,6 +177,7 @@ async function main() {
       const notas = conjuntosDeNotas[indice % conjuntosDeNotas.length]
       const media = notas.reduce((total, nota) => total + nota, 0) / notas.length
       indice++
+      const imagemNegocio = `/api/imagem-negocio?nome=${encodeURIComponent(nome)}&categoria=${encodeURIComponent(categoria.nome)}&indice=${indice}`
 
       const negocio = await prisma.negocio.create({
         data: {
@@ -198,7 +199,7 @@ async function main() {
               estado: "SP",
             },
           },
-          fotos: { create: [{ url: categoria.imagem }] },
+          fotos: { create: [{ url: imagemNegocio }] },
           produtos: {
             create: [
               {
@@ -206,14 +207,14 @@ async function main() {
                 descricao: `Produto em destaque do ${nome}.`,
                 preco: produto1[1],
                 status: "disponivel",
-                imagem: categoria.imagem,
+                imagem: imagemNegocio,
               },
               {
                 nome: produto2[0],
                 descricao: `Uma das opções mais procuradas no ${nome}.`,
                 preco: produto2[1],
                 status: "disponivel",
-                imagem: categoria.imagem,
+                imagem: imagemNegocio,
               },
             ],
           },
