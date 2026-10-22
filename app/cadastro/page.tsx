@@ -180,7 +180,7 @@ export default function Cadastro() {
                     <button
                         type="button"
                         onClick={cadastrarComGoogle}
-                        className="w-full mt-8 flex items-center justify-center gap-3 border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-bold py-4 rounded-2xl transition shadow-sm"
+                        className="w-full mt-8 flex items-center justify-center gap-3 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-100 font-bold py-4 rounded-2xl transition shadow-sm"
                     >
                         <svg
                             width="21"

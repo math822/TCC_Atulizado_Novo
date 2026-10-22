@@ -12,7 +12,7 @@ export default function Footer() {
     <footer className="mt-16 text-white">
 
       {/* MENU SUPERIOR */}
-      <div className="bg-gray-100 text-gray-900 border-t border-gray-200">
+      <div className="bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100 border-t border-gray-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6">
           <nav className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-3 py-4 text-sm font-bold">
             <a href="/" className="hover:text-orange-600 transition">

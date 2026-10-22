@@ -18,15 +18,7 @@ export default function ThemeToggle() {
   const isDark = (theme === "system" ? resolvedTheme : theme) === "dark"
 
   const alternarTema = () => {
-    const novoTema = isDark ? "light" : "dark"
-    setTheme(novoTema)
-
-    // Força a aplicação da classe no HTML para alterar as cores do site
-    if (novoTema === "dark") {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
+    setTheme(isDark ? "light" : "dark")
   }
 
   return (

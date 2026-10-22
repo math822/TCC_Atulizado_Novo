@@ -14,7 +14,7 @@ export default function Logo() {
             width="28"
             height="23"
             rx="5"
-            fill="#202020"
+            className="fill-slate-900 dark:fill-white"
           />
 
           <rect
@@ -35,7 +35,7 @@ export default function Logo() {
             cx="44"
             cy="46"
             r="11"
-            fill="#202020"
+            className="fill-slate-900 dark:fill-white"
           />
 
           <circle
@@ -51,7 +51,7 @@ export default function Logo() {
             width="7"
             height="8"
             rx="3"
-            fill="#202020"
+            className="fill-slate-900 dark:fill-white"
           />
 
           <rect
@@ -60,13 +60,13 @@ export default function Logo() {
             width="10"
             height="12"
             rx="2"
-            fill="#ffffff"
+            className="fill-white dark:fill-slate-900"
           />
         </svg>
       </div>
 
       <div className="leading-none">
-        <h1 className="text-2xl font-black text-[#202020]">
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white">
           Lá da
         </h1>
 
@@ -74,7 +74,7 @@ export default function Logo() {
           Vendinha
         </h1>
 
-        <p className="text-[11px] text-gray-600 mt-1">
+        <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-1">
           — Onde tudo tem —
         </p>
       </div>

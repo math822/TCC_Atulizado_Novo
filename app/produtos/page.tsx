@@ -79,7 +79,7 @@ export default function ProdutosPage() {
 
   return (
     <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 p-6">
-      <div className="max-w-5xl mx-auto bg-white rounded-[40px] shadow-2xl overflow-hidden">
+      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl overflow-hidden">
 
         <div className="bg-gradient-to-r from-orange-600 to-orange-400 p-12 text-white">
           <h1 className="text-5xl font-black">
@@ -121,14 +121,14 @@ export default function ProdutosPage() {
           <form onSubmit={cadastrarProduto} className="p-10 space-y-6">
 
             <div>
-              <label className="font-bold text-gray-700">
+              <label className="font-bold text-gray-700 dark:text-gray-200">
                 Escolha o negócio
               </label>
 
               <select
                 value={idNegocio}
                 onChange={(e) => setIdNegocio(e.target.value)}
-                className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               >
                 {negocios.map((negocio) => (
                   <option key={negocio.id_negocio} value={negocio.id_negocio}>
@@ -137,10 +137,9 @@ export default function ProdutosPage() {
                 ))}
               </select>
             </div>
-            //focus
 
             <div>
-              <label className="font-bold text-gray-700">
+              <label className="font-bold text-gray-700 dark:text-gray-200">
                 Nome do produto/serviço
               </label>
 
@@ -149,12 +148,12 @@ export default function ProdutosPage() {
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 placeholder="Ex: X-Burguer Especial"
-                className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="font-bold text-gray-700">
+              <label className="font-bold text-gray-700 dark:text-gray-200">
                 Descrição
               </label>
 
@@ -162,13 +161,13 @@ export default function ProdutosPage() {
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
                 placeholder="Descreva o produto..."
-                className="w-full mt-2 border border-orange-100 rounded-2xl p-4 h-32 outline-none focus:border-orange-500"
+                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 h-32 outline-none focus:border-orange-500"
               />
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="font-bold text-gray-700">
+                <label className="font-bold text-gray-700 dark:text-gray-200">
                   Preço
                 </label>
 
@@ -179,19 +178,19 @@ export default function ProdutosPage() {
                   value={preco}
                   onChange={(e) => setPreco(e.target.value)}
                   placeholder="24.90"
-                  className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                  className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-gray-700">
+                <label className="font-bold text-gray-700 dark:text-gray-200">
                   Status
                 </label>
 
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                  className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
                 >
                   <option value="disponivel">Disponível</option>
                   <option value="indisponivel">Indisponível</option>

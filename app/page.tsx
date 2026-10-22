@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import CategoryGrid from "../components/CategoryGrid"
 import Footer from "../components/Footer"
+import Reveal from "../components/Reveal"
 
 export default function Home() {
   const [negocios, setNegocios] = useState<any[]>([])
@@ -150,10 +151,10 @@ export default function Home() {
         )}
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {negocios.map((negocio) => (
+          {negocios.map((negocio, i) => (
+            <Reveal key={negocio.id_negocio} delay={i * 60}>
             <div
-              key={negocio.id_negocio}
-              className="group bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-card hover:shadow-2xl hover:-translate-y-2 transition duration-300 border border-orange-50 dark:border-slate-800"
+              className="lift group h-full bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-card hover:shadow-2xl transition duration-300 border border-orange-50 dark:border-slate-800"
             >
               <div className="relative h-48 overflow-hidden bg-gradient-to-br from-orange-100 to-amber-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                 {negocio.imagem || negocio.fotos?.length > 0 ? (
@@ -213,6 +214,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>
@@ -252,10 +254,10 @@ export default function Home() {
               titulo: "Seus favoritos",
               texto: "Salve os negócios que você mais gosta para voltar depois.",
             },
-          ].map((b) => (
+          ].map((b, i) => (
+            <Reveal key={b.titulo} delay={i * 90}>
             <div
-              key={b.titulo}
-              className="bg-white dark:bg-slate-900 rounded-3xl p-7 shadow-card hover:shadow-2xl hover:-translate-y-1 transition duration-300 border border-orange-50 dark:border-slate-800"
+              className="lift h-full bg-white dark:bg-slate-900 rounded-3xl p-7 shadow-card hover:shadow-2xl transition duration-300 border border-orange-50 dark:border-slate-800"
             >
               <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-3xl">
                 {b.icone}
@@ -267,12 +269,14 @@ export default function Home() {
                 {b.texto}
               </p>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Chamada para cadastro */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
+        <Reveal>
         <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-r from-orange-600 to-amber-500 px-8 py-14 text-center shadow-soft">
           <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
           <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
@@ -290,6 +294,7 @@ export default function Home() {
             Cadastrar meu negócio →
           </a>
         </div>
+        </Reveal>
       </section>
 
       <Footer />

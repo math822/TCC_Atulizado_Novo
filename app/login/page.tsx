@@ -71,7 +71,7 @@ function LoginForm() {
   }
 
   return (
-    <main className="min-h-screen bg-orange-50 flex items-center justify-center px-4 py-8">
+    <main className="min-h-screen bg-orange-50 dark:bg-slate-950 flex items-center justify-center px-4 py-8 transition-colors">
       <div className="w-full max-w-md">
 
         {/* LOGO */}
@@ -80,15 +80,15 @@ function LoginForm() {
         </div>
 
         {/* CARD DE LOGIN */}
-        <div className="bg-white rounded-3xl shadow-xl p-7 sm:p-9">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-7 sm:p-9">
 
           {/* TÍTULO */}
           <div className="text-center mb-7">
-            <h1 className="text-3xl font-black text-gray-900">
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white">
               Entrar
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-gray-500 dark:text-gray-400 mt-2">
               Acesse sua conta do Lá da Vendinha
             </p>
           </div>
@@ -97,7 +97,7 @@ function LoginForm() {
           <button
             type="button"
             onClick={entrarComGoogle}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 font-bold py-4 rounded-xl transition shadow-sm"
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-100 font-bold py-4 rounded-xl transition shadow-sm"
           >
             {/* Ícone Google */}
             <svg
@@ -145,7 +145,7 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-bold text-gray-700 mb-2"
+                className="block text-sm font-bold text-gray-700 dark:text-gray-200 mb-2"
               >
                 Email
               </label>
@@ -158,7 +158,7 @@ function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seuemail@email.com"
-                className="w-full border border-gray-200 bg-gray-50 rounded-xl px-4 py-3.5 text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                className="w-full border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 rounded-xl px-4 py-3.5 text-gray-900 dark:text-white outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
               />
             </div>
 
@@ -168,7 +168,7 @@ function LoginForm() {
 
                 <label
                   htmlFor="senha"
-                  className="text-sm font-bold text-gray-700"
+                  className="text-sm font-bold text-gray-700 dark:text-gray-200"
                 >
                   Senha
                 </label>
@@ -195,7 +195,7 @@ function LoginForm() {
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   placeholder="Digite sua senha"
-                  className="w-full border border-gray-200 bg-gray-50 rounded-xl px-4 py-3.5 pr-20 text-gray-900 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                  className="w-full border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800 rounded-xl px-4 py-3.5 pr-20 text-gray-900 dark:text-white outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                 />
 
                 <button
@@ -223,7 +223,7 @@ function LoginForm() {
           {/* CADASTRO */}
           <div className="text-center mt-7">
 
-            <span className="text-gray-500">
+            <span className="text-gray-500 dark:text-gray-400">
               Ainda não tem uma conta?
             </span>
 

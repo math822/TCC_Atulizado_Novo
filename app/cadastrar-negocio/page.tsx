@@ -196,7 +196,7 @@ export default function CadastrarNegocio() {
         <Logo />
       </div>
 
-      <div className="max-w-5xl mx-auto bg-white rounded-[40px] shadow-2xl overflow-hidden">
+      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl overflow-hidden">
         <div className="bg-gradient-to-r from-orange-600 to-orange-400 p-12 text-white">
           <div className="flex items-center gap-4">
             <div className="w-20 h-20 rounded-3xl bg-white/20 flex items-center justify-center text-5xl">
@@ -213,7 +213,7 @@ export default function CadastrarNegocio() {
         </div>
 
         {!usuario && (
-          <div className="m-10 bg-red-50 border border-red-200 text-red-700 rounded-2xl p-5 font-bold">
+          <div className="m-10 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 rounded-2xl p-5 font-bold">
             Você precisa estar logado para cadastrar um negócio.
             <a href="/login?redirect=/cadastrar-negocio" className="ml-2 underline">
               Entrar agora
@@ -223,7 +223,7 @@ export default function CadastrarNegocio() {
 
         <form onSubmit={cadastrarNegocio} className="p-10 space-y-6">
           <div>
-            <label className="font-bold text-gray-700">Foto principal do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200">Foto principal do negócio</label>
             <input
               type="file"
               accept="image/*"
@@ -234,11 +234,11 @@ export default function CadastrarNegocio() {
                   setPreview(URL.createObjectURL(arquivo))
                 }
               }}
-              className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
             />
 
             {preview && (
-              <div className="mt-4 overflow-hidden rounded-3xl border border-orange-100">
+              <div className="mt-4 overflow-hidden rounded-3xl border border-orange-100 dark:border-slate-700">
                 <img src={preview} alt="Preview" className="w-full h-72 object-cover" />
               </div>
             )}
@@ -251,23 +251,23 @@ export default function CadastrarNegocio() {
           </div>
 
           <div>
-            <label className="font-bold text-gray-700">Nome do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200">Nome do negócio</label>
             <input
               required
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               placeholder="Ex: Lanche do Zé"
-              className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
             />
           </div>
 
           <div>
-            <label className="font-bold text-gray-700">Categoria do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200">Categoria do negócio</label>
             <select
               required
               value={idCategoria}
               onChange={(e) => setIdCategoria(e.target.value)}
-              className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500 bg-white text-gray-800"
+              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
             >
               <option value="">Selecione uma categoria</option>
               {categorias.map((categoria) => (
@@ -279,19 +279,19 @@ export default function CadastrarNegocio() {
           </div>
 
           <div>
-            <label className="font-bold text-gray-700">Descrição</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200">Descrição</label>
             <textarea
               required
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
               placeholder="Fale sobre seu negócio..."
-              className="w-full mt-2 border border-orange-100 rounded-2xl p-4 h-36 outline-none focus:border-orange-500"
+              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 h-36 outline-none focus:border-orange-500"
             />
           </div>
 
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="font-bold text-gray-700">Telefone</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200">Telefone</label>
               <input
                 required
                 type="text"
@@ -299,22 +299,22 @@ export default function CadastrarNegocio() {
                 onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
                 placeholder="(19) 99999-9999"
                 maxLength={15}
-                className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="font-bold text-gray-700">Horário de funcionamento</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200">Horário de funcionamento</label>
               <input
                 value={horario}
                 onChange={(e) => setHorario(e.target.value)}
                 placeholder="Ex: Segunda a sábado, 10h às 22h"
-                className="w-full mt-2 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
           </div>
 
-          <div className="border-t border-orange-100 pt-8">
+          <div className="border-t border-orange-100 dark:border-slate-700 pt-8">
             <h2 className="text-3xl font-black text-orange-600 flex items-center gap-3">
               📍 Endereço do negócio
             </h2>
@@ -322,7 +322,7 @@ export default function CadastrarNegocio() {
 
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="font-bold text-gray-700 text-sm">CEP</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">CEP</label>
               <input
                 required
                 type="text"
@@ -330,47 +330,47 @@ export default function CadastrarNegocio() {
                 onChange={(e) => buscarCep(e.target.value)}
                 placeholder="00000-000"
                 maxLength={9}
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 text-sm">Número</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Número</label>
               <input
                 required
                 type="text"
                 value={numero}
                 onChange={(e) => setNumero(apenasNumeros(e.target.value))}
                 placeholder="Ex: 123"
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 text-sm">Rua</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Rua</label>
               <input
                 required
                 value={rua}
                 onChange={(e) => setRua(e.target.value)}
                 placeholder="Rua"
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 text-sm">Bairro</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Bairro</label>
               <input
                 required
                 value={bairro}
                 onChange={(e) => setBairro(e.target.value)}
                 placeholder="Bairro"
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               />
             </div>
 
             {/* Select Dinâmico de Estado (IBGE) */}
             <div>
-              <label className="font-bold text-gray-700 text-sm">Estado</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Estado</label>
               <select
                 required
                 value={estado}
@@ -378,7 +378,7 @@ export default function CadastrarNegocio() {
                   setEstado(e.target.value)
                   setCidade("") // Reseta a cidade ao trocar o estado manualmente
                 }}
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500 bg-white text-gray-800"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
               >
                 <option value="">Selecione o Estado</option>
                 {estadosIBGE.map((est) => (
@@ -391,13 +391,13 @@ export default function CadastrarNegocio() {
 
             {/* Select Dinâmico de Cidade (IBGE) */}
             <div>
-              <label className="font-bold text-gray-700 text-sm">Cidade</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Cidade</label>
               <select
                 required
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}
                 disabled={!estado}
-                className="w-full mt-1 border border-orange-100 rounded-2xl p-4 outline-none focus:border-orange-500 bg-white text-gray-800 disabled:bg-gray-100"
+                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500 disabled:bg-gray-100 dark:disabled:bg-slate-900"
               >
                 <option value="">
                   {estado ? "Selecione a Cidade" : "Selecione um Estado primeiro"}

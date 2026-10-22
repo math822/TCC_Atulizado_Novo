@@ -22,7 +22,7 @@ export default function UserMenu() {
       <div className="flex items-center gap-3">
         <a
           href="/login"
-          className="px-5 py-3 rounded-2xl border-2 border-orange-200 text-orange-600 font-black hover:bg-orange-50 transition"
+          className="px-5 py-3 rounded-2xl border-2 border-orange-200 dark:border-slate-700 text-orange-600 font-black hover:bg-orange-50 dark:hover:bg-slate-800 transition"
         >
           Entrar
         </a>
@@ -41,7 +41,7 @@ export default function UserMenu() {
     <div className="flex items-center gap-6">
       <a
         href="/perfil"
-        className="hidden md:flex items-center gap-2 font-black text-gray-900 hover:text-orange-600 transition"
+        className="hidden md:flex items-center gap-2 font-black text-gray-900 dark:text-white hover:text-orange-600 transition"
       >
         <span className="text-3xl leading-none">♡</span>
         Favoritos
@@ -74,19 +74,19 @@ export default function UserMenu() {
           </div>
 
           <div className="hidden md:block text-left">
-            <p className="font-black text-gray-900">
+            <p className="font-black text-gray-900 dark:text-white">
               Olá, {usuario.nome?.split(" ")[0]}
             </p>
           </div>
 
-          <span className="text-gray-800 font-black">
+          <span className="text-gray-800 dark:text-gray-200 font-black">
             ˅
           </span>
         </button>
 
         {aberto && (
-          <div className="absolute right-0 mt-4 w-72 bg-white rounded-3xl shadow-2xl border border-orange-100 overflow-hidden z-50">
-            <div className="p-5 bg-orange-600 text-white">
+          <div className="absolute right-0 mt-4 w-72 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-orange-100 dark:border-slate-800 overflow-hidden z-50">
+            <div className="p-5 bg-gradient-to-br from-orange-600 to-orange-500 text-white">
               <h3 className="text-xl font-black">
                 {usuario.nome}
               </h3>
@@ -96,23 +96,23 @@ export default function UserMenu() {
             </div>
 
             <div className="p-3 grid gap-2">
-              <a href="/perfil" className="p-3 rounded-2xl hover:bg-orange-50 font-bold">
+              <a href="/perfil" className="p-3 rounded-2xl hover:bg-orange-50 dark:hover:bg-slate-800 font-bold text-gray-900 dark:text-white transition">
                 👤 Meu perfil
               </a>
 
-              <a href="/dashboard" className="p-3 rounded-2xl hover:bg-orange-50 font-bold">
+              <a href="/dashboard" className="p-3 rounded-2xl hover:bg-orange-50 dark:hover:bg-slate-800 font-bold text-gray-900 dark:text-white transition">
                 📊 Dashboard
               </a>
 
               {usuario.tipo === "admin" && (
-                <a href="/admin" className="p-3 rounded-2xl hover:bg-orange-50 font-bold text-orange-600">
+                <a href="/admin" className="p-3 rounded-2xl hover:bg-orange-50 dark:hover:bg-slate-800 font-bold text-orange-600 transition">
                   🛡️ Painel admin
                 </a>
               )}
 
               <button
                 onClick={sair}
-                className="p-3 rounded-2xl hover:bg-red-50 text-left font-black text-red-600"
+                className="p-3 rounded-2xl hover:bg-red-50 dark:hover:bg-red-950/30 text-left font-black text-red-600 transition"
               >
                 🚪 Sair
               </button>

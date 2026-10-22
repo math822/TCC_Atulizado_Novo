@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useTheme } from "next-themes"
 
 interface NavbarProps {
     busca?: string
@@ -14,10 +15,16 @@ export default function Navbar({
 
     const [usuario, setUsuario] = useState<any>(null)
     const [temNotificacao, setTemNotificacao] = useState(true)
-    const [temaEscuro, setTemaEscuro] = useState(false)
 
-    // Carrega usuário e tema ao iniciar
+    const { resolvedTheme, setTheme } = useTheme()
+    const [montado, setMontado] = useState(false)
+
+    const temaEscuro = resolvedTheme === "dark"
+
+    // Carrega usuário ao iniciar
     useEffect(() => {
+        setMontado(true)
+
         const salvo = localStorage.getItem("usuario")
 
         if (salvo) {
@@ -28,34 +35,11 @@ export default function Navbar({
                 localStorage.removeItem("usuario")
             }
         }
-
-        const temaSalvo = localStorage.getItem("tema")
-
-        if (
-            temaSalvo === "dark" ||
-            (
-                !temaSalvo &&
-                window.matchMedia(
-                    "(prefers-color-scheme: dark)"
-                ).matches
-            )
-        ) {
-            setTemaEscuro(true)
-            document.documentElement.classList.add("dark")
-        }
     }, [])
 
-    // Alterna o tema
+    // Alterna o tema usando o next-themes
     function alternarTema() {
-        if (temaEscuro) {
-            document.documentElement.classList.remove("dark")
-            localStorage.setItem("tema", "light")
-            setTemaEscuro(false)
-        } else {
-            document.documentElement.classList.add("dark")
-            localStorage.setItem("tema", "dark")
-            setTemaEscuro(true)
-        }
+        setTheme(temaEscuro ? "light" : "dark")
     }
 
     // Sair da conta
@@ -149,7 +133,7 @@ export default function Navbar({
                         }
                         className="w-10 h-10 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-orange-100/50 dark:hover:bg-slate-800 transition text-xl"
                     >
-                        {temaEscuro ? "☀️" : "🌙"}
+                        {montado ? (temaEscuro ? "☀️" : "🌙") : ""}
                     </button>
 
                     {/* DIVISÓRIA */}
