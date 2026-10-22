@@ -5,6 +5,15 @@ import Link from "next/link"
 import Navbar from "../../../components/Navbar"
 import Footer from "../../../components/Footer"
 
+const imagensCategoria: Record<string, string> = {
+  Artesanato: "/categorias/Artesanato.png",
+  Beleza: "/categorias/Beleza.png",
+  Alimentação: "/categorias/Comida.png",
+  Informática: "/categorias/Informatica.png",
+  Moda: "/categorias/Moda.png",
+  Serviços: "/categorias/Servico.png",
+}
+
 export default function CategoriaPage({
   params,
 }: {
@@ -54,28 +63,28 @@ export default function CategoriaPage({
     <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 transition-colors">
       <Navbar busca={busca} setBusca={setBusca} />
 
-      <section className="bg-gradient-to-r from-orange-600 to-orange-400 text-white py-16 px-6">
+      <section className="bg-gradient-to-r from-orange-600 to-orange-400 text-white py-10 sm:py-16 px-4 sm:px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <Link
             href="/"
-            className="inline-block bg-white/20 px-5 py-2.5 rounded-2xl font-bold mb-8 hover:bg-white/30 transition"
+            className="inline-block bg-white/20 px-4 sm:px-5 py-2.5 rounded-2xl font-bold mb-7 sm:mb-8 hover:bg-white/30 transition"
           >
             ← Voltar para início
           </Link>
 
-          <div className="flex items-center gap-6">
-            <div className="w-24 h-24 rounded-[32px] bg-white/20 flex items-center justify-center text-6xl shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[26px] sm:rounded-[32px] bg-white/20 flex items-center justify-center text-5xl sm:text-6xl shadow-xl flex-shrink-0">
               {icone}
             </div>
-            <div>
-              <h1 className="text-5xl md:text-6xl font-black">{categoria}</h1>
-              <p className="text-orange-100 text-lg mt-2">
+            <div className="min-w-0">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight break-words">{categoria}</h1>
+              <p className="text-orange-100 text-base sm:text-lg mt-2 max-w-2xl">
                 {infoCategoria?.descricao || "Negócios desta categoria perto de você."}
               </p>
             </div>
           </div>
 
-          <p className="mt-6 text-orange-100 font-bold">
+          <p className="mt-5 sm:mt-6 text-orange-100 font-bold">
             {carregando
               ? "Carregando..."
               : `${filtrados.length} negócio${filtrados.length === 1 ? "" : "s"} encontrado${filtrados.length === 1 ? "" : "s"}`}
@@ -83,13 +92,13 @@ export default function CategoriaPage({
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-wrap gap-3 mb-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex flex-nowrap sm:flex-wrap gap-3 mb-8 sm:mb-10 overflow-x-auto sm:overflow-visible pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
           {categorias.map((c) => (
             <Link
               key={c.id_categoria}
               href={`/categorias/${encodeURIComponent(c.nome)}`}
-              className={`px-5 py-2.5 rounded-full font-bold text-sm transition shadow-sm ${
+              className={`flex-shrink-0 px-5 py-2.5 rounded-full font-bold text-sm transition shadow-sm ${
                 c.nome === categoria
                   ? "bg-orange-600 text-white"
                   : "bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-200 hover:bg-orange-100 dark:hover:bg-slate-800"
@@ -124,18 +133,23 @@ export default function CategoriaPage({
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-6">
           {filtrados.map((negocio) => (
             <div
               key={negocio.id_negocio}
-              className="group bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+              className="group h-full flex flex-col bg-white dark:bg-slate-900 rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300 border border-orange-100/70 dark:border-slate-800"
             >
-              <div className="relative h-48 overflow-hidden bg-white dark:bg-slate-800 flex items-center justify-center">
+              <div className="relative aspect-[16/10] overflow-hidden bg-orange-100 dark:bg-slate-800 flex items-center justify-center">
                 {negocio.fotos?.length > 0 ? (
                   <img
                     src={negocio.fotos[0].url}
                     alt={negocio.nome}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null
+                      event.currentTarget.src = imagensCategoria[categoria] || "/categorias/Comida.png"
+                    }}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center text-7xl">
@@ -147,7 +161,7 @@ export default function CategoriaPage({
                 </div>
               </div>
 
-              <div className="p-5">
+              <div className="p-5 flex flex-col flex-1">
                 <h3 className="text-xl font-black text-gray-900 dark:text-white line-clamp-1">
                   {negocio.nome}
                 </h3>
@@ -161,7 +175,7 @@ export default function CategoriaPage({
                 )}
                 <Link
                   href={`/negocio/${negocio.id_negocio}`}
-                  className="mt-5 block text-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition"
+                  className="mt-auto block text-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition shadow-md hover:shadow-lg"
                 >
                   Ver negócio
                 </Link>

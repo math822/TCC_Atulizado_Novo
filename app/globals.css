@@ -54,6 +54,13 @@ a {
   background: #9a3412;
 }
 
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Seleção de texto */
 ::selection {
   background: #fdba74;

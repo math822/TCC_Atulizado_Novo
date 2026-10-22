@@ -177,7 +177,7 @@ async function main() {
       const notas = conjuntosDeNotas[indice % conjuntosDeNotas.length]
       const media = notas.reduce((total, nota) => total + nota, 0) / notas.length
       indice++
-      const imagemNegocio = `/api/imagem-negocio?nome=${encodeURIComponent(nome)}&categoria=${encodeURIComponent(categoria.nome)}&indice=${indice}`
+      const imagemNegocio = `/api/imagem-negocio?nome=${encodeURIComponent(nome)}&categoria=${encodeURIComponent(categoria.nome)}&indice=${indice}&v=2`
 
       const negocio = await prisma.negocio.create({
         data: {

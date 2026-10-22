@@ -117,6 +117,10 @@ export default function NegocioPage({
                 <img
                   src={negocio.fotos[0].url}
                   alt={negocio.nome}
+                  onError={(event) => {
+                    event.currentTarget.onerror = null
+                    event.currentTarget.src = "/categorias/Comida.png"
+                  }}
                   className="w-full h-full object-cover"
                 />
               ) : (

@@ -52,7 +52,7 @@ export default function Navbar({
     return (
         <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-orange-100 dark:border-slate-800 transition-colors">
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-20 py-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-x-3">
 
                 {/* LOGO */}
                 <a
@@ -73,7 +73,7 @@ export default function Navbar({
 
                 {/* BUSCA */}
                 {setBusca && (
-                    <div className="flex-1 max-w-md mx-2">
+                    <div className="order-3 basis-full sm:order-none sm:basis-auto flex-1 max-w-none sm:max-w-md mx-0 sm:mx-2 mt-3 sm:mt-0">
                         <div className="relative">
 
                             <input
