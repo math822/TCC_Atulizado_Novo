@@ -72,24 +72,6 @@ export default function Hero({ busca, setBusca }: Props) {
                 Ver categorias
               </a>
             </div>
-
-            {/* Estatísticas */}
-            <div className="flex gap-10 mt-10">
-              {[
-                { valor: "+500", label: "Negócios" },
-                { valor: "+1.200", label: "Produtos" },
-                { valor: "4.9★", label: "Avaliação média" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-3xl font-black text-gray-900 dark:text-white">
-                    {s.valor}
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Coluna da imagem */}

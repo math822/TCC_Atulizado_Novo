@@ -6,6 +6,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const busca = searchParams.get("busca") || ""
     const categoria = searchParams.get("categoria") || ""
+    const ordenar = searchParams.get("ordenar") || "recentes"
 
     const where: any = {}
 
@@ -28,9 +29,10 @@ export async function GET(req: Request) {
         endereco: true,
         fotos: true
       },
-      orderBy: {
-        data_criacao: "desc"
-      }
+      orderBy:
+        ordenar === "avaliacao"
+          ? [{ media_avaliacao: "desc" }, { data_criacao: "desc" }]
+          : { data_criacao: "desc" }
     })
 
     return NextResponse.json(negocios)
