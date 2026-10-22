@@ -1,7 +1,14 @@
 import type { Metadata } from "next"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "react-hot-toast"
 import { Providers } from "./providers"
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
   title: "Lá da Vendinha",
@@ -15,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
-      <body className="bg-white dark:bg-slate-950 transition-colors duration-300">
+      <body className={`${inter.variable} bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-colors duration-300 antialiased`}>
         <Providers>
           {children}
 

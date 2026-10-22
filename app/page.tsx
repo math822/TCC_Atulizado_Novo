@@ -123,7 +123,7 @@ export default function Home() {
 
           <a
             href="/cadastrar-negocio"
-            className="hidden md:inline-block bag-orange-600 hover:bg-orange-700 text-white px-6 py-4 rounded-2xl font-black shadow-lg"
+            className="hidden md:inline-block bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-6 py-4 rounded-2xl font-black shadow-soft transition hover:-translate-y-0.5"
           >
             + Cadastrar
           </a>
@@ -153,15 +153,14 @@ export default function Home() {
           {negocios.map((negocio) => (
             <div
               key={negocio.id_negocio}
-              className="group bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+              className="group bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-card hover:shadow-2xl hover:-translate-y-2 transition duration-300 border border-orange-50 dark:border-slate-800"
             >
-              {/* Contêiner ajustado com fundo mesclado */}
-              <div className="relative h-48 overflow-hidden bg-white dark:bg-slate-800 flex items-center justify-center">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-orange-100 to-amber-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                 {negocio.imagem || negocio.fotos?.length > 0 ? (
                   <img
                     src={negocio.imagem || negocio.fotos[0].url}
                     alt={negocio.nome}
-                    className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center text-7xl">
@@ -169,9 +168,11 @@ export default function Home() {
                   </div>
                 )}
 
+                <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition" />
+
                 <button
                   onClick={() => favoritar(negocio.id_negocio)}
-                  className={`absolute top-4 right-4 w-12 h-12 rounded-full bg-white/95 shadow-xl text-4xl font-black flex items-center justify-center transition hover:scale-110 ${
+                  className={`absolute top-4 right-4 w-11 h-11 rounded-full bg-white/95 shadow-lg text-2xl flex items-center justify-center transition hover:scale-110 ${
                     favoritos.includes(negocio.id_negocio)
                       ? "text-red-500"
                       : "text-gray-300"
@@ -180,21 +181,21 @@ export default function Home() {
                   ♥
                 </button>
 
-                <div className="absolute left-4 bottom-4 bg-white/95 text-orange-600 px-4 py-2 rounded-2xl font-black shadow-lg">
+                <div className="absolute left-4 bottom-4 bg-white/95 text-orange-600 px-3.5 py-1.5 rounded-full font-black shadow-lg text-sm">
                   ⭐ {negocio.media_avaliacao || "0.0"}
                 </div>
               </div>
 
               <div className="p-5">
-                <h3 className="text-xl font-black text-gray-900 dark:text-white line-clamp-1">
+                <span className="inline-block bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full">
+                  {negocio.categoria?.nome || "Negócio local"}
+                </span>
+
+                <h3 className="text-xl font-black text-gray-900 dark:text-white line-clamp-1 mt-3">
                   {negocio.nome}
                 </h3>
 
-                <p className="text-orange-600 font-bold mt-1">
-                  {negocio.categoria?.nome || "Negócio local"}
-                </p>
-
-                <p className="text-gray-500 dark:text-gray-300 text-sm mt-3 line-clamp-2">
+                <p className="text-gray-500 dark:text-gray-300 text-sm mt-2 line-clamp-2">
                   {negocio.descricao || "Conheça este negócio local da sua região."}
                 </p>
 
@@ -206,13 +207,88 @@ export default function Home() {
 
                 <a
                   href={`/negocio/${negocio.id_negocio}`}
-                  className="mt-5 block text-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition"
+                  className="mt-5 block text-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition shadow-md hover:shadow-lg"
                 >
                   Ver negócio
                 </a>
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Seção de benefícios */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">
+            Por que usar o{" "}
+            <span className="text-gradient">Lá da Vendinha</span>?
+          </h2>
+          <p className="text-gray-500 dark:text-gray-300 mt-3 max-w-2xl mx-auto">
+            Conectamos você aos melhores negócios da sua região de forma simples
+            e rápida.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              icone: "🔎",
+              titulo: "Descoberta fácil",
+              texto: "Encontre lojas e serviços perto de você em segundos.",
+            },
+            {
+              icone: "⭐",
+              titulo: "Avaliações reais",
+              texto: "Veja notas e comentários de clientes de verdade.",
+            },
+            {
+              icone: "🏪",
+              titulo: "Comércio local",
+              texto: "Valorize empreendedores da sua comunidade.",
+            },
+            {
+              icone: "❤️",
+              titulo: "Seus favoritos",
+              texto: "Salve os negócios que você mais gosta para voltar depois.",
+            },
+          ].map((b) => (
+            <div
+              key={b.titulo}
+              className="bg-white dark:bg-slate-900 rounded-3xl p-7 shadow-card hover:shadow-2xl hover:-translate-y-1 transition duration-300 border border-orange-50 dark:border-slate-800"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-3xl">
+                {b.icone}
+              </div>
+              <h3 className="text-lg font-black text-gray-900 dark:text-white mt-5">
+                {b.titulo}
+              </h3>
+              <p className="text-gray-500 dark:text-gray-300 text-sm mt-2 leading-relaxed">
+                {b.texto}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Chamada para cadastro */}
+      <section className="max-w-7xl mx-auto px-6 pb-20">
+        <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-r from-orange-600 to-amber-500 px-8 py-14 text-center shadow-soft">
+          <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
+          <h2 className="relative text-3xl md:text-4xl font-black text-white">
+            Tem um negócio local?
+          </h2>
+          <p className="relative text-orange-50 mt-3 text-lg max-w-xl mx-auto">
+            Cadastre-se grátis e seja encontrado por centenas de clientes da sua
+            região.
+          </p>
+          <a
+            href="/cadastrar-negocio"
+            className="relative inline-block mt-8 bg-white text-orange-600 px-9 py-4 rounded-2xl font-black shadow-lg hover:scale-105 transition"
+          >
+            Cadastrar meu negócio →
+          </a>
         </div>
       </section>
 

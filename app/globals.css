@@ -2,17 +2,121 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+:root {
+  --font-inter: "Inter", system-ui, sans-serif;
 }
 
-body{
-  background:#eff6ff;
-  font-family:Arial, Helvetica, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a{
-  text-decoration:none;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  background: #fff7ed;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #fdba74;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fb923c;
+}
+
+/* Seleção de texto */
+::selection {
+  background: #fdba74;
+  color: #7c2d12;
+}
+
+/* Animações */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(20px, -30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.7s ease-out both;
+}
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-blob {
+  animation: blob 12s ease-in-out infinite;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Texto com gradiente */
+.text-gradient {
+  background: linear-gradient(90deg, #ea580c, #f97316, #fb923c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Vidro fosco */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
 }
