@@ -7,13 +7,15 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "bcryptjs": "^3.0.3",
     "lucide-react": "^0.300.0",
-    "next": "latest",
+    "next": "^15.5.28",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",

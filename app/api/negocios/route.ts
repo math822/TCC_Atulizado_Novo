@@ -5,21 +5,31 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
     const busca = searchParams.get("busca") || ""
+    const categoria = searchParams.get("categoria") || ""
+
+    const where: any = {}
+
+    if (busca) {
+      where.OR = [
+        { nome: { contains: busca, mode: "insensitive" } },
+        { descricao: { contains: busca, mode: "insensitive" } }
+      ]
+    }
+
+    if (categoria) {
+      where.categoria = { nome: categoria }
+    }
 
     const negocios = await prisma.negocio.findMany({
-      where: busca
-        ? {
-            OR: [
-              { nome: { contains: busca } },
-              { descricao: { contains: busca } }
-            ]
-          }
-        : {},
+      where,
       include: {
-        usuario: true
+        usuario: true,
+        categoria: true,
+        endereco: true,
+        fotos: true
       },
       orderBy: {
-        id_negocio: "desc"
+        data_criacao: "desc"
       }
     })
 
@@ -54,10 +64,12 @@ export async function POST(req: Request) {
         telefone: body.telefone || null,
         horario_funcionamento: body.horario_funcionamento || null,
         status: body.status || "ativo",
-        id_usuario: id_usuario
+        id_usuario: id_usuario,
+        id_categoria: body.id_categoria || null
       },
       include: {
-        usuario: true
+        usuario: true,
+        categoria: true
       }
     })
 

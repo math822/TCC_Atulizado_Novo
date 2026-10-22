@@ -333,6 +333,15 @@ export async function GET(req: Request) {
       }
     )
 
+    resposta.cookies.set(
+      "usuario",
+      JSON.stringify(usuarioSeguro),
+      {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      }
+    )
+
     // =====================================================
     // APAGAR COOKIES TEMPORÁRIOS
     // =====================================================

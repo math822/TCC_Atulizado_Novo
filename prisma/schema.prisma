@@ -39,6 +39,9 @@ model Negocio {
   id_usuario String
   usuario    Usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade)
 
+  id_categoria String?
+  categoria    Categoria? @relation(fields: [id_categoria], references: [id_categoria], onDelete: SetNull)
+
   endereco    Endereco?
   fotos       Foto[]
   produtos    Produto[]
@@ -66,8 +69,11 @@ model Endereco {
 }
 
 model Categoria {
-  id_categoria String @id @default(uuid())
-  nome         String @unique
+  id_categoria String    @id @default(uuid())
+  nome         String    @unique
+  descricao    String?
+  icone        String?
+  negocios     Negocio[]
 
   @@map("categoria")
 }

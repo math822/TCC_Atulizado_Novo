@@ -19,6 +19,7 @@ export async function GET(
         produtos: true,
         avaliacoes: true,
         usuario: true,
+        categoria: true,
       },
     })
 

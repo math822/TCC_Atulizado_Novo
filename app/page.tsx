@@ -12,20 +12,19 @@ export default function Home() {
   const [negocios, setNegocios] = useState<any[]>([])
   const [carregando, setCarregando] = useState(true)
   const [busca, setBusca] = useState("")
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState("")
   const [favoritos, setFavoritos] = useState<string[]>([])
 
   useEffect(() => {
     buscarNegocios()
     buscarFavoritos()
-  }, [busca, categoriaSelecionada])
+  }, [busca])
 
   async function buscarNegocios() {
     try {
       setCarregando(true)
 
       const resposta = await fetch(
-        `/api/negocios?busca=${busca}&categoria=${categoriaSelecionada}`
+        `/api/negocios?busca=${busca}`
       )
 
       const dados = await resposta.json()
@@ -107,10 +106,7 @@ export default function Home() {
 
       <Hero busca={busca} setBusca={setBusca} />
 
-      <CategoryGrid
-        categoriaSelecionada={categoriaSelecionada}
-        setCategoriaSelecionada={setCategoriaSelecionada}
-      />
+      <CategoryGrid />
 
       <section id="negocios" className="max-w-7xl mx-auto px-6 py-12">
 
