@@ -7,6 +7,14 @@ interface RevealProps {
   className?: string
   delay?: number
   as?: string
+  variant?: "up" | "left" | "right" | "scale"
+}
+
+const variantes: Record<NonNullable<RevealProps["variant"]>, string> = {
+  up: "",
+  left: "reveal-left",
+  right: "reveal-right",
+  scale: "reveal-scale",
 }
 
 export default function Reveal({
@@ -14,6 +22,7 @@ export default function Reveal({
   className = "",
   delay = 0,
   as = "div",
+  variant = "up",
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null)
   const [visivel, setVisivel] = useState(false)
@@ -43,7 +52,7 @@ export default function Reveal({
   return (
     <Tag
       ref={ref as any}
-      className={`reveal ${visivel ? "is-visible" : ""} ${className}`}
+      className={`reveal ${variantes[variant]} ${visivel ? "is-visible" : ""} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

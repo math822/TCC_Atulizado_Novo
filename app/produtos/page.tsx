@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Navbar from "../../components/Navbar"
+import Footer from "../../components/Footer"
 
 export default function ProdutosPage() {
   const [usuario, setUsuario] = useState<any>(null)
@@ -78,140 +80,140 @@ export default function ProdutosPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 p-6">
-      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl overflow-hidden">
+    <main className="flex min-h-screen flex-col text-slate-950 dark:text-white">
+      <Navbar />
 
-        <div className="bg-gradient-to-r from-orange-600 to-orange-400 p-12 text-white">
-          <h1 className="text-5xl font-black">
-            <div className="flex gap-3 mt-5">
-              <span className="bg-white/20 px-4 py-2 rounded-xl font-bold">
-                🛒 Produtos
-              </span>
+      <div className="flex-1 px-4 py-10 sm:px-6">
+        <div className="future-card mx-auto max-w-5xl overflow-hidden rounded-[40px]">
 
-              <span className="bg-white/20 px-4 py-2 rounded-xl font-bold">
-                🏪 Negócios
-              </span>
-
-              <span className="bg-white/20 px-4 py-2 rounded-xl font-bold">
-                📈 Visibilidade
-              </span>
+          <div className="relative overflow-hidden border-b border-cyan-900/10 px-8 py-12 dark:border-cyan-300/10">
+            <div className="future-grid pointer-events-none absolute inset-0" />
+            <div className="pointer-events-none absolute -right-20 -top-10 h-64 w-64 rounded-full bg-cyan-400/20 blur-3xl" />
+            <div className="relative">
+              <span className="section-label">● Área do empreendedor</span>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <span className="rounded-xl bg-cyan-500/15 px-4 py-2 font-bold text-cyan-700 dark:text-cyan-200">🛒 Produtos</span>
+                <span className="rounded-xl bg-cyan-500/15 px-4 py-2 font-bold text-cyan-700 dark:text-cyan-200">🏪 Negócios</span>
+                <span className="rounded-xl bg-cyan-500/15 px-4 py-2 font-bold text-cyan-700 dark:text-cyan-200">📈 Visibilidade</span>
+              </div>
+              <h1 className="mt-5 text-5xl font-black tracking-tight">Produtos e serviços</h1>
+              <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+                Cadastre produtos para aparecerem na página do seu negócio.
+              </p>
             </div>
-            Produtos e serviços
-          </h1>
-
-          <p className="mt-4 text-blue-100 text-lg">
-            Cadastre produtos para aparecerem na página do seu negócio.
-          </p>
-        </div>
-
-        {negocios.length === 0 ? (
-          <div className="p-10 text-center">
-            <h2 className="text-3xl font-black text-orange-600">
-              Você ainda não tem negócios cadastrados
-            </h2>
-
-            <a
-              href="/cadastrar-negocio"
-              className="mt-6 inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-2xl font-bold"
-            >
-              Cadastrar negócio primeiro
-            </a>
           </div>
-        ) : (
-          <form onSubmit={cadastrarProduto} className="p-10 space-y-6">
 
-            <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200">
-                Escolha o negócio
-              </label>
+          {negocios.length === 0 ? (
+            <div className="p-10 text-center">
+              <h2 className="text-3xl font-black text-orange-600">
+                Você ainda não tem negócios cadastrados
+              </h2>
 
-              <select
-                value={idNegocio}
-                onChange={(e) => setIdNegocio(e.target.value)}
-                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+              <a
+                href="/cadastrar-negocio"
+                className="press mt-6 inline-block rounded-2xl bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700"
               >
-                {negocios.map((negocio) => (
-                  <option key={negocio.id_negocio} value={negocio.id_negocio}>
-                    {negocio.nome}
-                  </option>
-                ))}
-              </select>
+                Cadastrar negócio primeiro
+              </a>
             </div>
+          ) : (
+            <form onSubmit={cadastrarProduto} className="space-y-6 p-8 sm:p-10">
 
-            <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200">
-                Nome do produto/serviço
-              </label>
-
-              <input
-                required
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                placeholder="Ex: X-Burguer Especial"
-                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
-              />
-            </div>
-
-            <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200">
-                Descrição
-              </label>
-
-              <textarea
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-                placeholder="Descreva o produto..."
-                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 h-32 outline-none focus:border-orange-500"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-5">
               <div>
-                <label className="font-bold text-gray-700 dark:text-gray-200">
-                  Preço
+                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  Escolha o negócio
+                </label>
+
+                <select
+                  value={idNegocio}
+                  onChange={(e) => setIdNegocio(e.target.value)}
+                  className="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
+                >
+                  {negocios.map((negocio) => (
+                    <option key={negocio.id_negocio} value={negocio.id_negocio}>
+                      {negocio.nome}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  Nome do produto/serviço
                 </label>
 
                 <input
                   required
-                  type="number"
-                  step="0.01"
-                  value={preco}
-                  onChange={(e) => setPreco(e.target.value)}
-                  placeholder="24.90"
-                  className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder="Ex: X-Burguer Especial"
+                  className="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-gray-700 dark:text-gray-200">
-                  Status
+                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  Descrição
                 </label>
 
-                <select
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
-                >
-                  <option value="disponivel">Disponível</option>
-                  <option value="indisponivel">Indisponível</option>
-                </select>
+                <textarea
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
+                  placeholder="Descreva o produto..."
+                  className="w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white h-32"
+                />
               </div>
-            </div>
 
-            <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-5 rounded-2xl text-xl shadow-xl transition">
-              Cadastrar produto
-            </button>
+              <div className="grid gap-5 md:grid-cols-2">
+                <div>
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                    Preço
+                  </label>
 
-            {mensagem && (
-              <p className="text-center font-bold text-orange-600">
-                {mensagem}
-              </p>
-            )}
+                  <input
+                    required
+                    type="number"
+                    step="0.01"
+                    value={preco}
+                    onChange={(e) => setPreco(e.target.value)}
+                    placeholder="24.90"
+                    className="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
+                  />
+                </div>
 
-          </form>
-        )}
+                <div>
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                    Status
+                  </label>
 
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
+                  >
+                    <option value="disponivel">Disponível</option>
+                    <option value="indisponivel">Indisponível</option>
+                  </select>
+                </div>
+              </div>
+
+              <button className="press w-full rounded-2xl bg-orange-600 py-5 text-xl font-black text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-700">
+                Cadastrar produto
+              </button>
+
+              {mensagem && (
+                <p className="text-center font-bold text-orange-600">
+                  {mensagem}
+                </p>
+              )}
+
+            </form>
+          )}
+
+        </div>
       </div>
+
+      <Footer />
     </main>
   )
 }

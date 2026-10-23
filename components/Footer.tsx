@@ -2,312 +2,105 @@
 
 export default function Footer() {
   function voltarAoTopo() {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
+  const grupos = [
+    {
+      titulo: "Encontrar",
+      links: [
+        ["Categorias", "/categorias"],
+        ["Negócios", "/negocio"],
+        ["Produtos", "/produtos"],
+      ],
+    },
+    {
+      titulo: "Minha conta",
+      links: [
+        ["Entrar", "/login"],
+        ["Criar conta", "/cadastro"],
+        ["Meu perfil", "/perfil"],
+      ],
+    },
+    {
+      titulo: "Para empreendedores",
+      links: [
+        ["Cadastrar negócio", "/cadastrar-negocio"],
+        ["Painel do negócio", "/dashboard"],
+        ["Sobre o projeto", "/sobre"],
+      ],
+    },
+  ]
+
   return (
-    <footer className="mt-16 text-white">
+    <footer className="mt-16 border-t border-cyan-900/10 bg-slate-950 text-white dark:border-cyan-300/10">
+      <div className="relative overflow-hidden">
+        <div className="future-grid pointer-events-none absolute inset-0 opacity-40" />
+        <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-500/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-500/15 blur-3xl" />
 
-      {/* MENU SUPERIOR */}
-      <div className="bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100 border-t border-gray-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-6">
-          <nav className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-3 py-4 text-sm font-bold">
-            <a href="/" className="hover:text-orange-600 transition">
-              INÍCIO
-            </a>
-
-            <a href="/negocio" className="hover:text-orange-600 transition">
-              NEGÓCIOS
-            </a>
-
-            <a href="/produtos" className="hover:text-orange-600 transition">
-              PRODUTOS
-            </a>
-
-            <a
-              href="/cadastrar-negocio"
-              className="hover:text-orange-600 transition"
-            >
-              CADASTRE SEU NEGÓCIO
-            </a>
-
-            <a href="/perfil" className="hover:text-orange-600 transition">
-              MEU PERFIL
-            </a>
-          </nav>
-        </div>
-      </div>
-
-      {/* REDES SOCIAIS */}
-      <div className="bg-orange-600">
-        <div className="max-w-7xl mx-auto px-6 py-5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-
-            <p className="font-black text-sm">
-              Acompanhe o Lá da Vendinha
-            </p>
-
-            <div className="flex items-center gap-4">
-
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black text-lg hover:bg-white hover:text-orange-600 hover:scale-110 transition"
-              >
-                f
-              </a>
-
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black text-lg hover:bg-white hover:text-orange-600 hover:scale-110 transition"
-              >
-                ◎
-              </a>
-
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black text-lg hover:bg-white hover:text-orange-600 hover:scale-110 transition"
-              >
-                ▶
-              </a>
-
-              <a
-                href="#"
-                aria-label="WhatsApp"
-                className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center font-black text-lg hover:bg-white hover:text-orange-600 hover:scale-110 transition"
-              >
-                ◉
-              </a>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ÁREA PRINCIPAL */}
-      <div className="bg-orange-800">
-        <div className="max-w-7xl mx-auto px-6 py-14">
-
-          {/* APRESENTAÇÃO */}
-          <div className="grid md:grid-cols-2 gap-10 pb-12 border-b border-orange-600/40">
-
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.25fr_1fr]">
             <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-12 h-12 rounded-xl bg-white text-orange-700 flex items-center justify-center font-black text-xl">
-                  LV
-                </div>
-
-                <div>
-                  <h2 className="text-2xl font-black">
-                    LÁ DA VENDINHA
-                  </h2>
-
-                  <p className="text-orange-200 text-sm">
-                    Comércio local mais perto de você
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-orange-100 leading-relaxed max-w-xl">
-                Uma plataforma criada para aproximar consumidores,
-                empreendedores e negócios locais, facilitando a descoberta
-                de produtos e serviços da região.
+              <a href="/" className="inline-flex items-center gap-3 rounded-2xl" aria-label="Lá da Vendinha — página inicial">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-lg font-black shadow-lg shadow-orange-700/20">LV</span>
+                <span className="text-2xl font-black">Lá da Vendinha</span>
+              </a>
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
+                Um jeito simples e seguro de encontrar produtos, serviços e empreendedores da sua região.
               </p>
-
-              <p className="text-orange-200 mt-4">
-                📍 Campinas - SP
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-black text-xl mb-4">
-                FALE CONOSCO
-              </h3>
-
-              <p className="text-orange-100 leading-relaxed">
-                Tem alguma dúvida, sugestão ou encontrou algum problema?
-                Entre em contato com a equipe do projeto.
-              </p>
-
               <a
                 href="mailto:contato@ladavendinha.com"
-                className="inline-block mt-5 font-bold text-white hover:text-orange-200 transition"
+                className="mt-6 inline-flex min-h-12 items-center rounded-2xl border border-cyan-300/30 px-5 font-bold text-cyan-100 transition hover:bg-cyan-300/10"
               >
                 ✉ contato@ladavendinha.com
               </a>
             </div>
 
-          </div>
-
-          {/* LINKS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 py-12">
-
-            {/* NAVEGAÇÃO */}
-            <div>
-              <h4 className="font-black mb-5">
-                Navegação
-              </h4>
-
-              <div className="space-y-3 text-sm text-orange-100">
-                <a
-                  href="/"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Início
-                </a>
-
-                <a
-                  href="/negocio"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Negócios
-                </a>
-
-                <a
-                  href="/produtos"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Produtos
-                </a>
-              </div>
-            </div>
-
-            {/* CONTA */}
-            <div>
-              <h4 className="font-black mb-5">
-                Minha conta
-              </h4>
-
-              <div className="space-y-3 text-sm text-orange-100">
-                <a
-                  href="/login"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Entrar
-                </a>
-
-                <a
-                  href="/cadastro"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Criar conta
-                </a>
-
-                <a
-                  href="/perfil"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Meu perfil
-                </a>
-              </div>
-            </div>
-
-            {/* NEGÓCIOS */}
-            <div>
-              <h4 className="font-black mb-5">
-                Para negócios
-              </h4>
-
-              <div className="space-y-3 text-sm text-orange-100">
-                <a
-                  href="/cadastrar-negocio"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Cadastre seu negócio
-                </a>
-
-                <a
-                  href="/dashboard"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Dashboard
-                </a>
-              </div>
-            </div>
-
-            {/* INSTITUCIONAL */}
-            <div>
-              <h4 className="font-black mb-5">
-                Institucional
-              </h4>
-
-              <div className="space-y-3 text-sm text-orange-100">
-                <a
-                  href="/sobre"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Sobre o projeto
-                </a>
-
-                <a
-                  href="/politica-privacidade"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Política de privacidade
-                </a>
-
-                <a
-                  href="/termos"
-                  className="block hover:text-white hover:translate-x-1 transition"
-                >
-                  Termos de uso
-                </a>
-              </div>
-            </div>
-
-            {/* SENAI */}
-            <div>
-              <h4 className="font-black mb-5">
-                Projeto SENAI
-              </h4>
-
-              <p className="text-sm text-orange-100 leading-relaxed">
-                Projeto desenvolvido no contexto educacional do SENAI,
-                com foco em tecnologia, desenvolvimento de sistemas e
-                valorização do comércio local.
+            <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <p className="text-lg font-black">Precisa de ajuda?</p>
+              <p className="mt-2 text-base leading-relaxed text-slate-300">
+                Use as categorias ou a busca no topo para encontrar o que procura. Tudo foi organizado para funcionar bem no celular e no computador.
               </p>
+              <a href="/sobre" className="mt-5 inline-flex min-h-11 items-center font-black text-orange-300 hover:text-orange-200">
+                Conheça o projeto →
+              </a>
             </div>
-
           </div>
 
+          <nav aria-label="Links do rodapé" className="grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-3">
+            {grupos.map((grupo) => (
+              <div key={grupo.titulo}>
+                <h2 className="text-lg font-black text-white">{grupo.titulo}</h2>
+                <ul className="mt-4 space-y-3">
+                  {grupo.links.map(([texto, href]) => (
+                    <li key={href}>
+                      <a href={href} className="link-underline inline-flex min-h-10 items-center text-base text-slate-300 transition hover:text-cyan-200">
+                        {texto}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+
+          <div className="flex flex-col gap-3 border-t border-white/10 pt-7 text-base text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <p>© 2026 Lá da Vendinha.</p>
+            <p>Projeto educacional desenvolvido no SENAI.</p>
+          </div>
         </div>
       </div>
 
-      {/* RODAPÉ FINAL */}
-      <div className="bg-orange-600">
-        <div className="max-w-7xl mx-auto px-6 py-5">
-
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-center md:text-left">
-
-            <p>
-              © 2026 Lá da Vendinha. Todos os direitos reservados.
-            </p>
-
-            <p className="font-bold">
-              Projeto desenvolvido no SENAI
-            </p>
-
-          </div>
-
-        </div>
-      </div>
-
-      {/* VOLTAR AO TOPO */}
       <button
         type="button"
         onClick={voltarAoTopo}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-orange-600 hover:bg-orange-700 text-white rounded-full shadow-xl font-black text-xl transition hover:scale-110"
+        className="press fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-600 text-xl font-black text-white shadow-xl transition hover:bg-orange-700 sm:bottom-6 sm:right-6"
         aria-label="Voltar ao topo"
         title="Voltar ao topo"
       >
         ↑
       </button>
-
     </footer>
   )
 }

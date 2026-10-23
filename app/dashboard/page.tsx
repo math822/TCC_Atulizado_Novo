@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import Logo from "../../components/Logo"
+import Navbar from "../../components/Navbar"
+import Footer from "../../components/Footer"
 
 export default function Dashboard() {
   const [usuario, setUsuario] = useState<any>(null)
@@ -82,7 +83,7 @@ export default function Dashboard() {
 
   if (carregando) {
     return (
-      <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 flex items-center justify-center">
+      <main className="min-h-screen text-slate-950 dark:text-white flex items-center justify-center">
         <h1 className="text-4xl font-black text-orange-600">
           Carregando dashboard...
         </h1>
@@ -91,71 +92,74 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 py-10 px-6">
-      <div className="max-w-7xl mx-auto">
+    <main className="flex min-h-screen flex-col text-slate-950 dark:text-white">
+      <Navbar />
 
-        <div className="mb-6">
-          <Logo />
-        </div>
+      <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6">
 
-        <section className="bg-white dark:bg-slate-900 rounded-[40px] shadow-xl overflow-hidden">
+        <section className="future-card overflow-hidden rounded-[40px]">
           <div className="grid lg:grid-cols-3">
 
-            <div className="lg:col-span-2 p-10">
-              <p className="text-orange-600 font-black">
-                Painel do empreendedor
-              </p>
+            <div className="p-10 lg:col-span-2">
+              <span className="section-label">● Painel do empreendedor</span>
 
-              <h1 className="text-5xl font-black text-gray-900 dark:text-white mt-3">
+              <h1 className="mt-4 text-5xl font-black tracking-tight">
                 Olá, {usuario?.nome}
               </h1>
 
-              <p className="text-gray-500 dark:text-gray-300 text-lg mt-4 max-w-2xl">
-                Gerencie seus negócios, produtos e acompanhe sua presença na plataforma Lá da Vendinha.
+              <p className="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
+                Gerencie seus negócios, produtos, mensagens e acompanhe sua presença na plataforma Lá da Vendinha.
               </p>
 
-              <div className="flex flex-wrap gap-4 mt-8">
+              <div className="mt-8 flex flex-wrap gap-4">
                 <a
                   href="/cadastrar-negocio"
-                  className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-4 rounded-2xl font-black shadow-lg"
+                  className="press rounded-2xl bg-orange-600 px-6 py-4 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
                 >
                   + Cadastrar negócio
                 </a>
 
                 <a
                   href="/produtos"
-                  className="border-2 border-orange-200 text-orange-600 px-6 py-4 rounded-2xl font-black hover:bg-orange-50"
+                  className="press rounded-2xl border-2 border-cyan-600/30 px-6 py-4 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-slate-800"
                 >
                   + Cadastrar produto
                 </a>
 
                 <a
+                  href="/mensagens"
+                  className="press rounded-2xl border-2 border-cyan-600/30 px-6 py-4 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-slate-800"
+                >
+                  💬 Mensagens
+                </a>
+
+                <a
                   href="/"
-                  className="border-2 border-gray-200 dark:border-slate-700 text-gray-800 dark:text-white px-6 py-4 rounded-2xl font-black hover:bg-gray-50 dark:hover:bg-slate-800"
+                  className="press rounded-2xl border-2 border-cyan-900/10 px-6 py-4 font-black text-slate-800 transition hover:bg-slate-50 dark:border-cyan-300/10 dark:text-white dark:hover:bg-slate-800"
                 >
                   Ver site
                 </a>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-orange-600 to-orange-400 p-10 text-white flex flex-col justify-center">
-              <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-5xl font-black">
+            <div className="animate-gradient flex flex-col justify-center bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 p-10 text-white">
+              <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-white/15 text-5xl font-black">
                 {usuario?.foto_perfil ? (
                   <img
                     src={usuario.foto_perfil}
                     alt={usuario.nome}
-                    className="w-full h-full rounded-full object-cover"
+                    className="h-full w-full rounded-full object-cover"
                   />
                 ) : (
                   usuario?.nome?.charAt(0).toUpperCase()
                 )}
               </div>
 
-              <h2 className="text-3xl font-black mt-6">
+              <h2 className="mt-6 text-3xl font-black capitalize">
                 {usuario?.tipo}
               </h2>
 
-              <p className="text-orange-100 mt-2">
+              <p className="mt-2 text-slate-300">
                 Conta ativa na plataforma
               </p>
             </div>
@@ -163,53 +167,48 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <section className="grid md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
-            <p className="text-gray-500 dark:text-gray-300 font-bold">
+        <section className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="future-card rounded-3xl p-8">
+            <p className="font-bold text-slate-600 dark:text-slate-300">
               Negócios cadastrados
             </p>
-            <h2 className="text-6xl font-black text-orange-600 mt-4">
+            <h2 className="mt-4 text-6xl font-black text-orange-600">
               {negocios.length}
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
-            <p className="text-gray-500 dark:text-gray-300 font-bold">
+          <div className="future-card rounded-3xl p-8">
+            <p className="font-bold text-slate-600 dark:text-slate-300">
               Produtos cadastrados
             </p>
-            <h2 className="text-6xl font-black text-orange-600 mt-4">
+            <h2 className="mt-4 text-6xl font-black text-orange-600">
               {produtos.length}
             </h2>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
-            <p className="text-gray-500 dark:text-gray-300 font-bold">
+          <div className="future-card rounded-3xl p-8">
+            <p className="font-bold text-slate-600 dark:text-slate-300">
               Status
             </p>
-            <h2 className="text-4xl font-black text-green-600 mt-4">
+            <h2 className="mt-4 text-4xl font-black text-green-600">
               Ativo
             </h2>
           </div>
         </section>
 
-        <section className="grid lg:grid-cols-2 gap-8 mt-8">
+        <section className="mt-8 grid gap-8 lg:grid-cols-2">
 
-          <div className="bg-white dark:bg-slate-900 rounded-[35px] p-8 shadow-xl">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-black text-gray-900 dark:text-white">
-                Meus negócios
-              </h2>
+          <div className="future-card rounded-[35px] p-8">
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="text-3xl font-black">Meus negócios</h2>
 
-              <a
-                href="/cadastrar-negocio"
-                className="text-orange-600 font-black"
-              >
+              <a href="/cadastrar-negocio" className="link-underline font-black text-orange-600">
                 + Novo
               </a>
             </div>
 
             {negocios.length === 0 && (
-              <p className="text-gray-500 dark:text-gray-300">
+              <p className="text-slate-600 dark:text-slate-300">
                 Nenhum negócio cadastrado ainda.
               </p>
             )}
@@ -218,7 +217,7 @@ export default function Dashboard() {
               {negocios.map((negocio) => (
                 <div
                   key={negocio.id_negocio}
-                  className="border border-orange-100 dark:border-slate-700 rounded-3xl overflow-hidden"
+                  className="overflow-hidden rounded-3xl border border-cyan-900/10 dark:border-cyan-300/10"
                 >
                   <div className="h-44 overflow-hidden">
                     {negocio.fotos?.length > 0 ? (
@@ -227,37 +226,35 @@ export default function Dashboard() {
                         alt={negocio.nome}
                         onError={(event) => {
                           event.currentTarget.onerror = null
-                          event.currentTarget.src = "/categorias/Comida.png"
+                          event.currentTarget.src = "/categorias/alimentacao-futuro-v2.png"
                         }}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="h-full bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center text-7xl">
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-orange-300 to-cyan-300 text-7xl dark:from-slate-800 dark:to-slate-700">
                         🏪
                       </div>
                     )}
                   </div>
 
                   <div className="p-5">
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white">
-                      {negocio.nome}
-                    </h3>
+                    <h3 className="text-2xl font-black">{negocio.nome}</h3>
 
-                    <p className="text-gray-500 dark:text-gray-300 text-sm mt-2">
+                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                       {negocio.descricao || "Sem descrição"}
                     </p>
 
-                    <div className="flex gap-3 mt-5 flex-wrap">
+                    <div className="mt-5 flex flex-wrap gap-3">
                       <a
                         href={`/negocio/${negocio.id_negocio}`}
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black"
+                        className="press rounded-2xl bg-orange-600 px-5 py-3 font-black text-white transition hover:bg-orange-700"
                       >
                         Ver
                       </a>
 
                       <a
                         href={`/editar-negocio/${negocio.id_negocio}`}
-                        className="bg-orange-100 hover:bg-orange-200 text-orange-700 px-5 py-3 rounded-2xl font-black"
+                        className="press rounded-2xl bg-cyan-500/15 px-5 py-3 font-black text-cyan-700 transition hover:bg-cyan-500/25 dark:text-cyan-200"
                       >
                         Editar
                       </a>
@@ -268,19 +265,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-[35px] p-8 shadow-xl">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-black text-gray-900 dark:text-white">
-                Produtos
-              </h2>
+          <div className="future-card rounded-[35px] p-8">
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="text-3xl font-black">Produtos</h2>
 
-              <a href="/produtos" className="text-orange-600 font-black">
+              <a href="/produtos" className="link-underline font-black text-orange-600">
                 + Novo
               </a>
             </div>
 
             {produtos.length === 0 && (
-              <p className="text-gray-500 dark:text-gray-300">
+              <p className="text-slate-600 dark:text-slate-300">
                 Nenhum produto cadastrado ainda.
               </p>
             )}
@@ -289,18 +284,16 @@ export default function Dashboard() {
               {produtos.map((produto) => (
                 <div
                   key={produto.id_produto}
-                  className="border border-orange-100 dark:border-slate-700 rounded-3xl p-5 flex items-center justify-between gap-4"
+                  className="flex items-center justify-between gap-4 rounded-3xl border border-cyan-900/10 p-5 dark:border-cyan-300/10"
                 >
                   <div>
-                    <h3 className="text-xl font-black text-gray-900 dark:text-white">
-                      {produto.nome}
-                    </h3>
+                    <h3 className="text-xl font-black">{produto.nome}</h3>
 
-                    <p className="text-gray-500 dark:text-gray-300 text-sm mt-1">
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                       {produto.descricao || "Sem descrição"}
                     </p>
 
-                    <p className="text-orange-600 font-black mt-2">
+                    <p className="mt-2 font-black text-orange-600">
                       R$ {produto.preco}
                     </p>
                   </div>
@@ -308,14 +301,14 @@ export default function Dashboard() {
                   <div className="flex gap-2">
                     <a
                       href={`/editar-produto/${produto.id_produto}`}
-                      className="bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-3 rounded-2xl font-black"
+                      className="press rounded-2xl bg-cyan-500/15 px-4 py-3 font-black text-cyan-700 transition hover:bg-cyan-500/25 dark:text-cyan-200"
                     >
                       Editar
                     </a>
 
                     <button
                       onClick={() => apagarProduto(produto.id_produto)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-2xl font-black"
+                      className="press rounded-2xl bg-red-500 px-4 py-3 font-black text-white transition hover:bg-red-600"
                     >
                       Apagar
                     </button>
@@ -328,6 +321,8 @@ export default function Dashboard() {
         </section>
 
       </div>
+
+      <Footer />
     </main>
   )
 }

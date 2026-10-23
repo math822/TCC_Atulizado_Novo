@@ -24,6 +24,10 @@ model Usuario {
   avaliacoes  Avaliacao[]
   favoritos   Favorito[]
   comentarios Comentario[]
+
+  conversas_como_cliente      Conversa[] @relation("cliente_conversas")
+  conversas_como_empreendedor Conversa[] @relation("empreendedor_conversas")
+  mensagens_enviadas          Mensagem[] @relation("mensagens_remetente")
 }
 
 model Negocio {
@@ -48,6 +52,7 @@ model Negocio {
   avaliacoes  Avaliacao[]
   favoritos   Favorito[]
   comentarios Comentario[]
+  conversas   Conversa[]
 
   @@map("negocio")
 }
@@ -143,6 +148,41 @@ model Produto {
   negocio    Negocio @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
 
   @@map("produto")
+}
+
+model Conversa {
+  id_conversa     String   @id @default(uuid())
+  id_cliente      String
+  id_empreendedor String
+  id_negocio      String?
+  assunto         String?
+  criado_em       DateTime @default(now())
+  atualizado_em   DateTime @updatedAt
+
+  cliente      Usuario    @relation("cliente_conversas", fields: [id_cliente], references: [id_usuario], onDelete: Cascade)
+  empreendedor Usuario    @relation("empreendedor_conversas", fields: [id_empreendedor], references: [id_usuario], onDelete: Cascade)
+  negocio      Negocio?   @relation(fields: [id_negocio], references: [id_negocio], onDelete: Cascade)
+  mensagens    Mensagem[]
+
+  @@index([id_cliente, id_empreendedor])
+  @@index([id_empreendedor, id_cliente])
+  @@map("conversa")
+}
+
+model Mensagem {
+  id_mensagem String   @id @default(uuid())
+  texto       String   @db.Text
+  lida        Boolean  @default(false)
+  data        DateTime @default(now())
+
+  id_conversa  String
+  id_remetente String
+
+  conversa  Conversa @relation(fields: [id_conversa], references: [id_conversa], onDelete: Cascade)
+  remetente Usuario  @relation("mensagens_remetente", fields: [id_remetente], references: [id_usuario], onDelete: Cascade)
+
+  @@index([id_conversa, data])
+  @@map("mensagem")
 }
 
 enum TipoUsuario {

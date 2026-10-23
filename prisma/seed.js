@@ -8,7 +8,7 @@ const categorias = [
     nome: "Alimentação",
     descricao: "Restaurantes, lanches e comidas",
     icone: "🍔",
-    imagem: "/categorias/Comida.png",
+    imagem: "/categorias/alimentacao-futuro-v2.png",
     negocios: [
       ["Sabor da Vila", "Comida caseira preparada diariamente com ingredientes frescos.", "Cambuí", ["Prato executivo", 29.9], ["Marmita especial", 24.9]],
       ["Burger do Bairro", "Hambúrgueres artesanais, porções e combos para toda a família.", "Taquaral", ["X-Burger artesanal", 27.9], ["Combo da casa", 39.9]],
@@ -21,7 +21,7 @@ const categorias = [
     nome: "Beleza",
     descricao: "Salões, barbearias e estética",
     icone: "💈",
-    imagem: "/categorias/Beleza.png",
+    imagem: "/categorias/beleza-futuro-v2.png",
     negocios: [
       ["Studio Bella", "Cortes, escovas, coloração e cuidados completos para seus cabelos.", "Cambuí", ["Corte feminino", 65.0], ["Escova", 45.0]],
       ["Barbearia Central", "Corte masculino, barba e atendimento com hora marcada.", "Centro", ["Corte masculino", 40.0], ["Barba completa", 30.0]],
@@ -34,7 +34,7 @@ const categorias = [
     nome: "Informática",
     descricao: "Assistência técnica e tecnologia",
     icone: "💻",
-    imagem: "/categorias/Informatica.png",
+    imagem: "/categorias/informatica-futuro-v2.png",
     negocios: [
       ["Tech Rápido", "Manutenção de computadores e notebooks com diagnóstico transparente.", "Centro", ["Formatação completa", 120.0], ["Limpeza preventiva", 90.0]],
       ["Cell Fix Campinas", "Conserto de celulares, troca de tela e acessórios.", "Cambuí", ["Troca de tela", 249.9], ["Película 3D", 35.0]],
@@ -47,7 +47,7 @@ const categorias = [
     nome: "Moda",
     descricao: "Roupas, calçados e acessórios",
     icone: "👗",
-    imagem: "/categorias/Moda.png",
+    imagem: "/categorias/moda-futuro-v2.png",
     negocios: [
       ["Boutique da Ana", "Moda feminina atual com peças selecionadas e atendimento personalizado.", "Cambuí", ["Vestido midi", 149.9], ["Blusa estampada", 79.9]],
       ["Estilo Urbano", "Roupas casuais e streetwear para todos os estilos.", "Centro", ["Camiseta oversized", 69.9], ["Calça cargo", 139.9]],
@@ -60,7 +60,7 @@ const categorias = [
     nome: "Serviços",
     descricao: "Prestadores de serviço",
     icone: "🛠️",
-    imagem: "/categorias/Servico.png",
+    imagem: "/categorias/servicos-futuro-v2.png",
     negocios: [
       ["Elétrica Segura", "Instalações e reparos elétricos residenciais com segurança.", "Jardim Chapadão", ["Visita técnica", 100.0], ["Instalação de tomada", 75.0]],
       ["Repara Fácil", "Pequenos reparos, montagem de móveis e manutenção residencial.", "Taquaral", ["Montagem de móvel", 120.0], ["Reparo hidráulico", 110.0]],
@@ -73,7 +73,7 @@ const categorias = [
     nome: "Artesanato",
     descricao: "Produtos artesanais",
     icone: "🧶",
-    imagem: "/categorias/Artesanato.png",
+    imagem: "/categorias/artesanato-futuro-v2.png",
     negocios: [
       ["Ateliê da Nanda", "Peças exclusivas em crochê feitas à mão e sob encomenda.", "Barão Geraldo", ["Bolsa de crochê", 120.0], ["Amigurumi", 85.0]],
       ["Cerâmica Raiz", "Cerâmicas utilitárias e decorativas produzidas artesanalmente.", "Sousas", ["Caneca artesanal", 65.0], ["Vaso decorativo", 110.0]],

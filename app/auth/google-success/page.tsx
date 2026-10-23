@@ -102,27 +102,25 @@ export default function GoogleSuccess() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-slate-950 flex items-center justify-center px-6">
-      <div className="w-full max-w-md bg-slate-900 rounded-[32px] shadow-2xl p-10 text-center">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-slate-950 dark:text-white">
+      <div className="future-grid pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
 
-        <div className="mx-auto mb-8 w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center">
-          <span className="text-4xl">
-            ✓
-          </span>
+      <div className="future-surface animate-pop relative w-full max-w-md rounded-[32px] p-10 text-center">
+        <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-cyan-600 text-4xl font-black text-white">
+          ✓
         </div>
 
-        <h1 className="text-3xl font-black text-white">
-          {mensagem}
-        </h1>
+        <h1 className="text-3xl font-black">{mensagem}</h1>
 
-        <p className="text-gray-400 mt-4">
+        <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
           Aguarde enquanto preparamos sua conta...
         </p>
 
         <div className="mt-8 flex justify-center">
-          <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
         </div>
-
       </div>
     </main>
   )

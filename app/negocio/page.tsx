@@ -104,56 +104,21 @@ export default function NegociosPage() {
   }
 
   return (
-    <main className="bg-[#fff7ed] dark:bg-slate-950 min-h-screen">
+    <main className="text-slate-950 dark:text-white min-h-screen">
       <Navbar />
 
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-3 gap-6">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
 
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl text-center">
-            <h2 className="text-5xl font-black text-orange-600">
-              {negocios.length}
-            </h2>
-
-            <p className="text-gray-500 dark:text-gray-300 mt-2">
-              Negócios cadastrados
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl text-center">
-            <h2 className="text-5xl font-black text-orange-600">
-              +12k
-            </h2>
-
-            <p className="text-gray-500 dark:text-gray-300 mt-2">
-              Usuários ativos
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl text-center">
-            <h2 className="text-5xl font-black text-orange-600">
-              4.9 ⭐
-            </h2>
-
-            <p className="text-gray-500 dark:text-gray-300 mt-2">
-              Avaliação média
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-6 py-10">
-
-        <div className="flex items-center justify-between mb-10">
+        <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-orange-600 font-black">
-              Marketplace local
-            </p>
+            <span className="section-label">Marketplace local</span>
 
-            <h2 className="text-4xl font-black text-gray-900 dark:text-white">
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
               Negócios cadastrados
-            </h2>
+            </h1>
+            <p className="mt-3 text-lg text-slate-600 dark:text-slate-300">
+              Conheça lojas e profissionais da sua região.
+            </p>
           </div>
 
           <a
@@ -195,17 +160,17 @@ export default function NegociosPage() {
           {negocios.map((negocio) => (
             <div
               key={negocio.id_negocio}
-              className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-xl hover:-translate-y-2 hover:shadow-2xl transition duration-300"
+              className="future-card flex h-full flex-col overflow-hidden rounded-[30px] transition duration-300 hover:-translate-y-1"
             >
 
-              <div className="h-52 overflow-hidden relative">
+              <div className="relative aspect-[16/10] overflow-hidden">
                 {negocio.fotos?.length > 0 ? (
                   <img
                     src={negocio.fotos[0].url}
                     alt={negocio.nome}
                     onError={(event) => {
                       event.currentTarget.onerror = null
-                      event.currentTarget.src = "/categorias/Comida.png"
+                      event.currentTarget.src = "/categorias/alimentacao-futuro-v2.png"
                     }}
                     className="w-full h-full object-cover"
                   />
@@ -216,10 +181,13 @@ export default function NegociosPage() {
                 )}
 
                 <button
+                  type="button"
                   onClick={() =>
                     toggleFavorito(negocio.id_negocio)
                   }
-                  className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/95 shadow-xl text-3xl font-black flex items-center justify-center transition hover:scale-110"
+                  aria-label={favoritos.includes(negocio.id_negocio) ? `Remover ${negocio.nome} dos favoritos` : `Adicionar ${negocio.nome} aos favoritos`}
+                  aria-pressed={favoritos.includes(negocio.id_negocio)}
+                  className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-2xl font-black shadow-xl transition hover:scale-105"
                 >
                   {favoritos.includes(negocio.id_negocio)
                     ? "❤️"
@@ -231,7 +199,7 @@ export default function NegociosPage() {
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="flex flex-1 flex-col p-6">
 
                 <h3 className="text-2xl font-black text-gray-900 dark:text-white">
                   {negocio.nome}
@@ -253,7 +221,7 @@ export default function NegociosPage() {
 
                 <a
                   href={`/negocio/${negocio.id_negocio}`}
-                  className="mt-6 inline-block bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition"
+                  className="mt-auto flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-5 py-3 font-black text-white transition hover:bg-orange-700"
                 >
                   Ver negócio
                 </a>
@@ -266,9 +234,9 @@ export default function NegociosPage() {
 
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="bg-gradient-to-r from-orange-600 to-orange-400 rounded-[40px] p-14 text-white text-center shadow-2xl">
-          <h2 className="text-5xl font-black">
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="rounded-[36px] bg-gradient-to-br from-slate-950 via-slate-900 to-cyan-950 px-6 py-12 text-center text-white shadow-2xl sm:p-14">
+          <h2 className="text-3xl font-black sm:text-5xl">
             Divulgue seu negócio hoje mesmo
           </h2>
 

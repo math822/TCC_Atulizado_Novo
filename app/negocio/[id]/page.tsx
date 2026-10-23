@@ -2,7 +2,8 @@
 
 import { useEffect, useState, use } from "react"
 import toast from "react-hot-toast"
-import Logo from "../../../components/Logo"
+import Navbar from "../../../components/Navbar"
+import Footer from "../../../components/Footer"
 
 export default function NegocioPage({
   params
@@ -13,6 +14,8 @@ export default function NegocioPage({
 
   const [negocio, setNegocio] = useState<any>(null)
   const [carregando, setCarregando] = useState(true)
+  const [usuario, setUsuario] = useState<any>(null)
+  const [abrindoChat, setAbrindoChat] = useState(false)
 
   const [nota, setNota] = useState(5)
   const [comentario, setComentario] = useState("")
@@ -20,6 +23,17 @@ export default function NegocioPage({
   useEffect(() => {
     buscarNegocio()
   }, [id])
+
+  useEffect(() => {
+    const salvo = localStorage.getItem("usuario")
+    if (salvo) {
+      try {
+        setUsuario(JSON.parse(salvo))
+      } catch {
+        localStorage.removeItem("usuario")
+      }
+    }
+  }, [])
 
   async function buscarNegocio() {
     try {
@@ -73,9 +87,38 @@ export default function NegocioPage({
     }
   }
 
+  async function falarComVendedor() {
+    if (!usuario) {
+      window.location.href = `/login?redirect=/negocio/${id}`
+      return
+    }
+
+    setAbrindoChat(true)
+    try {
+      const resposta = await fetch("/api/chat/conversas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_usuario: usuario.id_usuario,
+          id_negocio: negocio.id_negocio
+        })
+      })
+      const dados = await resposta.json()
+      if (resposta.ok && dados.id_conversa) {
+        window.location.href = `/mensagens/${dados.id_conversa}`
+      } else {
+        toast.error(dados.error || "Não foi possível abrir o chat")
+        setAbrindoChat(false)
+      }
+    } catch {
+      toast.error("Erro ao abrir o chat")
+      setAbrindoChat(false)
+    }
+  }
+
   if (carregando) {
     return (
-      <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 flex items-center justify-center">
+      <main className="min-h-screen text-slate-950 dark:text-white flex items-center justify-center">
         <h1 className="text-4xl font-black text-orange-600">
           Carregando negócio...
         </h1>
@@ -85,7 +128,7 @@ export default function NegocioPage({
 
   if (!negocio) {
     return (
-      <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 flex items-center justify-center">
+      <main className="min-h-screen text-slate-950 dark:text-white flex items-center justify-center">
         <h1 className="text-4xl font-black text-red-600">
           Negócio não encontrado
         </h1>
@@ -94,83 +137,79 @@ export default function NegocioPage({
   }
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950">
+    <main className="min-h-screen text-slate-950 dark:text-white">
+      <Navbar />
 
-      <section className="bg-gradient-to-r from-orange-600 to-orange-400 text-white py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-
-          <div className="mb-8 bg-white w-fit p-4 rounded-3xl shadow-xl">
-            <Logo />
-          </div>
-
+      <section className="relative overflow-hidden border-b border-cyan-900/10 px-4 py-10 dark:border-cyan-300/10 sm:px-6 sm:py-14">
+        <div className="future-grid pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl">
           <a
-            href="/"
-            className="inline-block bg-white/20 px-5 py-3 rounded-2xl font-black mb-10 hover:bg-white/30"
+            href="/negocio"
+            className="mb-8 inline-flex min-h-11 items-center rounded-2xl border border-cyan-900/10 bg-white/80 px-5 font-bold text-slate-800 shadow-sm backdrop-blur transition hover:bg-white dark:border-cyan-300/10 dark:bg-slate-900/80 dark:text-white"
           >
-            ← Voltar para início
+            ← Voltar para negócios
           </a>
 
-          <div className="flex flex-col lg:flex-row gap-10 items-center">
-
-            <div className="w-72 h-72 rounded-[40px] overflow-hidden shadow-2xl bg-white/20">
+          <div className="grid items-center gap-8 lg:grid-cols-[360px_1fr] lg:gap-12">
+            <div className="future-surface overflow-hidden rounded-[34px] p-2">
               {negocio.fotos?.length > 0 ? (
                 <img
                   src={negocio.fotos[0].url}
                   alt={negocio.nome}
                   onError={(event) => {
                     event.currentTarget.onerror = null
-                    event.currentTarget.src = "/categorias/Comida.png"
+                    event.currentTarget.src = "/categorias/alimentacao-futuro-v2.png"
                   }}
-                  className="w-full h-full object-cover"
+                  className="aspect-square w-full rounded-[28px] object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-9xl">
+                <div className="flex aspect-square w-full items-center justify-center rounded-[28px] bg-gradient-to-br from-orange-200 to-cyan-100 text-8xl dark:from-slate-800 dark:to-slate-700">
                   🏪
                 </div>
               )}
             </div>
 
-            <div className="flex-1">
-              <p className="bg-white/20 inline-block px-4 py-2 rounded-2xl font-bold">
-                {negocio.status || "ativo"}
-              </p>
-
-              <h1 className="text-6xl font-black mt-6">
+            <div>
+              <span className="section-label">● {negocio.status || "ativo"}</span>
+              <h1 className="mt-5 break-words text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
                 {negocio.nome}
               </h1>
-
-              <p className="text-orange-100 text-xl mt-6 max-w-3xl">
+              <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-300 sm:text-xl">
                 {negocio.descricao || "Negócio local cadastrado na plataforma."}
               </p>
 
-              <div className="flex gap-4 flex-wrap mt-8">
-                <div className="bg-white/20 px-5 py-3 rounded-2xl font-bold">
-                  ⭐ {negocio.media_avaliacao || "0.0"}
-                </div>
-
-                <div className="bg-white/20 px-5 py-3 rounded-2xl font-bold">
-                  📞 {negocio.telefone || "Não informado"}
-                </div>
-
-                <div className="bg-white/20 px-5 py-3 rounded-2xl font-bold">
-                  🕒 {negocio.horario_funcionamento || "Horário não informado"}
-                </div>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <div className="future-surface rounded-2xl px-5 py-3 font-bold">⭐ {negocio.media_avaliacao || "0.0"}</div>
+                <div className="future-surface rounded-2xl px-5 py-3 font-bold">📞 {negocio.telefone || "Não informado"}</div>
+                <div className="future-surface rounded-2xl px-5 py-3 font-bold">🕒 {negocio.horario_funcionamento || "Horário não informado"}</div>
               </div>
 
-              <div className="flex gap-3 mt-8 flex-wrap">
-                <button className="bg-white text-red-500 px-5 py-3 rounded-2xl font-black shadow-lg">
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button type="button" className="press min-h-12 rounded-2xl border-2 border-red-200 bg-white px-6 font-black text-red-600 shadow-sm dark:border-red-900/50 dark:bg-slate-900">
                   ♥ Favoritar
                 </button>
 
+                {usuario?.id_usuario !== negocio.id_usuario && (
+                  <button
+                    type="button"
+                    onClick={falarComVendedor}
+                    disabled={abrindoChat}
+                    className="press inline-flex min-h-12 items-center rounded-2xl bg-cyan-600 px-6 font-black text-white shadow-lg shadow-cyan-600/20 transition hover:bg-cyan-700 disabled:opacity-60"
+                  >
+                    {abrindoChat ? "Abrindo chat..." : "💬 Falar com o vendedor"}
+                  </button>
+                )}
+
                 <a
                   href={`tel:${negocio.telefone || ""}`}
-                  className="bg-white text-orange-600 px-5 py-3 rounded-2xl font-black shadow-lg"
+                  className="press inline-flex min-h-12 items-center rounded-2xl bg-orange-600 px-6 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
                 >
                   📞 Contatar
                 </a>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -180,7 +219,7 @@ export default function NegocioPage({
 
           <div className="lg:col-span-2 space-y-8">
 
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
+            <div className="future-card rounded-3xl p-6 sm:p-8">
               <h2 className="text-4xl font-black text-orange-600 mb-6">
                 Sobre o negócio
               </h2>
@@ -190,7 +229,7 @@ export default function NegocioPage({
               </p>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
+            <div className="future-card rounded-3xl p-6 sm:p-8">
               <h2 className="text-4xl font-black text-orange-600 mb-6">
                 Produtos e serviços
               </h2>
@@ -237,7 +276,7 @@ export default function NegocioPage({
 
           <div className="space-y-8">
 
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
+            <div className="future-card rounded-3xl p-6 sm:p-8">
               <h2 className="text-3xl font-black text-orange-600 mb-6">
                 Informações
               </h2>
@@ -281,7 +320,7 @@ export default function NegocioPage({
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl">
+            <div className="future-card rounded-3xl p-6 sm:p-8">
               <h2 className="text-3xl font-black text-orange-600 mb-6">
                 Avaliações
               </h2>
@@ -352,6 +391,8 @@ export default function NegocioPage({
 
         </div>
       </section>
+
+      <Footer />
     </main>
   )
 }

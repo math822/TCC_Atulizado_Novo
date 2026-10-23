@@ -6,21 +6,12 @@ import Image from "next/image"
 import Reveal from "./Reveal"
 
 const imagens: Record<string, string> = {
-  Artesanato: "/categorias/Artesanato.png",
-  Beleza: "/categorias/Beleza.png",
-  Alimentação: "/categorias/Comida.png",
-  Informática: "/categorias/Informatica.png",
-  Moda: "/categorias/Moda.png",
-  Serviços: "/categorias/Servico.png",
-}
-
-const gradientes: Record<string, string> = {
-  Artesanato: "from-pink-500 to-rose-400",
-  Beleza: "from-fuchsia-500 to-purple-400",
-  "Alimentação": "from-orange-500 to-amber-400",
-  "Informática": "from-sky-500 to-blue-400",
-  Moda: "from-violet-500 to-indigo-400",
-  "Serviços": "from-emerald-500 to-teal-400",
+  Artesanato: "/categorias/artesanato-futuro-v2.png",
+  Beleza: "/categorias/beleza-futuro-v2.png",
+  Alimentação: "/categorias/alimentacao-futuro-v2.png",
+  Informática: "/categorias/informatica-futuro-v2.png",
+  Moda: "/categorias/moda-futuro-v2.png",
+  Serviços: "/categorias/servicos-futuro-v2.png",
 }
 
 export default function CategoryGrid() {
@@ -42,60 +33,61 @@ export default function CategoryGrid() {
   }, [])
 
   return (
-    <section id="categorias" className="max-w-7xl mx-auto px-6 py-16">
-      <div className="flex justify-between items-end mb-10">
+    <section id="categorias" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <span className="inline-block px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/40 text-orange-600 text-xs font-black uppercase tracking-wide mb-3">
-            Navegue por
-          </span>
-          <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">
-            Categorias
+          <span className="section-label">Explore com facilidade</span>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+            O que você está procurando?
           </h2>
-          <p className="text-gray-500 dark:text-gray-300 mt-2">
-            Explore os negócios por tipo de atividade.
+          <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
+            Escolha uma categoria para encontrar negócios e profissionais da sua região.
           </p>
         </div>
         <Link
           href="/categorias"
-          className="hidden sm:inline-block text-orange-600 font-bold hover:underline"
+          className="press link-underline inline-flex min-h-12 items-center justify-center rounded-2xl border-2 border-cyan-700 px-5 font-black text-cyan-800 transition hover:bg-cyan-50 dark:border-cyan-300 dark:text-cyan-200 dark:hover:bg-cyan-950/30"
         >
-          Ver todas →
+          Ver todas as categorias →
         </Link>
       </div>
 
       {carregando && (
-        <div className="text-center text-orange-600 font-black py-10">
+        <div role="status" className="future-surface rounded-3xl py-10 text-center text-lg font-black text-orange-700 dark:text-orange-300">
           Carregando categorias...
         </div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {categorias.map((categoria, i) => (
-          <Reveal key={categoria.id_categoria} delay={i * 70}>
+          <Reveal key={categoria.id_categoria} delay={i * 60} variant="scale">
             <Link
               href={`/categorias/${encodeURIComponent(categoria.nome)}`}
-              className="lift group block overflow-hidden rounded-3xl bg-white dark:bg-slate-900 shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100 dark:border-slate-700"
+              className="future-card shine hover-rise group block h-full overflow-hidden rounded-[28px]"
             >
-              <div className="relative w-full h-40 overflow-hidden">
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
                 <Image
-                  src={imagens[categoria.nome] || "/categorias/Comida.png"}
-                  alt={categoria.nome}
+                  src={imagens[categoria.nome] || "/categorias/alimentacao-futuro-v2.png"}
+                  alt={`Categoria ${categoria.nome}`}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div
-                  className={`absolute inset-0 bg-gradient-to-t ${
-                    gradientes[categoria.nome] || "from-orange-500 to-amber-400"
-                  } opacity-0 group-hover:opacity-40 transition-opacity duration-300`}
-                />
-                <div className="absolute top-2 right-2 w-11 h-11 rounded-2xl bg-white/90 dark:bg-slate-900/80 shadow-lg flex items-center justify-center text-xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/30 bg-white/90 text-3xl shadow-xl backdrop-blur dark:bg-slate-950/85">
                   {categoria.icone || "🏪"}
                 </div>
               </div>
-              <div className="py-4 px-3 bg-white dark:bg-slate-900">
-                <h3 className="text-lg font-black text-center text-gray-900 dark:text-white group-hover:text-orange-600 transition-colors">
-                  {categoria.nome}
-                </h3>
+              <div className="p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-2xl font-black text-slate-950 transition-colors group-hover:text-orange-700 dark:text-white dark:group-hover:text-orange-300">
+                    {categoria.nome}
+                  </h3>
+                  <span aria-hidden="true" className="text-2xl font-black text-cyan-700 transition-transform group-hover:translate-x-1 dark:text-cyan-300">→</span>
+                </div>
+                <p className="mt-2 text-base leading-relaxed text-slate-600 dark:text-slate-300">
+                  {categoria.descricao || "Veja os negócios disponíveis nesta categoria."}
+                </p>
               </div>
             </Link>
           </Reveal>

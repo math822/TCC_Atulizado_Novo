@@ -6,12 +6,12 @@ import Navbar from "../../../components/Navbar"
 import Footer from "../../../components/Footer"
 
 const imagensCategoria: Record<string, string> = {
-  Artesanato: "/categorias/Artesanato.png",
-  Beleza: "/categorias/Beleza.png",
-  Alimentação: "/categorias/Comida.png",
-  Informática: "/categorias/Informatica.png",
-  Moda: "/categorias/Moda.png",
-  Serviços: "/categorias/Servico.png",
+  Artesanato: "/categorias/artesanato-futuro-v2.png",
+  Beleza: "/categorias/beleza-futuro-v2.png",
+  Alimentação: "/categorias/alimentacao-futuro-v2.png",
+  Informática: "/categorias/informatica-futuro-v2.png",
+  Moda: "/categorias/moda-futuro-v2.png",
+  Serviços: "/categorias/servicos-futuro-v2.png",
 }
 
 export default function CategoriaPage({
@@ -60,31 +60,34 @@ export default function CategoriaPage({
   const icone = infoCategoria?.icone || "🏪"
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 transition-colors">
+    <main className="min-h-screen text-slate-950 transition-colors dark:text-white">
       <Navbar busca={busca} setBusca={setBusca} />
 
-      <section className="bg-gradient-to-r from-orange-600 to-orange-400 text-white py-10 sm:py-16 px-4 sm:px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative overflow-hidden border-b border-cyan-900/10 px-4 py-10 dark:border-cyan-300/10 sm:px-6 sm:py-16">
+        <div className="future-grid pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-orange-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl">
           <Link
             href="/"
-            className="inline-block bg-white/20 px-4 sm:px-5 py-2.5 rounded-2xl font-bold mb-7 sm:mb-8 hover:bg-white/30 transition"
+            className="mb-7 inline-flex min-h-11 items-center rounded-2xl border border-cyan-900/10 bg-white/80 px-4 font-bold text-slate-800 shadow-sm backdrop-blur transition hover:bg-white dark:border-cyan-300/10 dark:bg-slate-900/80 dark:text-white sm:mb-8 sm:px-5"
           >
-            ← Voltar para início
+            ← Voltar para o início
           </Link>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[26px] sm:rounded-[32px] bg-white/20 flex items-center justify-center text-5xl sm:text-6xl shadow-xl flex-shrink-0">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+            <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-[26px] border border-cyan-900/10 bg-white/85 text-5xl shadow-xl backdrop-blur dark:border-cyan-300/10 dark:bg-slate-900/85 sm:h-24 sm:w-24 sm:rounded-[32px] sm:text-6xl">
               {icone}
             </div>
             <div className="min-w-0">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight break-words">{categoria}</h1>
-              <p className="text-orange-100 text-base sm:text-lg mt-2 max-w-2xl">
+              <p className="mt-2 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg">
                 {infoCategoria?.descricao || "Negócios desta categoria perto de você."}
               </p>
             </div>
           </div>
 
-          <p className="mt-5 sm:mt-6 text-orange-100 font-bold">
+          <p className="mt-5 font-bold text-cyan-800 dark:text-cyan-200 sm:mt-6">
             {carregando
               ? "Carregando..."
               : `${filtrados.length} negócio${filtrados.length === 1 ? "" : "s"} encontrado${filtrados.length === 1 ? "" : "s"}`}
@@ -137,7 +140,7 @@ export default function CategoriaPage({
           {filtrados.map((negocio) => (
             <div
               key={negocio.id_negocio}
-              className="group h-full flex flex-col bg-white dark:bg-slate-900 rounded-[26px] sm:rounded-[30px] overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300 border border-orange-100/70 dark:border-slate-800"
+              className="future-card group flex h-full flex-col overflow-hidden rounded-[26px] transition duration-300 hover:-translate-y-1 sm:rounded-[30px]"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-orange-100 dark:bg-slate-800 flex items-center justify-center">
                 {negocio.fotos?.length > 0 ? (
@@ -147,7 +150,7 @@ export default function CategoriaPage({
                     loading="lazy"
                     onError={(event) => {
                       event.currentTarget.onerror = null
-                      event.currentTarget.src = imagensCategoria[categoria] || "/categorias/Comida.png"
+                      event.currentTarget.src = imagensCategoria[categoria] || "/categorias/alimentacao-futuro-v2.png"
                     }}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />

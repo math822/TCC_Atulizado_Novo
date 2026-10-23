@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "react-hot-toast"
 import { Providers } from "./providers"
+import SiteEffects from "../components/SiteEffects"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="pt-br" suppressHydrationWarning>
       <body className={`${inter.variable} bg-white dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-colors duration-300 antialiased`}>
         <Providers>
+          <SiteEffects />
           {children}
 
           <Toaster

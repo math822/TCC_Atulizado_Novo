@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import toast from "react-hot-toast"
-import Logo from "../../components/Logo"
+import Navbar from "../../components/Navbar"
 
 export default function Cadastro() {
     const [nome, setNome] = useState("")
@@ -125,36 +125,40 @@ export default function Cadastro() {
     }
 
     return (
-        <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 flex items-center justify-center px-6 py-12">
+        <main className="relative flex min-h-screen flex-col text-slate-950 dark:text-white">
+            <Navbar />
 
-            <div className="max-w-6xl w-full grid lg:grid-cols-2 bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl overflow-hidden">
+            <div className="flex flex-1 items-center justify-center px-6 py-12">
+            <div className="future-surface grid w-full max-w-6xl overflow-hidden rounded-[40px] lg:grid-cols-2">
 
                 {/* LADO ESQUERDO */}
-                <div className="hidden lg:flex flex-col justify-center p-14 bg-gradient-to-br from-orange-600 to-orange-400 text-white">
+                <div className="animate-gradient hidden flex-col justify-center bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 p-14 text-white lg:flex">
 
-                    <div className="bg-white rounded-[30px] p-6 w-fit mb-10">
-                        <Logo />
-                    </div>
+                    <span className="section-label w-fit">● Novo por aqui</span>
 
-                    <h1 className="text-6xl font-black leading-tight">
+                    <h1 className="mt-6 text-6xl font-black leading-tight">
                         Crie sua conta na Vendinha
                     </h1>
 
-                    <p className="text-orange-100 text-xl mt-6 leading-relaxed">
+                    <p className="mt-6 text-xl leading-relaxed text-slate-300">
                         Entre para a comunidade de clientes e empreendedores locais da sua região.
                     </p>
 
-                    <div className="grid gap-4 mt-10">
+                    <div className="mt-10 grid gap-4">
 
-                        <div className="bg-white/20 rounded-3xl p-5 font-bold">
+                        <div className="rounded-3xl bg-white/10 p-5 font-bold backdrop-blur">
                             🛒 Encontre negócios perto de você
                         </div>
 
-                        <div className="bg-white/20 rounded-3xl p-5 font-bold">
+                        <div className="rounded-3xl bg-white/10 p-5 font-bold backdrop-blur">
                             ❤️ Salve seus favoritos
                         </div>
 
-                        <div className="bg-white/20 rounded-3xl p-5 font-bold">
+                        <div className="rounded-3xl bg-white/10 p-5 font-bold backdrop-blur">
+                            💬 Converse com vendedores
+                        </div>
+
+                        <div className="rounded-3xl bg-white/10 p-5 font-bold backdrop-blur">
                             🏪 Cadastre seu empreendimento
                         </div>
 
@@ -162,17 +166,15 @@ export default function Cadastro() {
                 </div>
 
                 {/* LADO DIREITO */}
-                <div className="p-10 lg:p-16">
+                <div className="bg-white p-10 dark:bg-slate-900 lg:p-16">
 
-                    <div className="lg:hidden mb-10">
-                        <Logo />
-                    </div>
+                    <span className="section-label lg:hidden">● Criar conta</span>
 
-                    <h2 className="text-5xl font-black text-gray-900 dark:text-white">
+                    <h2 className="mt-4 text-5xl font-black">
                         Criar conta
                     </h2>
 
-                    <p className="text-gray-500 dark:text-gray-300 mt-4">
+                    <p className="mt-4 text-slate-600 dark:text-slate-300">
                         Crie sua conta rapidamente e comece a usar a plataforma.
                     </p>
 
@@ -180,7 +182,7 @@ export default function Cadastro() {
                     <button
                         type="button"
                         onClick={cadastrarComGoogle}
-                        className="w-full mt-8 flex items-center justify-center gap-3 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700 text-gray-800 dark:text-gray-100 font-bold py-4 rounded-2xl transition shadow-sm"
+                        className="press mt-8 flex w-full items-center justify-center gap-3 rounded-2xl border border-cyan-900/10 bg-white py-4 font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 dark:border-cyan-300/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
                     >
                         <svg
                             width="21"
@@ -242,7 +244,7 @@ export default function Cadastro() {
                                 value={nome}
                                 onChange={(e) => setNome(e.target.value)}
                                 placeholder="Digite seu nome"
-                                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                             />
 
                         </div>
@@ -265,7 +267,7 @@ export default function Cadastro() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Digite seu email"
-                                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                             />
 
                         </div>
@@ -287,7 +289,7 @@ export default function Cadastro() {
                                 value={telefone}
                                 onChange={(e) => setTelefone(e.target.value)}
                                 placeholder="(19) 99999-9999"
-                                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                             />
 
                         </div>
@@ -306,7 +308,7 @@ export default function Cadastro() {
                                 id="tipo"
                                 value={tipo}
                                 onChange={(e) => alterarTipo(e.target.value)}
-                                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                             >
                                 <option value="cliente">
                                     Cliente
@@ -342,7 +344,7 @@ export default function Cadastro() {
                                         setCnpj(formatarCNPJ(e.target.value))
                                     }
                                     placeholder="00.000.000/0000-00"
-                                    className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                    className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                                 />
 
                                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
@@ -372,7 +374,7 @@ export default function Cadastro() {
                                     value={senha}
                                     onChange={(e) => setSenha(e.target.value)}
                                     placeholder="Crie uma senha"
-                                    className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 pr-24 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                    className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 pr-24 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:text-white"
                                 />
 
                                 <button
@@ -391,7 +393,7 @@ export default function Cadastro() {
                         <button
                             type="submit"
                             disabled={carregando}
-                            className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-black py-5 rounded-2xl text-xl shadow-xl transition"
+                            className="press w-full rounded-2xl bg-orange-600 py-5 text-xl font-black text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-700 disabled:bg-gray-400"
                         >
                             {carregando
                                 ? "Criando conta..."
@@ -423,6 +425,7 @@ export default function Cadastro() {
                     </a>
 
                 </div>
+            </div>
             </div>
 
             {/* MODAL ESCOLHA GOOGLE */}

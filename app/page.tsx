@@ -102,31 +102,32 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 transition-colors">
+    <main className="min-h-screen text-slate-950 transition-colors dark:text-white">
       <Navbar busca={busca} setBusca={setBusca} />
 
       <Hero busca={busca} setBusca={setBusca} />
 
       <CategoryGrid />
 
-      <section id="negocios" className="max-w-7xl mx-auto px-6 py-12">
+      <section id="negocios" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">
-              Destaques da região
+            <span className="section-label">Bem avaliados na região</span>
+            <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+              Destaques perto de você
             </h2>
 
-            <p className="text-gray-500 dark:text-gray-300 mt-2">
-              Encontre lojas, serviços e produtos perto de você.
+            <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
+              Um negócio de cada categoria, escolhido pelas melhores avaliações.
             </p>
           </div>
 
           <a
             href="/cadastrar-negocio"
-            className="hidden md:inline-block bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white px-6 py-4 rounded-2xl font-black shadow-soft transition hover:-translate-y-0.5"
+            className="hidden min-h-12 items-center rounded-2xl bg-orange-600 px-6 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700 md:inline-flex"
           >
-            + Cadastrar
+            + Cadastrar negócio
           </a>
         </div>
 
@@ -150,20 +151,20 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {negocios.map((negocio, i) => (
-            <Reveal key={negocio.id_negocio} delay={i * 60}>
+            <Reveal key={negocio.id_negocio} delay={i * 60} variant="scale">
             <div
-              className="lift group h-full bg-white dark:bg-slate-900 rounded-[30px] overflow-hidden shadow-card hover:shadow-2xl transition duration-300 border border-orange-50 dark:border-slate-800"
+              className="future-card shine hover-rise group flex h-full flex-col overflow-hidden rounded-[30px]"
             >
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-orange-100 to-amber-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-orange-100 to-cyan-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
                 {negocio.imagem || negocio.fotos?.length > 0 ? (
                   <img
                     src={negocio.imagem || negocio.fotos[0].url}
                     alt={negocio.nome}
                     onError={(event) => {
                       event.currentTarget.onerror = null
-                      event.currentTarget.src = "/categorias/Comida.png"
+                      event.currentTarget.src = "/categorias/alimentacao-futuro-v2.png"
                     }}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -176,11 +177,14 @@ export default function Home() {
                 <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition" />
 
                 <button
+                  type="button"
                   onClick={() => favoritar(negocio.id_negocio)}
-                  className={`absolute top-4 right-4 w-11 h-11 rounded-full bg-white/95 shadow-lg text-2xl flex items-center justify-center transition hover:scale-110 ${
+                  aria-label={favoritos.includes(negocio.id_negocio) ? `Remover ${negocio.nome} dos favoritos` : `Adicionar ${negocio.nome} aos favoritos`}
+                  aria-pressed={favoritos.includes(negocio.id_negocio)}
+                  className={`absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 text-2xl shadow-lg transition hover:scale-105 ${
                     favoritos.includes(negocio.id_negocio)
                       ? "text-red-500"
-                      : "text-gray-300"
+                      : "text-slate-400"
                   }`}
                 >
                   ♥
@@ -191,8 +195,8 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="p-5">
-                <span className="inline-block bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-orange-400 text-xs font-black px-3 py-1 rounded-full">
+              <div className="flex flex-1 flex-col p-6">
+                <span className="inline-block w-fit rounded-full bg-cyan-50 px-3 py-1 text-sm font-black text-cyan-800 dark:bg-cyan-950/30 dark:text-cyan-200">
                   {negocio.categoria?.nome || "Negócio local"}
                 </span>
 
@@ -200,19 +204,19 @@ export default function Home() {
                   {negocio.nome}
                 </h3>
 
-                <p className="text-gray-500 dark:text-gray-300 text-sm mt-2 line-clamp-2">
+                <p className="mt-2 line-clamp-2 text-base leading-relaxed text-slate-600 dark:text-slate-300">
                   {negocio.descricao || "Conheça este negócio local da sua região."}
                 </p>
 
                 {negocio.endereco && (
-                  <p className="text-gray-400 dark:text-gray-500 text-sm mt-3">
+                  <p className="mt-3 text-base text-slate-600 dark:text-slate-300">
                     📍 {negocio.endereco.bairro}, {negocio.endereco.cidade}
                   </p>
                 )}
 
                 <a
                   href={`/negocio/${negocio.id_negocio}`}
-                  className="mt-5 block text-center bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black transition shadow-md hover:shadow-lg"
+                  className="press mt-auto flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-5 py-3 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
                 >
                   Ver negócio
                 </a>
@@ -224,13 +228,13 @@ export default function Home() {
       </section>
 
       {/* Seção de benefícios */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white">
-            Por que usar o{" "}
-            <span className="text-gradient">Lá da Vendinha</span>?
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mb-12 text-center">
+          <span className="section-label">Pensado para todas as idades</span>
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+            Simples para usar. Bom para a comunidade.
           </h2>
-          <p className="text-gray-500 dark:text-gray-300 mt-3 max-w-2xl mx-auto">
+          <p className="mx-auto mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
             Conectamos você aos melhores negócios da sua região de forma simples
             e rápida.
           </p>
@@ -259,9 +263,9 @@ export default function Home() {
               texto: "Salve os negócios que você mais gosta para voltar depois.",
             },
           ].map((b, i) => (
-            <Reveal key={b.titulo} delay={i * 90}>
+            <Reveal key={b.titulo} delay={i * 90} variant="up">
             <div
-              className="lift h-full bg-white dark:bg-slate-900 rounded-3xl p-7 shadow-card hover:shadow-2xl transition duration-300 border border-orange-50 dark:border-slate-800"
+              className="future-card hover-rise h-full rounded-3xl p-7"
             >
               <div className="w-14 h-14 rounded-2xl bg-orange-100 dark:bg-slate-800 flex items-center justify-center text-3xl">
                 {b.icone}
@@ -269,7 +273,7 @@ export default function Home() {
               <h3 className="text-lg font-black text-gray-900 dark:text-white mt-5">
                 {b.titulo}
               </h3>
-              <p className="text-gray-500 dark:text-gray-300 text-sm mt-2 leading-relaxed">
+              <p className="mt-2 text-base leading-relaxed text-slate-600 dark:text-slate-300">
                 {b.texto}
               </p>
             </div>
@@ -279,9 +283,9 @@ export default function Home() {
       </section>
 
       {/* Chamada para cadastro */}
-      <section className="max-w-7xl mx-auto px-6 pb-20">
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <Reveal>
-        <div className="relative overflow-hidden rounded-[40px] bg-gradient-to-r from-orange-600 to-amber-500 px-8 py-14 text-center shadow-soft">
+        <div className="animate-gradient relative overflow-hidden rounded-[36px] bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 px-6 py-14 text-center shadow-2xl sm:px-8">
           <div className="pointer-events-none absolute -top-16 -right-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
           <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
           <h2 className="relative text-3xl md:text-4xl font-black text-white">

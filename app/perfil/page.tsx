@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import Logo from "../../components/Logo"
+import Navbar from "../../components/Navbar"
+import Footer from "../../components/Footer"
 
 export default function PerfilPage() {
     const [usuario, setUsuario] = useState<any>(null)
@@ -167,24 +168,23 @@ export default function PerfilPage() {
     if (!usuario) return null
 
     return (
-        <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 px-6 py-10 transition-colors">
-            <div className="max-w-7xl mx-auto">
+        <main className="flex min-h-screen flex-col text-slate-950 transition-colors dark:text-white">
+            <Navbar />
 
-                <div className="mb-6">
-                    <Logo />
-                </div>
+            <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6">
 
-                <section className="bg-white dark:bg-slate-900 rounded-[45px] shadow-2xl overflow-hidden">
-                    <div className="bg-gradient-to-r from-orange-600 to-orange-400 px-10 py-14 text-white">
+                <section className="future-card overflow-hidden rounded-[45px]">
+                    <div className="animate-gradient relative overflow-hidden bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 px-10 py-14 text-white">
+                        <div className="pointer-events-none absolute -right-20 -top-10 h-72 w-72 rounded-full bg-orange-400/20 blur-3xl" />
 
-                        <div className="flex flex-col lg:flex-row items-center gap-10">
+                        <div className="relative flex flex-col items-center gap-10 lg:flex-row">
 
-                            <div className="w-40 h-40 rounded-full overflow-hidden bg-white/20 border-4 border-white/30 shadow-2xl flex items-center justify-center">
+                            <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full border-4 border-white/30 bg-white/15 shadow-2xl">
                                 {usuario.foto_perfil ? (
                                     <img
                                         src={usuario.foto_perfil}
                                         alt={usuario.nome}
-                                        className="w-full h-full object-cover"
+                                        className="h-full w-full object-cover"
                                     />
                                 ) : (
                                     <span className="text-7xl font-black">
@@ -194,7 +194,7 @@ export default function PerfilPage() {
                             </div>
 
                             <div className="flex-1 text-center lg:text-left">
-                                <p className="font-black bg-white/20 inline-block px-5 py-2 rounded-2xl mb-4">
+                                <p className="mb-4 inline-block rounded-2xl bg-white/15 px-5 py-2 font-black capitalize">
                                     {usuario.tipo}
                                 </p>
 
@@ -202,29 +202,36 @@ export default function PerfilPage() {
                                     {usuario.nome}
                                 </h1>
 
-                                <p className="text-orange-100 text-xl mt-3">
+                                <p className="mt-3 text-xl text-slate-300">
                                     {usuario.email}
                                 </p>
 
-                                <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-8">
+                                <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
                                     <button
                                         onClick={() => setEditarAberto(!editarAberto)}
-                                        className="bg-white text-orange-600 px-6 py-4 rounded-2xl font-black shadow-lg hover:bg-orange-50 transition"
+                                        className="press rounded-2xl bg-white px-6 py-4 font-black text-slate-900 shadow-lg transition hover:bg-slate-100"
                                     >
                                         {editarAberto ? "Fechar edição" : "Editar perfil"}
                                     </button>
 
                                     <a
                                         href="/dashboard"
-                                        className="bg-white/20 hover:bg-white/30 px-6 py-4 rounded-2xl font-black transition"
+                                        className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
                                     >
                                         Dashboard
+                                    </a>
+
+                                    <a
+                                        href="/mensagens"
+                                        className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
+                                    >
+                                        💬 Mensagens
                                     </a>
 
                                     {usuario.tipo === "admin" && (
                                         <a
                                             href="/admin"
-                                            className="bg-black/20 hover:bg-black/30 px-6 py-4 rounded-2xl font-black transition"
+                                            className="press rounded-2xl bg-black/20 px-6 py-4 font-black transition hover:bg-black/30"
                                         >
                                             Painel admin
                                         </a>
@@ -232,7 +239,7 @@ export default function PerfilPage() {
 
                                     <button
                                         onClick={sairDaConta}
-                                        className="bg-red-500/20 hover:bg-red-500/40 text-white px-6 py-4 rounded-2xl font-black transition"
+                                        className="press rounded-2xl bg-red-500/20 px-6 py-4 font-black text-white transition hover:bg-red-500/40"
                                     >
                                         🚪 Sair
                                     </button>
@@ -242,30 +249,30 @@ export default function PerfilPage() {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-6 p-8">
-                        <div className="bg-orange-50 dark:bg-slate-800 rounded-3xl p-6">
-                            <p className="text-gray-500 dark:text-gray-300 font-bold">
+                    <div className="grid gap-6 p-8 md:grid-cols-3">
+                        <div className="rounded-3xl bg-cyan-500/10 p-6">
+                            <p className="font-bold text-slate-600 dark:text-slate-300">
                                 Meus negócios
                             </p>
-                            <h2 className="text-5xl font-black text-orange-600 mt-2">
+                            <h2 className="mt-2 text-5xl font-black text-orange-600">
                                 {negocios.length}
                             </h2>
                         </div>
 
-                        <div className="bg-orange-50 dark:bg-slate-800 rounded-3xl p-6">
-                            <p className="text-gray-500 dark:text-gray-300 font-bold">
+                        <div className="rounded-3xl bg-cyan-500/10 p-6">
+                            <p className="font-bold text-slate-600 dark:text-slate-300">
                                 Favoritos
                             </p>
-                            <h2 className="text-5xl font-black text-red-500 mt-2">
+                            <h2 className="mt-2 text-5xl font-black text-red-500">
                                 {favoritos.length}
                             </h2>
                         </div>
 
-                        <div className="bg-orange-50 dark:bg-slate-800 rounded-3xl p-6">
-                            <p className="text-gray-500 dark:text-gray-300 font-bold">
+                        <div className="rounded-3xl bg-cyan-500/10 p-6">
+                            <p className="font-bold text-slate-600 dark:text-slate-300">
                                 Status da conta
                             </p>
-                            <h2 className="text-3xl font-black text-green-600 mt-3">
+                            <h2 className="mt-3 text-3xl font-black text-green-600">
                                 Ativa
                             </h2>
                         </div>
@@ -274,7 +281,7 @@ export default function PerfilPage() {
 
                 {/* FORMULÁRIO DE EDIÇÃO + ZONA DE PERIGO */}
                 {editarAberto && (
-                    <section className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl p-10 mt-8 space-y-12">
+                    <section className="future-card rounded-[40px] p-10 mt-8 space-y-12">
                         <div>
                             <h2 className="text-4xl font-black text-orange-600 mb-8">
                                 Editar dados da conta
@@ -291,7 +298,7 @@ export default function PerfilPage() {
                                         type="file"
                                         accept="image/*"
                                         onChange={(e) => setImagem(e.target.files?.[0] || null)}
-                                        className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 text-gray-900 dark:text-white"
+                                        className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium dark:border-cyan-300/10 dark:bg-slate-800 text-gray-900 dark:text-white"
                                     />
 
                                     {imagem && (
@@ -310,7 +317,7 @@ export default function PerfilPage() {
                                         <input
                                             value={nome}
                                             onChange={(e) => setNome(e.target.value)}
-                                            className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                            className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
                                         />
                                     </div>
 
@@ -322,7 +329,7 @@ export default function PerfilPage() {
                                         <input
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                            className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
                                         />
                                     </div>
                                 </div>
@@ -338,7 +345,7 @@ export default function PerfilPage() {
                                             value={senhaAtual}
                                             onChange={(e) => setSenhaAtual(e.target.value)}
                                             placeholder="Somente se for trocar senha"
-                                            className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                            className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
                                         />
                                     </div>
 
@@ -352,7 +359,7 @@ export default function PerfilPage() {
                                             value={novaSenha}
                                             onChange={(e) => setNovaSenha(e.target.value)}
                                             placeholder="Nova senha"
-                                            className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
+                                            className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
                                         />
                                     </div>
                                 </div>
@@ -390,7 +397,7 @@ export default function PerfilPage() {
 
                 <section className="grid lg:grid-cols-2 gap-8 mt-8">
 
-                    <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl p-8">
+                    <div className="future-card rounded-[40px] p-8">
                         <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-8">
                             Meus negócios
                         </h2>
@@ -405,7 +412,7 @@ export default function PerfilPage() {
                             {negocios.map((negocio) => (
                                 <div
                                     key={negocio.id_negocio}
-                                    className="border border-orange-100 dark:border-slate-700 rounded-3xl p-6"
+                                    className="rounded-3xl border border-cyan-900/10 dark:border-cyan-300/10 p-6"
                                 >
                                     <h3 className="text-2xl font-black text-gray-900 dark:text-white">
                                         {negocio.nome}
@@ -426,7 +433,7 @@ export default function PerfilPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl p-8">
+                    <div className="future-card rounded-[40px] p-8">
                         <h2 className="text-4xl font-black text-red-500 mb-8">
                             ♥ Favoritos
                         </h2>
@@ -441,7 +448,7 @@ export default function PerfilPage() {
                             {favoritos.map((favorito) => (
                                 <div
                                     key={favorito.id_favorito}
-                                    className="border border-orange-100 dark:border-slate-700 rounded-3xl overflow-hidden"
+                                    className="rounded-3xl border border-cyan-900/10 dark:border-cyan-300/10 overflow-hidden"
                                 >
                                     <div className="h-44 overflow-hidden">
                                         {favorito.negocio?.fotos?.length > 0 ? (
@@ -518,6 +525,8 @@ export default function PerfilPage() {
                     </div>
                 </div>
             )}
+
+            <Footer />
         </main>
     )
 }

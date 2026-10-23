@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Logo from "../../components/Logo"
+import Navbar from "../../components/Navbar"
+import Footer from "../../components/Footer"
 
 // Helper: Aceitar APENAS números no input
 const apenasNumeros = (val: string) => val.replace(/\D/g, "")
@@ -191,26 +192,28 @@ export default function CadastrarNegocio() {
   }
 
   return (
-    <main className="min-h-screen bg-[#fff7ed] dark:bg-slate-950 py-20 px-6">
-      <div className="max-w-5xl mx-auto mb-6">
-        <Logo />
-      </div>
+    <main className="flex min-h-screen flex-col text-slate-950 dark:text-white">
+      <Navbar />
 
-      <div className="max-w-5xl mx-auto bg-white dark:bg-slate-900 rounded-[40px] shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-orange-600 to-orange-400 p-12 text-white">
-          <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-3xl bg-white/20 flex items-center justify-center text-5xl">
-              🏪
-            </div>
+      <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-12 sm:px-6">
+        <div className="future-card overflow-hidden rounded-[40px]">
+          <div className="relative overflow-hidden border-b border-cyan-900/10 px-10 py-12 dark:border-cyan-300/10">
+            <div className="future-grid pointer-events-none absolute inset-0" />
+            <div className="pointer-events-none absolute -right-20 -top-10 h-64 w-64 rounded-full bg-orange-400/20 blur-3xl" />
+            <div className="relative flex items-center gap-4">
+              <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-orange-500 to-cyan-600 text-5xl text-white">
+                🏪
+              </div>
 
-            <div>
-              <h1 className="text-5xl font-black">Cadastre seu negócio</h1>
-              <p className="text-orange-100 mt-2 text-lg">
-                Divulgue sua empresa para milhares de clientes.
-              </p>
+              <div>
+                <span className="section-label">● Área do empreendedor</span>
+                <h1 className="mt-3 text-5xl font-black tracking-tight">Cadastre seu negócio</h1>
+                <p className="mt-2 text-lg text-slate-600 dark:text-slate-300">
+                  Divulgue sua empresa para milhares de clientes.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
         {!usuario && (
           <div className="m-10 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 rounded-2xl p-5 font-bold">
@@ -234,11 +237,11 @@ export default function CadastrarNegocio() {
                   setPreview(URL.createObjectURL(arquivo))
                 }
               }}
-              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+              className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
             />
 
             {preview && (
-              <div className="mt-4 overflow-hidden rounded-3xl border border-orange-100 dark:border-slate-700">
+              <div className="mt-4 overflow-hidden rounded-3xl border border-cyan-900/10 dark:border-cyan-300/10">
                 <img src={preview} alt="Preview" className="w-full h-72 object-cover" />
               </div>
             )}
@@ -257,7 +260,7 @@ export default function CadastrarNegocio() {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               placeholder="Ex: Lanche do Zé"
-              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+              className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
             />
           </div>
 
@@ -267,7 +270,7 @@ export default function CadastrarNegocio() {
               required
               value={idCategoria}
               onChange={(e) => setIdCategoria(e.target.value)}
-              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+              className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
             >
               <option value="">Selecione uma categoria</option>
               {categorias.map((categoria) => (
@@ -285,7 +288,7 @@ export default function CadastrarNegocio() {
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
               placeholder="Fale sobre seu negócio..."
-              className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 h-36 outline-none focus:border-orange-500"
+              className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white h-36"
             />
           </div>
 
@@ -299,7 +302,7 @@ export default function CadastrarNegocio() {
                 onChange={(e) => setTelefone(formatarTelefone(e.target.value))}
                 placeholder="(19) 99999-9999"
                 maxLength={15}
-                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
@@ -309,12 +312,12 @@ export default function CadastrarNegocio() {
                 value={horario}
                 onChange={(e) => setHorario(e.target.value)}
                 placeholder="Ex: Segunda a sábado, 10h às 22h"
-                className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-2 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
           </div>
 
-          <div className="border-t border-orange-100 dark:border-slate-700 pt-8">
+          <div className="border-t border-cyan-900/10 pt-8 dark:border-cyan-300/10">
             <h2 className="text-3xl font-black text-orange-600 flex items-center gap-3">
               📍 Endereço do negócio
             </h2>
@@ -330,7 +333,7 @@ export default function CadastrarNegocio() {
                 onChange={(e) => buscarCep(e.target.value)}
                 placeholder="00000-000"
                 maxLength={9}
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
@@ -342,7 +345,7 @@ export default function CadastrarNegocio() {
                 value={numero}
                 onChange={(e) => setNumero(apenasNumeros(e.target.value))}
                 placeholder="Ex: 123"
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
@@ -353,7 +356,7 @@ export default function CadastrarNegocio() {
                 value={rua}
                 onChange={(e) => setRua(e.target.value)}
                 placeholder="Rua"
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
@@ -364,7 +367,7 @@ export default function CadastrarNegocio() {
                 value={bairro}
                 onChange={(e) => setBairro(e.target.value)}
                 placeholder="Bairro"
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               />
             </div>
 
@@ -378,7 +381,7 @@ export default function CadastrarNegocio() {
                   setEstado(e.target.value)
                   setCidade("") // Reseta a cidade ao trocar o estado manualmente
                 }}
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white"
               >
                 <option value="">Selecione o Estado</option>
                 {estadosIBGE.map((est) => (
@@ -397,7 +400,7 @@ export default function CadastrarNegocio() {
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}
                 disabled={!estado}
-                className="w-full mt-1 border border-orange-100 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-2xl p-4 outline-none focus:border-orange-500 disabled:bg-gray-100 dark:disabled:bg-slate-900"
+                className="w-full mt-1 rounded-2xl border border-cyan-900/10 bg-slate-50/90 p-4 min-h-12 font-medium text-slate-900 outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 dark:bg-slate-800 dark:text-white disabled:bg-gray-100 dark:disabled:bg-slate-900"
               >
                 <option value="">
                   {estado ? "Selecione a Cidade" : "Selecione um Estado primeiro"}
@@ -413,7 +416,7 @@ export default function CadastrarNegocio() {
 
           <button
             disabled={carregando || !usuario}
-            className="w-full bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 transition text-white font-black py-5 rounded-2xl text-xl shadow-xl"
+            className="press w-full rounded-2xl bg-orange-600 py-5 text-xl font-black text-white shadow-xl shadow-orange-600/20 transition hover:bg-orange-700 disabled:bg-gray-400"
           >
             {carregando ? "Cadastrando..." : "Cadastrar negócio"}
           </button>
@@ -424,7 +427,10 @@ export default function CadastrarNegocio() {
             </p>
           )}
         </form>
+        </div>
       </div>
+
+      <Footer />
     </main>
   )
 }
