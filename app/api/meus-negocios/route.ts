@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
+import { sessaoObrigatoria } from "../../lib/auth"
 
 export async function POST(req: Request) {
 
@@ -7,10 +8,13 @@ export async function POST(req: Request) {
 
     const body = await req.json()
 
+    const sessao = await sessaoObrigatoria(body.id_usuario)
+    if (sessao instanceof NextResponse) return sessao
+
     const negocios = await prisma.negocio.findMany({
 
       where: {
-        id_usuario: body.id_usuario
+        id_usuario: sessao.id_usuario
       },
 
       include: {

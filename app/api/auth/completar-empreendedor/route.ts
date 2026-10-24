@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
-import { lerSessao, validarCNPJ } from "../../../lib/auth"
+import { lerSessao, validarCNPJ, opcoesCookieSessao } from "../../../lib/auth"
 
 export async function POST(req: Request) {
   try {
@@ -77,10 +77,7 @@ export async function POST(req: Request) {
       usuario: usuarioSeguro
     })
 
-    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7
-    })
+    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), opcoesCookieSessao())
 
     return resposta
   } catch (error) {

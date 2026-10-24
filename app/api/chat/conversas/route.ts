@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
+import { sessaoObrigatoria } from "../../../lib/auth"
 
 // Lista as conversas do usuário logado (inbox)
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
-    const id_usuario = searchParams.get("id_usuario")
 
-    if (!id_usuario) {
-      return NextResponse.json({ error: "Usuário não informado" }, { status: 400 })
-    }
+    const sessao = await sessaoObrigatoria(searchParams.get("id_usuario"))
+    if (sessao instanceof NextResponse) return sessao
+    const id_usuario = sessao.id_usuario
 
     const conversas = await prisma.conversa.findMany({
       where: {
@@ -59,10 +59,14 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const id_usuario = body.id_usuario
+
+    const sessao = await sessaoObrigatoria(body.id_usuario)
+    if (sessao instanceof NextResponse) return sessao
+    const id_usuario = sessao.id_usuario
+
     const id_negocio = body.id_negocio
 
-    if (!id_usuario || !id_negocio) {
+    if (!id_negocio) {
       return NextResponse.json({ error: "Dados incompletos" }, { status: 400 })
     }
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
-import { exigirEmpreendedor } from "../../lib/auth"
+import { exigirEmpreendedor, sessaoObrigatoria } from "../../lib/auth"
 
 export async function GET(req: Request) {
   try {
@@ -10,6 +10,11 @@ export async function GET(req: Request) {
     const cidade = searchParams.get("cidade") || ""
     const ordenar = searchParams.get("ordenar") || "recentes"
     const destaques = searchParams.get("destaques") === "true"
+
+    // Paginação só entra quando a tela pede; as telas que montam destaques
+    // precisam da lista inteira para escolher um por categoria.
+    const limite = Number(searchParams.get("limite")) || 0
+    const pagina = Number(searchParams.get("pagina")) || 1
 
     const where: any = {}
 
@@ -33,7 +38,7 @@ export async function GET(req: Request) {
     const negocios = await prisma.negocio.findMany({
       where,
       include: {
-        usuario: true,
+        usuario: { select: { id_usuario: true, nome: true, foto_perfil: true } },
         categoria: true,
         endereco: true,
         fotos: true
@@ -41,7 +46,10 @@ export async function GET(req: Request) {
       orderBy:
         ordenar === "avaliacao"
           ? [{ media_avaliacao: "desc" }, { data_criacao: "desc" }]
-          : { data_criacao: "desc" }
+          : { data_criacao: "desc" },
+      ...(limite && !destaques
+        ? { take: limite, skip: (pagina - 1) * limite }
+        : {})
     })
 
     if (destaques) {
@@ -72,14 +80,14 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    const id_usuario = body.id_usuario || body.usuarioId
+    // A identidade de quem cria o negócio vem do cookie de sessão, não do corpo.
+    const sessao = await sessaoObrigatoria(body.id_usuario || body.usuarioId)
 
-    if (!id_usuario) {
-      return NextResponse.json(
-        { error: "Usuário não identificado" },
-        { status: 401 }
-      )
+    if (sessao instanceof NextResponse) {
+      return sessao
     }
+
+    const id_usuario = sessao.id_usuario
 
     const bloqueado = await exigirEmpreendedor(id_usuario)
 
@@ -95,11 +103,24 @@ export async function POST(req: Request) {
         horario_funcionamento: body.horario_funcionamento || null,
         status: body.status || "ativo",
         id_usuario: id_usuario,
-        id_categoria: body.id_categoria || null
+        id_categoria: body.id_categoria || null,
+        endereco: {
+          create: {
+            cep: body.cep || null,
+            rua: body.rua || null,
+            numero: body.numero || null,
+            bairro: body.bairro || null,
+            cidade: body.cidade || null,
+            estado: body.estado || null
+          }
+        },
+        ...(body.imagem ? { fotos: { create: { url: body.imagem } } } : {})
       },
       include: {
-        usuario: true,
-        categoria: true
+        usuario: { select: { id_usuario: true, nome: true, foto_perfil: true } },
+        categoria: true,
+        endereco: true,
+        fotos: true
       }
     })
 

@@ -191,10 +191,11 @@ export default function EditarNegocioPage({
           <form onSubmit={salvarAlteracoes} className="space-y-6 p-8 sm:p-10">
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="nova-foto-do-negocio">
                 Nova foto do negócio
               </label>
               <input
+                id="nova-foto-do-negocio"
                 type="file"
                 accept="image/*"
                 onChange={(e) => setImagem(e.target.files?.[0] || null)}
@@ -203,33 +204,35 @@ export default function EditarNegocioPage({
             </div>
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="nome">
                 Nome
               </label>
-              <input value={nome} onChange={(e) => setNome(e.target.value)} className={campo} />
+              <input
+                id="nome" required value={nome} onChange={(e) => setNome(e.target.value)} className={campo} />
             </div>
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="descricao">
                 Descrição
               </label>
-              <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} className={`${campo} h-40`} />
+              <textarea
+                id="descricao" required value={descricao} onChange={(e) => setDescricao(e.target.value)} className={`${campo} h-40`} />
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
-              <input value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone" className={campo} />
-              <input value={horario} onChange={(e) => setHorario(e.target.value)} placeholder="Horário" className={campo} />
+              <input required aria-label="Telefone" value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone" className={campo} />
+              <input aria-label="Horário de funcionamento" value={horario} onChange={(e) => setHorario(e.target.value)} placeholder="Horário" className={campo} />
             </div>
 
             <h2 className="text-3xl font-black text-orange-600">Endereço</h2>
 
             <div className="grid gap-5 md:grid-cols-2">
-              <input value={rua} onChange={(e) => setRua(e.target.value)} placeholder="Rua" className={campo} />
-              <input value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Número" className={campo} />
-              <input value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Bairro" className={campo} />
-              <input value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Cidade" className={campo} />
-              <input value={estado} onChange={(e) => setEstado(e.target.value)} placeholder="Estado" className={campo} />
-              <input value={cep} onChange={(e) => setCep(e.target.value)} placeholder="CEP" className={campo} />
+              <input required aria-label="Rua" value={rua} onChange={(e) => setRua(e.target.value)} placeholder="Rua" className={campo} />
+              <input required aria-label="Número" value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Número" className={campo} />
+              <input required aria-label="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Bairro" className={campo} />
+              <input required aria-label="Cidade" value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Cidade" className={campo} />
+              <input required aria-label="Estado" value={estado} onChange={(e) => setEstado(e.target.value)} placeholder="Estado" className={campo} />
+              <input required aria-label="CEP" value={cep} onChange={(e) => setCep(e.target.value)} placeholder="CEP" className={campo} />
             </div>
 
             <button

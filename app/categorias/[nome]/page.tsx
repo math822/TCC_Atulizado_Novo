@@ -26,25 +26,49 @@ export default function CategoriaPage({
   const [categorias, setCategorias] = useState<any[]>([])
   const [busca, setBusca] = useState("")
   const [carregando, setCarregando] = useState(true)
+  const [carregandoMais, setCarregandoMais] = useState(false)
+  const [pagina, setPagina] = useState(1)
+  const [temMais, setTemMais] = useState(false)
+
+  const POR_PAGINA = 9
+
+  async function buscarPagina(numero: number) {
+    const anexar = numero > 1
+    if (anexar) setCarregandoMais(true)
+    else setCarregando(true)
+
+    try {
+      const [resNegocios, resCategorias] = await Promise.all([
+        fetch(
+          `/api/negocios?categoria=${encodeURIComponent(categoria)}&limite=${POR_PAGINA}&pagina=${numero}`
+        ),
+        fetch("/api/categorias"),
+      ])
+
+      const dadosNegocios = await resNegocios.json()
+      const dadosCategorias = await resCategorias.json()
+
+      if (resNegocios.ok) {
+        setNegocios((anterior) =>
+          anexar ? [...anterior, ...dadosNegocios] : dadosNegocios
+        )
+        setPagina(numero)
+        setTemMais(dadosNegocios.length === POR_PAGINA)
+      } else {
+        setNegocios(anterior => anexar ? anterior : [])
+      }
+
+      if (resCategorias.ok) setCategorias(dadosCategorias)
+    } catch {
+      if (!anexar) setNegocios([])
+    }
+
+    setCarregando(false)
+    setCarregandoMais(false)
+  }
 
   useEffect(() => {
-    async function carregar() {
-      setCarregando(true)
-      try {
-        const [resNegocios, resCategorias] = await Promise.all([
-          fetch(`/api/negocios?categoria=${encodeURIComponent(categoria)}`),
-          fetch("/api/categorias"),
-        ])
-        const dadosNegocios = await resNegocios.json()
-        const dadosCategorias = await resCategorias.json()
-        setNegocios(resNegocios.ok ? dadosNegocios : [])
-        setCategorias(resCategorias.ok ? dadosCategorias : [])
-      } catch {
-        setNegocios([])
-      }
-      setCarregando(false)
-    }
-    carregar()
+    buscarPagina(1)
   }, [categoria])
 
   const filtrados = negocios.filter((n) => {
@@ -186,6 +210,19 @@ export default function CategoriaPage({
             </div>
           ))}
         </div>
+
+        {temMais && (
+          <div className="mt-10 text-center">
+            <button
+              type="button"
+              onClick={() => buscarPagina(pagina + 1)}
+              disabled={carregandoMais}
+              className="press min-h-12 rounded-2xl border-2 border-orange-600 px-8 font-black text-orange-700 transition hover:bg-orange-50 dark:text-orange-300 dark:hover:bg-slate-800 disabled:opacity-60"
+            >
+              {carregandoMais ? "Carregando..." : "Carregar mais negócios"}
+            </button>
+          </div>
+        )}
       </section>
 
       <Footer />

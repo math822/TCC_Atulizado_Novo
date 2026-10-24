@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import Navbar from "../../components/Navbar"
@@ -215,28 +216,28 @@ export default function PerfilPage() {
                                     </button>
 
                                     {(usuario.tipo === "empreendedor" || usuario.tipo === "admin") && (
-                                        <a
+                                        <Link
                                             href="/dashboard"
                                             className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
                                         >
                                             Dashboard
-                                        </a>
+                                        </Link>
                                     )}
 
-                                    <a
+                                    <Link
                                         href="/mensagens"
                                         className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
                                     >
                                         💬 Mensagens
-                                    </a>
+                                    </Link>
 
                                     {usuario.tipo === "admin" && (
-                                        <a
+                                        <Link
                                             href="/admin"
                                             className="press rounded-2xl bg-black/20 px-6 py-4 font-black transition hover:bg-black/30"
                                         >
                                             Painel admin
-                                        </a>
+                                        </Link>
                                     )}
 
                                     <button
@@ -292,11 +293,11 @@ export default function PerfilPage() {
                             <form onSubmit={salvarPerfil} className="space-y-6">
 
                                 <div>
-                                    <label className="font-black text-gray-800 dark:text-white">
+                                    <label className="font-black text-gray-800 dark:text-white" htmlFor="foto-de-perfil">
                                         Foto de perfil
                                     </label>
-
-                                    <input
+                                        <input
+                                          id="foto-de-perfil"
                                         type="file"
                                         accept="image/*"
                                         onChange={(e) => setImagem(e.target.files?.[0] || null)}
@@ -312,11 +313,12 @@ export default function PerfilPage() {
 
                                 <div className="grid md:grid-cols-2 gap-5">
                                     <div>
-                                        <label className="font-black text-gray-800 dark:text-white">
+                                        <label className="font-black text-gray-800 dark:text-white" htmlFor="nome">
                                             Nome
                                         </label>
-
-                                        <input
+                                            <input
+                                              id="nome"
+                                          required
                                             value={nome}
                                             onChange={(e) => setNome(e.target.value)}
                                             className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
@@ -324,11 +326,12 @@ export default function PerfilPage() {
                                     </div>
 
                                     <div>
-                                        <label className="font-black text-gray-800 dark:text-white">
+                                        <label className="font-black text-gray-800 dark:text-white" htmlFor="email">
                                             Email
                                         </label>
-
-                                        <input
+                                            <input
+                                              id="email"
+                                          required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             className="w-full mt-2 border border-cyan-900/10 bg-slate-50/90 dark:bg-slate-800 rounded-2xl p-4 min-h-12 font-medium outline-none transition focus:border-cyan-600 focus:bg-white dark:border-cyan-300/10 text-gray-900 dark:text-white"
@@ -338,11 +341,11 @@ export default function PerfilPage() {
 
                                 <div className="grid md:grid-cols-2 gap-5">
                                     <div>
-                                        <label className="font-black text-gray-800 dark:text-white">
+                                        <label className="font-black text-gray-800 dark:text-white" htmlFor="senha-atual">
                                             Senha atual
                                         </label>
-
-                                        <input
+                                            <input
+                                              id="senha-atual"
                                             type="password"
                                             value={senhaAtual}
                                             onChange={(e) => setSenhaAtual(e.target.value)}
@@ -352,11 +355,11 @@ export default function PerfilPage() {
                                     </div>
 
                                     <div>
-                                        <label className="font-black text-gray-800 dark:text-white">
+                                        <label className="font-black text-gray-800 dark:text-white" htmlFor="nova-senha">
                                             Nova senha
                                         </label>
-
-                                        <input
+                                            <input
+                                              id="nova-senha"
                                             type="password"
                                             value={novaSenha}
                                             onChange={(e) => setNovaSenha(e.target.value)}
@@ -424,12 +427,12 @@ export default function PerfilPage() {
                                         {negocio.descricao || "Sem descrição"}
                                     </p>
 
-                                    <a
+                                    <Link
                                         href={`/negocio/${negocio.id_negocio}`}
                                         className="mt-5 inline-block bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black"
                                     >
                                         Ver negócio
-                                    </a>
+                                    </Link>
                                 </div>
                             ))}
                         </div>
@@ -475,12 +478,12 @@ export default function PerfilPage() {
                                             {favorito.negocio?.descricao || "Sem descrição"}
                                         </p>
 
-                                        <a
+                                        <Link
                                             href={`/negocio/${favorito.negocio?.id_negocio}`}
                                             className="mt-5 inline-block bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-2xl font-black"
                                         >
                                             Ver favorito
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             ))}

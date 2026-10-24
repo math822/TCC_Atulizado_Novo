@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useRef, useState, use } from "react"
 import toast from "react-hot-toast"
 import Navbar from "../../../components/Navbar"
@@ -115,13 +116,13 @@ export default function ConversaPage({
 
         <div className="relative z-10 border-b border-cyan-900/10 bg-white/80 px-4 py-4 backdrop-blur-xl dark:border-cyan-300/10 dark:bg-slate-950/80 sm:px-6">
           <div className="mx-auto flex max-w-3xl items-center gap-4">
-            <a
+            <Link
               href="/mensagens"
               aria-label="Voltar para as mensagens"
               className="press flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-900/10 bg-white text-lg font-black dark:border-cyan-300/10 dark:bg-slate-900"
             >
               ←
-            </a>
+            </Link>
 
             <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-cyan-600 text-lg font-black text-white">
               {detalhe?.outro.foto_perfil ? (
@@ -136,12 +137,12 @@ export default function ConversaPage({
                 {detalhe?.outro.nome || "Carregando..."}
               </h1>
               {detalhe?.negocio && (
-                <a
+                <Link
                   href={`/negocio/${detalhe.negocio.id_negocio}`}
                   className="link-underline truncate text-sm font-bold text-cyan-700 dark:text-cyan-300"
                 >
                   {detalhe.negocio.nome}
-                </a>
+                </Link>
               )}
             </div>
           </div>
@@ -154,12 +155,12 @@ export default function ConversaPage({
               <p className="mt-3 text-lg text-slate-600 dark:text-slate-300">
                 Não foi possível abrir esta conversa. Ela pode ter sido removida ou você não participa dela.
               </p>
-              <a
+              <Link
                 href="/mensagens"
                 className="press mt-6 inline-flex min-h-12 items-center rounded-2xl bg-orange-600 px-6 font-black text-white transition hover:bg-orange-700"
               >
                 Voltar para mensagens
-              </a>
+              </Link>
             </div>
           ) : (
             <>

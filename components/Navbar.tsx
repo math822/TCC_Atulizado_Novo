@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
 import SearchBar from "./SearchBar"
@@ -18,6 +19,9 @@ export default function Navbar({
     const [naoLidas, setNaoLidas] = useState(0)
     const [notifAberto, setNotifAberto] = useState(false)
     const notifRef = useRef<HTMLDivElement>(null)
+
+    const [menuAberto, setMenuAberto] = useState(false)
+    const menuRef = useRef<HTMLDivElement>(null)
 
     const { resolvedTheme, setTheme } = useTheme()
     const [montado, setMontado] = useState(false)
@@ -56,11 +60,14 @@ export default function Navbar({
             .catch(() => {})
     }, [usuario])
 
-    // Fecha o painel de notificações ao clicar fora
+    // Fecha os painéis abertos ao clicar fora deles
     useEffect(() => {
         function aoClicarFora(e: MouseEvent) {
             if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
                 setNotifAberto(false)
+            }
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setMenuAberto(false)
             }
         }
         document.addEventListener("mousedown", aoClicarFora)
@@ -89,6 +96,22 @@ export default function Navbar({
     }
     const temNotificacao = notificacoes.length > 0
 
+    // Itens do menu que aparece no celular.
+    const menu = usuario
+        ? [
+            { icone: "🏠", texto: "Início", href: "/" },
+            { icone: "👤", texto: "Meu perfil", href: "/perfil" },
+            ...(usuario.tipo === "empreendedor" || usuario.tipo === "admin"
+                ? [{ icone: "📊", texto: "Painel", href: "/dashboard" }, { icone: "📦", texto: "Meus produtos", href: "/produtos" }]
+                : []),
+            ...(usuario.tipo === "admin" ? [{ icone: "🛡️", texto: "Administração", href: "/admin" }] : []),
+        ]
+        : [
+            { icone: "🏠", texto: "Início", href: "/" },
+            { icone: "🔑", texto: "Entrar", href: "/login" },
+            { icone: "📝", texto: "Criar conta", href: "/cadastro" },
+        ]
+
     // Alterna o tema usando o next-themes
     function alternarTema() {
         setTheme(temaEscuro ? "light" : "dark")
@@ -107,7 +130,7 @@ export default function Navbar({
             <div className="mx-auto flex min-h-20 max-w-7xl flex-wrap items-center justify-between gap-x-3 px-4 py-3 sm:flex-nowrap sm:px-6 lg:px-8">
 
                 {/* LOGO */}
-                <a
+                <Link
                     href="/"
                     aria-label="Lá da Vendinha — página inicial"
                     className="group flex flex-shrink-0 items-center gap-3 rounded-2xl"
@@ -119,7 +142,7 @@ export default function Navbar({
                     <span className="hidden text-xl font-black tracking-tight text-slate-950 dark:text-white sm:inline-block">
                         Lá da <span className="text-orange-600">Vendinha</span>
                     </span>
-                </a>
+                </Link>
 
                 {/* BUSCA */}
                 <SearchBar
@@ -133,7 +156,7 @@ export default function Navbar({
                 <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
 
                     {/* MENSAGENS */}
-                    <a
+                    <Link
                         href="/mensagens"
                         title="Mensagens"
                         aria-label={naoLidas > 0 ? `Abrir mensagens, ${naoLidas} não lidas` : "Abrir mensagens"}
@@ -145,16 +168,16 @@ export default function Navbar({
                                 {naoLidas > 9 ? "9+" : naoLidas}
                             </span>
                         )}
-                    </a>
+                    </Link>
 
                     {/* FAVORITOS */}
-                    <a
-                        href="/#negocios"
+                    <Link
+                        href="/perfil#favoritos"
                         title="Meus Favoritos"
                         className="flex h-11 w-11 items-center justify-center rounded-2xl text-xl text-slate-700 transition hover:bg-cyan-50 hover:text-cyan-800 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-cyan-200"
                     >
                         ❤️
-                    </a>
+                    </Link>
 
                     {/* NOTIFICAÇÕES */}
                     <div ref={notifRef} className="relative">
@@ -186,14 +209,14 @@ export default function Navbar({
                                     <ul className="py-1">
                                         {notificacoes.map((n, i) => (
                                             <li key={i}>
-                                                <a
+                                                <Link
                                                     href={n.href}
                                                     onClick={() => setNotifAberto(false)}
                                                     className="flex items-start gap-3 px-4 py-2.5 text-sm transition hover:bg-orange-50 dark:hover:bg-slate-800"
                                                 >
                                                     <span aria-hidden="true" className="text-lg leading-none">{n.icone}</span>
                                                     <span className="min-w-0 flex-1 font-semibold leading-snug">{n.texto}</span>
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
@@ -235,17 +258,17 @@ export default function Navbar({
 
                             {/* PAINEL DO EMPREENDEDOR */}
                             {(usuario.tipo === "empreendedor" || usuario.tipo === "admin") && (
-                                <a
+                                <Link
                                     href="/dashboard"
                                     title="Painel do empreendedor"
                                     className="press hidden items-center rounded-full bg-cyan-600 px-4 py-2.5 text-sm font-black text-white transition hover:bg-cyan-700 sm:inline-flex"
                                 >
                                     📊 Painel
-                                </a>
+                                </Link>
                             )}
 
                             {/* PERFIL */}
-                            <a
+                            <Link
                                 href="/perfil"
                                 title="Meu perfil"
                                 className="flex items-center gap-2 p-1.5 pl-3 rounded-full bg-orange-50 dark:bg-slate-800 border border-orange-200 dark:border-slate-700 hover:border-orange-400 transition"
@@ -276,7 +299,7 @@ export default function Navbar({
 
                                 </div>
 
-                            </a>
+                            </Link>
 
                             {/* SAIR */}
                             <button
@@ -296,23 +319,63 @@ export default function Navbar({
                         <div className="flex items-center gap-2">
 
                             {/* CRIAR CONTA */}
-                            <a
+                            <Link
                                 href="/cadastro"
                                 className="press hidden min-h-11 items-center rounded-2xl border-2 border-orange-600 bg-white px-5 py-2.5 text-base font-bold text-orange-700 transition-all hover:bg-orange-50 dark:bg-slate-950 dark:text-orange-300 dark:hover:bg-slate-800 sm:inline-flex"
                             >
                                 Criar conta
-                            </a>
+                            </Link>
 
                             {/* ENTRAR */}
-                            <a
+                            <Link
                                 href="/login"
                                 className="press flex min-h-11 items-center rounded-2xl bg-orange-600 px-5 py-2.5 text-base font-black text-white shadow-lg shadow-orange-600/20 transition-all hover:bg-orange-700"
                             >
                                 Entrar
-                            </a>
+                            </Link>
 
                         </div>
                     )}
+
+                    {/* MENU MOBILE: no celular os botões acima ficam ocultos,
+                        então tudo que sumiu (Painel, Sair, Criar conta) vive aqui. */}
+                    <div ref={menuRef} className="relative sm:hidden">
+                        <button
+                            type="button"
+                            onClick={() => setMenuAberto((v) => !v)}
+                            aria-label="Abrir menu de navegação"
+                            aria-expanded={menuAberto}
+                            className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-900/10 bg-white text-lg text-slate-700 transition hover:bg-cyan-50 dark:border-cyan-300/10 dark:bg-slate-900 dark:text-slate-200"
+                        >
+                            {menuAberto ? "✕" : "☰"}
+                        </button>
+
+                        {menuAberto && (
+                            <nav className="absolute right-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-cyan-900/10 bg-white text-slate-900 shadow-2xl dark:border-cyan-300/10 dark:bg-slate-900 dark:text-white">
+                                {menu.map((item) => (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setMenuAberto(false)}
+                                        className="flex items-center gap-3 px-4 py-3 text-sm font-bold transition hover:bg-orange-50 dark:hover:bg-slate-800"
+                                    >
+                                        <span aria-hidden="true">{item.icone}</span>
+                                        {item.texto}
+                                    </Link>
+                                ))}
+
+                                {usuario && (
+                                    <button
+                                        type="button"
+                                        onClick={() => { setMenuAberto(false); sair() }}
+                                        className="w-full border-t border-cyan-900/10 px-4 py-3 text-left text-sm font-bold text-red-600 transition hover:bg-red-50 dark:border-cyan-300/10 dark:hover:bg-red-950/30"
+                                    >
+                                        🚪 Sair da conta
+                                    </button>
+                                )}
+                            </nav>
+                        )}
+                    </div>
 
                 </div>
             </div>

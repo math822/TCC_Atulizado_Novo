@@ -1,9 +1,11 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState, use } from "react"
 import toast from "react-hot-toast"
 import Navbar from "../../../components/Navbar"
 import Footer from "../../../components/Footer"
+import { moedaBR } from "../../lib/formatar"
 
 export default function NegocioPage({
   params
@@ -16,6 +18,7 @@ export default function NegocioPage({
   const [carregando, setCarregando] = useState(true)
   const [usuario, setUsuario] = useState<any>(null)
   const [abrindoChat, setAbrindoChat] = useState(false)
+  const [favorito, setFavorito] = useState(false)
 
   const [nota, setNota] = useState(5)
   const [comentario, setComentario] = useState("")
@@ -34,6 +37,50 @@ export default function NegocioPage({
       }
     }
   }, [])
+
+  // Marca o coração conforme a lista de favoritos de quem está logado.
+  useEffect(() => {
+    if (!usuario?.id_usuario || !negocio?.id_negocio) return
+
+    fetch(`/api/favoritos?id_usuario=${usuario.id_usuario}`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((dados) => {
+        if (Array.isArray(dados)) {
+          setFavorito(dados.some((f: any) => f.id_negocio === negocio.id_negocio))
+        }
+      })
+      .catch(() => {})
+  }, [usuario, negocio?.id_negocio])
+
+  async function toggleFavorito() {
+    if (!usuario?.id_usuario) {
+      window.location.href = `/login?redirect=/negocio/${id}`
+      return
+    }
+
+    try {
+      const resposta = await fetch("/api/favoritos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_usuario: usuario.id_usuario,
+          id_negocio: negocio.id_negocio
+        })
+      })
+
+      const dados = await resposta.json()
+
+      if (!resposta.ok) {
+        toast.error(dados.error || "Erro ao favoritar")
+        return
+      }
+
+      setFavorito(Boolean(dados.favoritado))
+      toast.success(dados.favoritado ? "Adicionado aos favoritos ❤️" : "Removido dos favoritos")
+    } catch {
+      toast.error("Erro de conexão")
+    }
+  }
 
   async function buscarNegocio() {
     try {
@@ -145,12 +192,12 @@ export default function NegocioPage({
         <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-400/20 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
         <div className="relative mx-auto max-w-7xl">
-          <a
+          <Link
             href="/negocio"
             className="mb-8 inline-flex min-h-11 items-center rounded-2xl border border-cyan-900/10 bg-white/80 px-5 font-bold text-slate-800 shadow-sm backdrop-blur transition hover:bg-white dark:border-cyan-300/10 dark:bg-slate-900/80 dark:text-white"
           >
             ← Voltar para negócios
-          </a>
+          </Link>
 
           <div className="grid items-center gap-8 lg:grid-cols-[360px_1fr] lg:gap-12">
             <div className="future-surface overflow-hidden rounded-[34px] p-2">
@@ -187,17 +234,23 @@ export default function NegocioPage({
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <button type="button" className="press min-h-12 rounded-2xl border-2 border-red-200 bg-white px-6 font-black text-red-600 shadow-sm dark:border-red-900/50 dark:bg-slate-900">
-                  ♥ Favoritar
+                <button
+                  type="button"
+                  onClick={toggleFavorito}
+                  aria-pressed={favorito}
+                  aria-label={favorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                  className="press min-h-12 rounded-2xl border-2 border-red-200 bg-white px-6 font-black text-red-600 shadow-sm transition hover:bg-red-50 dark:border-red-900/50 dark:bg-slate-900 dark:hover:bg-red-950/30"
+                >
+                  {favorito ? "♥ Favoritado" : "♡ Favoritar"}
                 </button>
 
                 {usuario?.id_usuario === negocio.id_usuario && (
-                  <a
+                  <Link
                     href={`/editar-negocio/${negocio.id_negocio}`}
                     className="press inline-flex min-h-12 items-center rounded-2xl border-2 border-cyan-600/40 px-6 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-200 dark:hover:bg-slate-800"
                   >
                     ✏️ Editar negócio
-                  </a>
+                  </Link>
                 )}
 
                 {usuario?.id_usuario !== negocio.id_usuario && (
@@ -281,7 +334,7 @@ export default function NegocioPage({
 
                     <div className="flex items-center justify-between mt-6">
                       <p className="text-3xl font-black text-orange-600">
-                        {Number(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                        {moedaBR(produto.preco)}
                       </p>
 
                       <span className="bg-green-100 text-green-700 px-4 py-2 rounded-2xl font-bold capitalize">
@@ -348,11 +401,11 @@ export default function NegocioPage({
 
               <form onSubmit={enviarAvaliacao} className="space-y-5 mb-10">
                 <div>
-                  <label className="font-bold text-gray-700 dark:text-white">
+                  <label className="font-bold text-gray-700 dark:text-white" htmlFor="nota">
                     Nota
                   </label>
-
-                  <select
+                    <select
+                      id="nota"
                     value={nota}
                     onChange={(e) => setNota(Number(e.target.value))}
                     className="w-full mt-2 border border-orange-100 dark:border-slate-700 bg-orange-50/60 dark:bg-slate-800 rounded-2xl p-4 outline-none focus:border-orange-500 text-gray-900 dark:text-white"
@@ -366,11 +419,11 @@ export default function NegocioPage({
                 </div>
 
                 <div>
-                  <label className="font-bold text-gray-700 dark:text-white">
+                  <label className="font-bold text-gray-700 dark:text-white" htmlFor="comentario">
                     Comentário
                   </label>
-
-                  <textarea
+                    <textarea
+                      id="comentario"
                     required
                     value={comentario}
                     onChange={(e) => setComentario(e.target.value)}
@@ -396,12 +449,35 @@ export default function NegocioPage({
                     key={avaliacao.id_avaliacao}
                     className="border border-orange-100 dark:border-slate-700 rounded-2xl p-5"
                   >
-                    <p className="text-yellow-500 font-black text-xl">
-                      ⭐ {avaliacao.nota}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-orange-600 text-sm font-black text-white">
+                        {avaliacao.usuario?.foto_perfil ? (
+                          <img
+                            src={avaliacao.usuario.foto_perfil}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          (avaliacao.usuario?.nome?.[0] || "?").toUpperCase()
+                        )}
+                      </div>
 
-                    <p className="text-gray-600 dark:text-gray-300 mt-3">
-                      {avaliacao.comentario}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-black text-slate-900 dark:text-white">
+                          {avaliacao.usuario?.nome || "Avaliação sem identificação"}
+                        </p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          {new Date(avaliacao.data).toLocaleDateString("pt-BR")}
+                        </p>
+                      </div>
+
+                      <p className="flex-shrink-0 text-xl font-black text-yellow-500">
+                        ⭐ {avaliacao.nota}
+                      </p>
+                    </div>
+
+                    <p className="mt-3 text-gray-600 dark:text-gray-300">
+                      {avaliacao.comentario || "Sem comentário"}
                     </p>
                   </div>
                 ))}

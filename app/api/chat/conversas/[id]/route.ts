@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../../lib/prisma"
+import { sessaoObrigatoria } from "../../../../lib/auth"
 
 async function carregarConversa(id_conversa: string, id_usuario: string) {
   const conversa = await prisma.conversa.findUnique({
@@ -27,11 +28,10 @@ export async function GET(
   try {
     const { id } = await params
     const { searchParams } = new URL(req.url)
-    const id_usuario = searchParams.get("id_usuario")
 
-    if (!id_usuario) {
-      return NextResponse.json({ error: "Usuário não informado" }, { status: 400 })
-    }
+    const sessao = await sessaoObrigatoria(searchParams.get("id_usuario"))
+    if (sessao instanceof NextResponse) return sessao
+    const id_usuario = sessao.id_usuario
 
     const conversa = await carregarConversa(id, id_usuario)
     if (!conversa) return NextResponse.json({ error: "Conversa não encontrada" }, { status: 404 })
@@ -79,10 +79,14 @@ export async function POST(
   try {
     const { id } = await params
     const body = await req.json()
-    const id_usuario = body.id_usuario
+
+    const sessao = await sessaoObrigatoria(body.id_usuario)
+    if (sessao instanceof NextResponse) return sessao
+    const id_usuario = sessao.id_usuario
+
     const texto = (body.texto || "").toString().trim()
 
-    if (!id_usuario || !texto) {
+    if (!texto) {
       return NextResponse.json({ error: "Mensagem vazia" }, { status: 400 })
     }
 

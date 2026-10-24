@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 export default function Footer() {
   function voltarAoTopo() {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -42,10 +44,10 @@ export default function Footer() {
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.25fr_1fr]">
             <div>
-              <a href="/" className="inline-flex items-center gap-3 rounded-2xl" aria-label="Lá da Vendinha — página inicial">
+              <Link href="/" className="inline-flex items-center gap-3 rounded-2xl" aria-label="Lá da Vendinha — página inicial">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-lg font-black shadow-lg shadow-orange-700/20">LV</span>
                 <span className="text-2xl font-black">Lá da Vendinha</span>
-              </a>
+              </Link>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
                 Um jeito simples e seguro de encontrar produtos, serviços e empreendedores da sua região.
               </p>
@@ -62,9 +64,9 @@ export default function Footer() {
               <p className="mt-2 text-base leading-relaxed text-slate-300">
                 Use as categorias ou a busca no topo para encontrar o que procura. Tudo foi organizado para funcionar bem no celular e no computador.
               </p>
-              <a href="/sobre" className="mt-5 inline-flex min-h-11 items-center font-black text-orange-300 hover:text-orange-200">
+              <Link href="/sobre" className="mt-5 inline-flex min-h-11 items-center font-black text-orange-300 hover:text-orange-200">
                 Conheça o projeto →
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -75,9 +77,9 @@ export default function Footer() {
                 <ul className="mt-4 space-y-3">
                   {grupo.links.map(([texto, href]) => (
                     <li key={href}>
-                      <a href={href} className="link-underline inline-flex min-h-10 items-center text-base text-slate-300 transition hover:text-cyan-200">
+                      <Link href={href} className="link-underline inline-flex min-h-10 items-center text-base text-slate-300 transition hover:text-cyan-200">
                         {texto}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

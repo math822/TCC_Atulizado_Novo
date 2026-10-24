@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
-import { validarCNPJ } from "../../../lib/auth"
+import { validarCNPJ, opcoesCookieSessao } from "../../../lib/auth"
 import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
@@ -30,7 +30,11 @@ export async function POST(req: Request) {
     }
 
     if (tipo === "admin") {
-      if (body.adminSecret !== process.env.ADMIN_SECRET) {
+      // Sem ADMIN_SECRET definido, a comparação abaixo passaria para qualquer um
+      // (undefined === undefined), então a rota falha fechada.
+      const secret = process.env.ADMIN_SECRET
+
+      if (!secret || body.adminSecret !== secret) {
         return NextResponse.json(
           { error: "Credencial de administrador inválida" },
           { status: 403 }
@@ -120,10 +124,7 @@ export async function POST(req: Request) {
       usuario: usuarioSeguro
     })
 
-    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7
-    })
+    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), opcoesCookieSessao())
 
     return resposta
   } catch (error) {

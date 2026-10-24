@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -10,25 +11,40 @@ export default function NegociosPage() {
   const [negocios, setNegocios] = useState<any[]>([])
   const [favoritos, setFavoritos] = useState<string[]>([])
   const [carregando, setCarregando] = useState(true)
+  const [carregandoMais, setCarregandoMais] = useState(false)
+  const [pagina, setPagina] = useState(1)
+  const [temMais, setTemMais] = useState(false)
+
+  const POR_PAGINA = 9
 
   useEffect(() => {
-    buscarNegocios()
+    buscarNegocios(1)
     buscarFavoritos()
   }, [])
 
-  async function buscarNegocios() {
+  async function buscarNegocios(numeroPagina: number) {
     try {
-      const resposta = await fetch("/api/negocios")
+      if (numeroPagina === 1) setCarregando(true)
+      else setCarregandoMais(true)
+
+      const resposta = await fetch(
+        `/api/negocios?limite=${POR_PAGINA}&pagina=${numeroPagina}`
+      )
       const dados = await resposta.json()
 
       if (resposta.ok) {
-        setNegocios(dados)
+        setNegocios((anterior) =>
+          numeroPagina === 1 ? dados : [...anterior, ...dados]
+        )
+        setPagina(numeroPagina)
+        setTemMais(dados.length === POR_PAGINA)
       }
     } catch (error) {
       console.log("Erro ao buscar negócios", error)
     }
 
     setCarregando(false)
+    setCarregandoMais(false)
   }
 
   async function buscarFavoritos() {
@@ -121,12 +137,12 @@ export default function NegociosPage() {
             </p>
           </div>
 
-          <a
+          <Link
             href="/cadastrar-negocio"
             className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-2xl font-black shadow-lg transition"
           >
             Cadastrar negócio
-          </a>
+          </Link>
         </div>
 
         {carregando && (
@@ -147,12 +163,12 @@ export default function NegociosPage() {
               Seja o primeiro empreendedor da plataforma.
             </p>
 
-            <a
+            <Link
               href="/cadastrar-negocio"
               className="mt-6 inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-2xl font-black"
             >
               Cadastrar meu negócio
-            </a>
+            </Link>
           </div>
         )}
 
@@ -219,18 +235,31 @@ export default function NegociosPage() {
                   </p>
                 )}
 
-                <a
+                <Link
                   href={`/negocio/${negocio.id_negocio}`}
                   className="mt-auto flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-5 py-3 font-black text-white transition hover:bg-orange-700"
                 >
                   Ver negócio
-                </a>
+                </Link>
 
               </div>
 
             </div>
           ))}
         </div>
+
+        {temMais && (
+          <div className="mt-10 text-center">
+            <button
+              type="button"
+              onClick={() => buscarNegocios(pagina + 1)}
+              disabled={carregandoMais}
+              className="press min-h-12 rounded-2xl border-2 border-orange-600 px-8 font-black text-orange-700 transition hover:bg-orange-50 dark:text-orange-300 dark:hover:bg-slate-800 disabled:opacity-60"
+            >
+              {carregandoMais ? "Carregando..." : "Carregar mais negócios"}
+            </button>
+          </div>
+        )}
 
       </section>
 
@@ -244,12 +273,12 @@ export default function NegociosPage() {
             Entre para a plataforma de negócios locais da região.
           </p>
 
-          <a
+          <Link
             href="/cadastrar-negocio"
             className="mt-10 inline-block bg-white text-orange-600 px-8 py-4 rounded-2xl font-black text-lg"
           >
             Cadastrar meu negócio
-          </a>
+          </Link>
         </div>
       </section>
 

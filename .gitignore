@@ -19,7 +19,6 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 .vercel
-.env*
 
 # Android / Capacitor (so o codigo-fonte do app entra; artefatos de build nao)
 android/.gradle/

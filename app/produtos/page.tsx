@@ -1,8 +1,11 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import { confirmar } from "../../components/Confirmar"
+import { moedaBR } from "../lib/formatar"
 
 export default function ProdutosPage() {
   const [usuario, setUsuario] = useState<any>(null)
@@ -103,7 +106,7 @@ export default function ProdutosPage() {
   }
 
   async function apagarProduto(id_produto: string) {
-    if (!confirm("Apagar este produto?")) return
+    if (!(await confirmar({ titulo: "Apagar este produto?", texto: "O anúncio sai do ar e não pode ser recuperado.", rotuloConfirmar: "Apagar", perigoso: true }))) return
 
     const resposta = await fetch(`/api/produtos/${id_produto}`, {
       method: "DELETE"
@@ -159,12 +162,12 @@ export default function ProdutosPage() {
               <h2 className="text-3xl font-black text-orange-600">
                 Você ainda não tem negócios cadastrados
               </h2>
-              <a
+              <Link
                 href="/cadastrar-negocio"
                 className="press mt-6 inline-block rounded-2xl bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700"
               >
                 Cadastrar negócio primeiro
-              </a>
+              </Link>
             </div>
           ) : (
             <div className="grid gap-10 p-8 sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
@@ -174,10 +177,11 @@ export default function ProdutosPage() {
                 <h2 className="text-2xl font-black">Novo produto</h2>
 
                 <div>
-                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="negocio">
                     Negócio
                   </label>
-                  <select value={idNegocio} onChange={(e) => setIdNegocio(e.target.value)} className={campo}>
+                  <select
+                    id="negocio" required value={idNegocio} onChange={(e) => setIdNegocio(e.target.value)} className={campo}>
                     {negocios.map((negocio) => (
                       <option key={negocio.id_negocio} value={negocio.id_negocio}>
                         {negocio.nome}
@@ -187,10 +191,11 @@ export default function ProdutosPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="nome-do-produto-servico">
                     Nome do produto/serviço
                   </label>
                   <input
+                    id="nome-do-produto-servico"
                     required
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
@@ -200,10 +205,11 @@ export default function ProdutosPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="descricao">
                     Descrição
                   </label>
                   <textarea
+                    id="descricao"
                     value={descricao}
                     onChange={(e) => setDescricao(e.target.value)}
                     placeholder="Descreva o produto..."
@@ -212,10 +218,11 @@ export default function ProdutosPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                  <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="imagem-url-span-classname-font-nor">
                     Imagem (URL) <span className="font-normal text-slate-400">— opcional</span>
                   </label>
                   <input
+                    id="imagem-url-span-classname-font-nor"
                     type="url"
                     value={imagem}
                     onChange={(e) => setImagem(e.target.value)}
@@ -226,10 +233,11 @@ export default function ProdutosPage() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                    <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="preco">
                       Preço
                     </label>
                     <input
+                      id="preco"
                       required
                       type="number"
                       step="0.01"
@@ -241,10 +249,11 @@ export default function ProdutosPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                    <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="status">
                       Status
                     </label>
-                    <select value={status} onChange={(e) => setStatus(e.target.value)} className={campo}>
+                    <select
+                      id="status" value={status} onChange={(e) => setStatus(e.target.value)} className={campo}>
                       <option value="disponivel">Disponível</option>
                       <option value="indisponivel">Indisponível</option>
                     </select>
@@ -331,17 +340,17 @@ export default function ProdutosPage() {
                             </span>
                           </p>
                           <p className="font-black text-orange-600">
-                            {Number(p.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                            {moedaBR(p.preco)}
                           </p>
                         </div>
 
                         <div className="flex flex-shrink-0 flex-col gap-2">
-                          <a
+                          <Link
                             href={`/editar-produto/${p.id_produto}`}
                             className="press rounded-xl bg-cyan-600 px-3 py-2 text-center text-sm font-black text-white transition hover:bg-cyan-700"
                           >
                             Editar
-                          </a>
+                          </Link>
                           <button
                             type="button"
                             onClick={() => apagarProduto(p.id_produto)}

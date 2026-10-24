@@ -38,6 +38,18 @@ export function validarCNPJ(cnpj: string): boolean {
   return true
 }
 
+// Flags do cookie de sessão. httpOnly impede que um script na página leva a sessão
+// (XSS); secure/sameSite só têm efeito sob HTTPS, que é o caso da Vercel e do app.
+export function opcoesCookieSessao() {
+  return {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const
+  }
+}
+
 export async function lerSessao(): Promise<Sessao | null> {
   const store = await cookies()
   const raw = store.get("usuario")?.value
@@ -51,6 +63,31 @@ export async function lerSessao(): Promise<Sessao | null> {
   } catch {
     return null
   }
+}
+
+// Identidade de quem chama a API: vem do cookie de sessão, nunca do corpo da request.
+// Retorna a sessão quando a ação é permitida, ou uma NextResponse de erro (401/403) quando não.
+// Se o cliente enviar um id_usuario diferente do da sessão, bloqueia (IDOR).
+export async function sessaoObrigatoria(
+  idAlvo?: string | null
+): Promise<Sessao | NextResponse> {
+  const sessao = await lerSessao()
+
+  if (!sessao) {
+    return NextResponse.json(
+      { error: "Faça login para continuar." },
+      { status: 401 }
+    )
+  }
+
+  if (idAlvo && idAlvo !== sessao.id_usuario) {
+    return NextResponse.json(
+      { error: "Você não pode agir em dados de outro usuário." },
+      { status: 403 }
+    )
+  }
+
+  return sessao
 }
 
 async function carregarUsuario(): Promise<{ sessao: Sessao; usuario: any } | null> {
@@ -98,6 +135,7 @@ export async function exigirEmpreendedor(idAlvo?: string): Promise<NextResponse 
 
 // Retorna null quando o usuário é dono do negócio (ou admin), ou uma NextResponse de erro quando não.
 export async function exigirDonoNegocio(id_negocio: string): Promise<NextResponse | null> {
+
   const dados = await carregarUsuario()
 
   if (!dados) {
@@ -135,4 +173,25 @@ export async function exigirDonoNegocio(id_negocio: string): Promise<NextRespons
   }
 
   return null
+}
+
+// Bloqueia tudo que é da área de administração: só conta tipo "admin" passa.
+export async function exigirAdmin(): Promise<Sessao | NextResponse> {
+  const dados = await carregarUsuario()
+
+  if (!dados) {
+    return NextResponse.json(
+      { error: "Faça login para continuar." },
+      { status: 401 }
+    )
+  }
+
+  if (dados.usuario.tipo !== "admin") {
+    return NextResponse.json(
+      { error: "Acesso restrito a administradores." },
+      { status: 403 }
+    )
+  }
+
+  return dados.sessao
 }

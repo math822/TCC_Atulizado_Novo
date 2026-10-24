@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
+import { sessaoObrigatoria } from "../../lib/auth"
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    if (!body.id_usuario || !body.id_negocio) {
+    const sessao = await sessaoObrigatoria(body.id_usuario)
+    if (sessao instanceof NextResponse) return sessao
+
+    if (!body.id_negocio) {
       return NextResponse.json(
-        { error: "Usuário ou negócio não informado" },
+        { error: "Negócio não informado" },
         { status: 400 }
       )
     }
@@ -16,7 +20,7 @@ export async function POST(req: Request) {
       data: {
         nota: Number(body.nota),
         comentario: body.comentario,
-        id_usuario: body.id_usuario,
+        id_usuario: sessao.id_usuario,
         id_negocio: body.id_negocio
       }
     })

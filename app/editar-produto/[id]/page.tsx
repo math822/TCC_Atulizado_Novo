@@ -148,39 +148,44 @@ export default function EditarProdutoPage({
           <form onSubmit={salvarProduto} className="space-y-6 p-8 sm:p-10">
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="nome-do-produto">
                 Nome do produto
               </label>
-              <input value={nome} onChange={(e) => setNome(e.target.value)} className={campo} />
+              <input
+                id="nome-do-produto" required value={nome} onChange={(e) => setNome(e.target.value)} className={campo} />
             </div>
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="descricao">
                 Descrição
               </label>
-              <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} className={`${campo} h-40`} />
+              <textarea
+                id="descricao" value={descricao} onChange={(e) => setDescricao(e.target.value)} className={`${campo} h-40`} />
             </div>
 
             <div>
-              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="imagem-url">
                 Imagem (URL) <span className="font-normal text-slate-400">— opcional</span>
               </label>
-              <input type="url" value={imagem} onChange={(e) => setImagem(e.target.value)} placeholder="https://exemplo.com/foto.jpg" className={campo} />
+              <input
+                id="imagem-url-span-classname-font-nor" type="url" value={imagem} onChange={(e) => setImagem(e.target.value)} placeholder="https://exemplo.com/foto.jpg" className={campo} />
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               <div>
-                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="preco">
                   Preço
                 </label>
-                <input type="number" step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} className={campo} />
+                <input
+                  id="preco" required type="number" min="0" step="0.01" value={preco} onChange={(e) => setPreco(e.target.value)} className={campo} />
               </div>
 
               <div>
-                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200" htmlFor="status">
                   Status
                 </label>
-                <select value={status} onChange={(e) => setStatus(e.target.value)} className={campo}>
+                <select
+                  id="status" value={status} onChange={(e) => setStatus(e.target.value)} className={campo}>
                   <option value="disponivel">Disponível</option>
                   <option value="indisponivel">Indisponível</option>
                 </select>

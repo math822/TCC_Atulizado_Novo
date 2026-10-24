@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
@@ -79,12 +80,12 @@ export default function MensagensPage() {
             <p className="mt-3 text-lg text-slate-600 dark:text-slate-300">
               Abra o perfil de um negócio e clique em <strong>Falar com o vendedor</strong> para começar.
             </p>
-            <a
+            <Link
               href="/negocio"
               className="press mt-6 inline-flex min-h-12 items-center rounded-2xl bg-orange-600 px-6 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
             >
               Explorar negócios
-            </a>
+            </Link>
           </div>
         ) : (
           <ul className="space-y-4">
@@ -92,7 +93,7 @@ export default function MensagensPage() {
               const minhas = c.ultima_mensagem?.id_remetente === usuario?.id_usuario
               return (
                 <Reveal as="li" key={c.id_conversa} delay={i * 60} variant="up">
-                  <a
+                  <Link
                     href={`/mensagens/${c.id_conversa}`}
                     className="future-card shine hover-rise flex items-center gap-4 rounded-3xl p-5"
                   >
@@ -130,7 +131,7 @@ export default function MensagensPage() {
                         {c.nao_lidas}
                       </span>
                     )}
-                  </a>
+                  </Link>
                 </Reveal>
               )
             })}

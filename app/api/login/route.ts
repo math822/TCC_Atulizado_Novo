@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
+import { opcoesCookieSessao } from "../../lib/auth"
 import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
@@ -67,10 +68,7 @@ export async function POST(req: Request) {
 
       }),
 
-      {
-        httpOnly: false,
-        path: "/"
-      }
+      opcoesCookieSessao()
     )
 
     return resposta

@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import Navbar from "../../components/Navbar"
 
@@ -19,6 +20,13 @@ export default function Cadastro() {
     const [mostrarEscolhaGoogle, setMostrarEscolhaGoogle] = useState(false)
     const [tipoGoogle, setTipoGoogle] = useState("cliente")
     const [carregandoGoogle, setCarregandoGoogle] = useState(false)
+
+    // Dentro do app Android o OAuth do Google não funciona, então não oferecemos o botão.
+    const [emApp, setEmApp] = useState(false)
+    useEffect(() => {
+        const capacitor = (window as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
+        if (capacitor?.isNativePlatform?.()) setEmApp(true)
+    }, [])
 
     function formatarCNPJ(valor: string) {
         const numeros = valor.replace(/\D/g, "").slice(0, 14)
@@ -178,7 +186,8 @@ export default function Cadastro() {
                         Crie sua conta rapidamente e comece a usar a plataforma.
                     </p>
 
-                    {/* GOOGLE */}
+                    {/* GOOGLE (só no navegador; no app Android não funciona) */}
+                    {!emApp && (
                     <button
                         type="button"
                         onClick={cadastrarComGoogle}
@@ -210,6 +219,7 @@ export default function Cadastro() {
 
                         Criar conta com Google
                     </button>
+                    )}
 
                     {/* DIVISOR */}
                     <div className="flex items-center gap-4 my-7">
@@ -284,6 +294,7 @@ export default function Cadastro() {
 
                             <input
                                 id="telefone"
+                                required
                                 type="tel"
                                 autoComplete="tel"
                                 value={telefone}
@@ -407,22 +418,22 @@ export default function Cadastro() {
 
                         Já tem conta?
 
-                        <a
+                        <Link
                             href="/login"
                             className="text-orange-600 font-black ml-2"
                         >
                             Entrar
-                        </a>
+                        </Link>
 
                     </p>
 
                     {/* INÍCIO */}
-                    <a
+                    <Link
                         href="/"
                         className="block text-center mt-6 text-gray-400 hover:text-orange-600 font-bold"
                     >
                         Voltar para início
-                    </a>
+                    </Link>
 
                 </div>
             </div>
@@ -445,7 +456,7 @@ export default function Cadastro() {
                             </h3>
 
                             <p className="text-gray-500 dark:text-gray-300 mt-3">
-                                Escolha como você deseja utilizar a La Davendinha.
+                                Escolha como você deseja utilizar a plataforma.
                             </p>
 
                         </div>

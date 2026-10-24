@@ -1,18 +1,33 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import Link from "next/link"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import toast from "react-hot-toast"
 import Navbar from "../../components/Navbar"
 
+// Só aceita caminhos internos ("/dashboard"), nunca URLs absolutas (/login?redirect=https://malicioso).
+function destinoSeguro(redirect: string | null): string | null {
+  if (!redirect || !redirect.startsWith("/") || redirect.startsWith("//")) return null
+  return redirect
+}
+
 function LoginForm() {
   const searchParams = useSearchParams()
-  const redirect = searchParams.get("redirect")
+  const redirect = destinoSeguro(searchParams.get("redirect"))
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
   const [verSenha, setVerSenha] = useState(false)
   const [carregando, setCarregando] = useState(false)
+  const [emApp, setEmApp] = useState(false)
+
+  // Dentro do app Android o OAuth do Google não funciona (a WebView é bloqueada pelo Google
+  // e o cookie de sessão nasceria no navegador do sistema), então só oferecemos email e senha.
+  useEffect(() => {
+    const capacitor = (window as { Capacitor?: { isNativePlatform?: () => boolean } }).Capacitor
+    if (capacitor?.isNativePlatform?.()) setEmApp(true)
+  }, [])
 
   async function entrar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -92,41 +107,51 @@ function LoginForm() {
               </p>
             </div>
 
-            {/* GOOGLE */}
-            <button
-              type="button"
-              onClick={entrarComGoogle}
-              className="press flex w-full items-center justify-center gap-3 rounded-2xl border border-cyan-900/10 bg-white py-4 font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 dark:border-cyan-300/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
-            >
-              {/* Ícone Google */}
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  fill="#4285F4"
-                  d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.22a4.47 4.47 0 0 1-1.94 2.93v2.43h3.14c1.84-1.69 2.93-4.18 2.93-7.39Z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 21.77c2.63 0 4.84-.87 6.45-2.35l-3.14-2.43c-.87.58-1.98.93-3.31.93-2.54 0-4.69-1.72-5.46-4.03H3.3v2.51A9.74 9.74 0 0 0 12 21.77Z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M6.54 13.89A5.86 5.86 0 0 1 6.23 12c0-.66.11-1.3.31-1.89V7.6H3.3A9.76 9.76 0 0 0 2.25 12c0 1.57.38 3.06 1.05 4.4l3.24-2.51Z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 6.08c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.23 12 2.23a9.74 9.74 0 0 0-8.7 5.37l3.24 2.51C7.31 7.8 9.46 6.08 12 6.08Z"
-                />
-              </svg>
+            {/* GOOGLE (só no navegador; no app Android não funciona) */}
+            {!emApp && (
+              <button
+                type="button"
+                onClick={entrarComGoogle}
+                className="press flex w-full items-center justify-center gap-3 rounded-2xl border border-cyan-900/10 bg-white py-4 font-bold text-slate-800 shadow-sm transition hover:bg-slate-50 dark:border-cyan-300/10 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+              >
+                {/* Ícone Google */}
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="#4285F4"
+                    d="M21.35 12.23c0-.79-.07-1.55-.22-2.27H12v4.3h5.22a4.47 4.47 0 0 1-1.94 2.93v2.43h3.14c1.84-1.69 2.93-4.18 2.93-7.39Z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 21.77c2.63 0 4.84-.87 6.45-2.35l-3.14-2.43c-.87.58-1.98.93-3.31.93-2.54 0-4.69-1.72-5.46-4.03H3.3v2.51A9.74 9.74 0 0 0 12 21.77Z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M6.54 13.89A5.86 5.86 0 0 1 6.23 12c0-.66.11-1.3.31-1.89V7.6H3.3A9.76 9.76 0 0 0 2.25 12c0 1.57.38 3.06 1.05 4.4l3.24-2.51Z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 6.08c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.17 14.63 2.23 12 2.23a9.74 9.74 0 0 0-8.7 5.37l3.24 2.51C7.31 7.8 9.46 6.08 12 6.08Z"
+                  />
+                </svg>
 
-              Continuar com Google
-            </button>
+                Continuar com Google
+              </button>
+            )}
+
+            {emApp && (
+              <p className="rounded-2xl bg-orange-50 px-4 py-3 text-sm font-bold text-orange-700 dark:bg-slate-800 dark:text-orange-300">
+                No app entre com email e senha — o login do Google funciona no site pelo navegador.
+              </p>
+            )}
 
             {/* DIVISOR */}
-            <div className="my-7 flex items-center gap-4">
-              <div className="h-px flex-1 bg-cyan-900/10 dark:bg-cyan-300/10" />
-              <span className="text-sm font-medium text-slate-400">ou</span>
-              <div className="h-px flex-1 bg-cyan-900/10 dark:bg-cyan-300/10" />
-            </div>
+            {!emApp && (
+              <div className="my-7 flex items-center gap-4">
+                <div className="h-px flex-1 bg-cyan-900/10 dark:bg-cyan-300/10" />
+                <span className="text-sm font-medium text-slate-400">ou</span>
+                <div className="h-px flex-1 bg-cyan-900/10 dark:bg-cyan-300/10" />
+              </div>
+            )}
 
             {/* FORMULÁRIO */}
             <form onSubmit={entrar} className="space-y-5">
@@ -162,15 +187,12 @@ function LoginForm() {
                     Senha
                   </label>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      toast("A recuperação de senha será adicionada em breve.")
-                    }
+                  <Link
+                    href="/recuperar-senha"
                     className="link-underline text-sm font-bold text-orange-600 hover:text-orange-700"
                   >
                     Esqueci minha senha
-                  </button>
+                  </Link>
                 </div>
 
                 <div className="relative">
@@ -211,22 +233,22 @@ function LoginForm() {
                 Ainda não tem uma conta?
               </span>
 
-              <a
+              <Link
                 href="/cadastro"
                 className="link-underline ml-2 font-black text-orange-600 hover:text-orange-700"
               >
                 Criar conta
-              </a>
+              </Link>
             </div>
           </div>
 
           {/* VOLTAR */}
-          <a
+          <Link
             href="/"
             className="link-underline mt-6 block text-center text-sm font-bold text-slate-500 hover:text-orange-600 transition"
           >
             ← Voltar para o início
-          </a>
+          </Link>
         </div>
       </div>
     </main>

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -240,12 +241,12 @@ export default function Home() {
             </div>
           </div>
 
-          <a
+          <Link
             href="/cadastrar-negocio"
             className="hidden min-h-12 items-center rounded-2xl bg-orange-600 px-6 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700 md:inline-flex"
           >
             + Cadastrar negócio
-          </a>
+          </Link>
         </div>
 
         {carregando && (
@@ -331,12 +332,12 @@ export default function Home() {
                   </p>
                 )}
 
-                <a
+                <Link
                   href={`/negocio/${negocio.id_negocio}`}
                   className="press mt-auto flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-5 py-3 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
                 >
                   Ver negócio
-                </a>
+                </Link>
               </div>
             </div>
             </Reveal>
@@ -412,12 +413,12 @@ export default function Home() {
             Cadastre-se grátis e seja encontrado por centenas de clientes da sua
             região.
           </p>
-          <a
+          <Link
             href="/cadastrar-negocio"
             className="relative inline-block mt-8 bg-white text-orange-600 px-9 py-4 rounded-2xl font-black shadow-lg hover:scale-105 transition"
           >
             Cadastrar meu negócio →
-          </a>
+          </Link>
         </div>
         </Reveal>
       </section>

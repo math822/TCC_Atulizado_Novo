@@ -1,21 +1,17 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
+import { sessaoObrigatoria } from "../../lib/auth"
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
-    const id_usuario = searchParams.get("id_usuario")
 
-    if (!id_usuario) {
-      return NextResponse.json(
-        { error: "Usuário não informado" },
-        { status: 400 }
-      )
-    }
+    const sessao = await sessaoObrigatoria(searchParams.get("id_usuario"))
+    if (sessao instanceof NextResponse) return sessao
 
     const favoritos = await prisma.favorito.findMany({
       where: {
-        id_usuario
+        id_usuario: sessao.id_usuario
       },
       include: {
         negocio: {
@@ -40,10 +36,13 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
 
+    const sessao = await sessaoObrigatoria(body.id_usuario)
+    if (sessao instanceof NextResponse) return sessao
+
     const existente = await prisma.favorito.findUnique({
       where: {
         id_usuario_id_negocio: {
-          id_usuario: body.id_usuario,
+          id_usuario: sessao.id_usuario,
           id_negocio: body.id_negocio
         }
       }
@@ -64,7 +63,7 @@ export async function POST(req: Request) {
 
     await prisma.favorito.create({
       data: {
-        id_usuario: body.id_usuario,
+        id_usuario: sessao.id_usuario,
         id_negocio: body.id_negocio
       }
     })

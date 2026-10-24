@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
@@ -218,16 +219,17 @@ export default function CadastrarNegocio() {
         {!usuario && (
           <div className="m-10 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 rounded-2xl p-5 font-bold">
             Você precisa estar logado para cadastrar um negócio.
-            <a href="/login?redirect=/cadastrar-negocio" className="ml-2 underline">
+            <Link href="/login?redirect=/cadastrar-negocio" className="ml-2 underline">
               Entrar agora
-            </a>
+            </Link>
           </div>
         )}
 
         <form onSubmit={cadastrarNegocio} className="p-10 space-y-6">
           <div>
-            <label className="font-bold text-gray-700 dark:text-gray-200">Foto principal do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="foto-principal-do-negocio">Foto principal do negócio</label>
             <input
+              id="foto-principal-do-negocio"
               type="file"
               accept="image/*"
               onChange={(e) => {
@@ -254,8 +256,9 @@ export default function CadastrarNegocio() {
           </div>
 
           <div>
-            <label className="font-bold text-gray-700 dark:text-gray-200">Nome do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="nome-do-negocio">Nome do negócio</label>
             <input
+              id="nome-do-negocio"
               required
               value={nome}
               onChange={(e) => setNome(e.target.value)}
@@ -265,8 +268,9 @@ export default function CadastrarNegocio() {
           </div>
 
           <div>
-            <label className="font-bold text-gray-700 dark:text-gray-200">Categoria do negócio</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="categoria-do-negocio">Categoria do negócio</label>
             <select
+              id="categoria-do-negocio"
               required
               value={idCategoria}
               onChange={(e) => setIdCategoria(e.target.value)}
@@ -282,8 +286,9 @@ export default function CadastrarNegocio() {
           </div>
 
           <div>
-            <label className="font-bold text-gray-700 dark:text-gray-200">Descrição</label>
+            <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="descricao">Descrição</label>
             <textarea
+              id="descricao"
               required
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
@@ -294,8 +299,9 @@ export default function CadastrarNegocio() {
 
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200">Telefone</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="telefone">Telefone</label>
               <input
+                id="telefone"
                 required
                 type="text"
                 value={telefone}
@@ -307,8 +313,9 @@ export default function CadastrarNegocio() {
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200">Horário de funcionamento</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200" htmlFor="horario-de-funcionamento">Horário de funcionamento</label>
               <input
+                id="horario-de-funcionamento"
                 value={horario}
                 onChange={(e) => setHorario(e.target.value)}
                 placeholder="Ex: Segunda a sábado, 10h às 22h"
@@ -325,8 +332,9 @@ export default function CadastrarNegocio() {
 
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">CEP</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="cep">CEP</label>
               <input
+                id="cep"
                 required
                 type="text"
                 value={cep}
@@ -338,8 +346,9 @@ export default function CadastrarNegocio() {
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Número</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="numero">Número</label>
               <input
+                id="numero"
                 required
                 type="text"
                 value={numero}
@@ -350,8 +359,9 @@ export default function CadastrarNegocio() {
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Rua</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="rua">Rua</label>
               <input
+                id="rua"
                 required
                 value={rua}
                 onChange={(e) => setRua(e.target.value)}
@@ -361,8 +371,9 @@ export default function CadastrarNegocio() {
             </div>
 
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Bairro</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="bairro">Bairro</label>
               <input
+                id="bairro"
                 required
                 value={bairro}
                 onChange={(e) => setBairro(e.target.value)}
@@ -373,8 +384,9 @@ export default function CadastrarNegocio() {
 
             {/* Select Dinâmico de Estado (IBGE) */}
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Estado</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="estado">Estado</label>
               <select
+                id="estado"
                 required
                 value={estado}
                 onChange={(e) => {
@@ -394,8 +406,9 @@ export default function CadastrarNegocio() {
 
             {/* Select Dinâmico de Cidade (IBGE) */}
             <div>
-              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm">Cidade</label>
+              <label className="font-bold text-gray-700 dark:text-gray-200 text-sm" htmlFor="cidade">Cidade</label>
               <select
+                id="cidade"
                 required
                 value={cidade}
                 onChange={(e) => setCidade(e.target.value)}

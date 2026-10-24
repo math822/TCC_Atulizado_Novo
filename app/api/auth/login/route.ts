@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
+import { opcoesCookieSessao } from "../../../lib/auth"
 import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
@@ -44,10 +45,7 @@ export async function POST(req: Request) {
       usuario: usuarioSeguro
     })
 
-    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7
-    })
+    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), opcoesCookieSessao())
 
     return resposta
 

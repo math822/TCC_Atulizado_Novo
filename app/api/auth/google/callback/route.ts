@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import crypto from "crypto"
 import bcrypt from "bcryptjs"
 import prisma from "../../../../lib/prisma"
+import { opcoesCookieSessao } from "../../../../lib/auth"
 
 export async function GET(req: Request) {
   try {
@@ -368,10 +369,7 @@ export async function GET(req: Request) {
     resposta.cookies.set(
       "usuario",
       JSON.stringify(usuarioSeguro),
-      {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7
-      }
+      opcoesCookieSessao()
     )
 
     // =====================================================

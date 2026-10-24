@@ -1,9 +1,12 @@
 "use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import { confirmar } from "../../components/Confirmar"
+import { moedaBR } from "../lib/formatar"
 
 export default function Dashboard() {
   const [usuario, setUsuario] = useState<any>(null)
@@ -62,9 +65,9 @@ export default function Dashboard() {
   }
 
   async function apagarProduto(id_produto: string) {
-    const confirmar = confirm("Deseja apagar este produto?")
+    const aceitou = await confirmar({ titulo: "Apagar este produto?", texto: "O anúncio sai do ar e não pode ser recuperado.", rotuloConfirmar: "Apagar", perigoso: true })
 
-    if (!confirmar) return
+    if (!aceitou) return
 
     const resposta = await fetch(`/api/produtos/${id_produto}`, {
       method: "DELETE"
@@ -112,33 +115,33 @@ export default function Dashboard() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <a
+                <Link
                   href="/cadastrar-negocio"
                   className="press rounded-2xl bg-orange-600 px-6 py-4 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
                 >
                   + Cadastrar negócio
-                </a>
+                </Link>
 
-                <a
+                <Link
                   href="/produtos"
                   className="press rounded-2xl border-2 border-cyan-600/30 px-6 py-4 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-slate-800"
                 >
                   + Cadastrar produto
-                </a>
+                </Link>
 
-                <a
+                <Link
                   href="/mensagens"
                   className="press rounded-2xl border-2 border-cyan-600/30 px-6 py-4 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-300 dark:hover:bg-slate-800"
                 >
                   💬 Mensagens
-                </a>
+                </Link>
 
-                <a
+                <Link
                   href="/"
                   className="press rounded-2xl border-2 border-cyan-900/10 px-6 py-4 font-black text-slate-800 transition hover:bg-slate-50 dark:border-cyan-300/10 dark:text-white dark:hover:bg-slate-800"
                 >
                   Ver site
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -212,9 +215,9 @@ export default function Dashboard() {
             <div className="mb-8 flex items-center justify-between">
               <h2 className="text-3xl font-black">Meus negócios</h2>
 
-              <a href="/cadastrar-negocio" className="link-underline font-black text-orange-600">
+              <Link href="/cadastrar-negocio" className="link-underline font-black text-orange-600">
                 + Novo
-              </a>
+              </Link>
             </div>
 
             {negocios.length === 0 && (
@@ -255,19 +258,19 @@ export default function Dashboard() {
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-3">
-                      <a
+                      <Link
                         href={`/negocio/${negocio.id_negocio}`}
                         className="press rounded-2xl bg-orange-600 px-5 py-3 font-black text-white transition hover:bg-orange-700"
                       >
                         Ver
-                      </a>
+                      </Link>
 
-                      <a
+                      <Link
                         href={`/editar-negocio/${negocio.id_negocio}`}
                         className="press rounded-2xl bg-cyan-500/15 px-5 py-3 font-black text-cyan-700 transition hover:bg-cyan-500/25 dark:text-cyan-200"
                       >
                         Editar
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -279,9 +282,9 @@ export default function Dashboard() {
             <div className="mb-8 flex items-center justify-between">
               <h2 className="text-3xl font-black">Produtos</h2>
 
-              <a href="/produtos" className="link-underline font-black text-orange-600">
+              <Link href="/produtos" className="link-underline font-black text-orange-600">
                 + Novo
-              </a>
+              </Link>
             </div>
 
             {produtos.length === 0 && (
@@ -304,17 +307,17 @@ export default function Dashboard() {
                     </p>
 
                     <p className="mt-2 font-black text-orange-600">
-                      R$ {produto.preco}
+                      {moedaBR(produto.preco)}
                     </p>
                   </div>
 
                   <div className="flex gap-2">
-                    <a
+                    <Link
                       href={`/editar-produto/${produto.id_produto}`}
                       className="press rounded-2xl bg-cyan-500/15 px-4 py-3 font-black text-cyan-700 transition hover:bg-cyan-500/25 dark:text-cyan-200"
                     >
                       Editar
-                    </a>
+                    </Link>
 
                     <button
                       onClick={() => apagarProduto(produto.id_produto)}
