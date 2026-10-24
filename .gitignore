@@ -20,3 +20,14 @@ yarn-error.log*
 Thumbs.db
 .vercel
 .env*
+
+# Android / Capacitor (so o codigo-fonte do app entra; artefatos de build nao)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/capacitor.build.gradle
+*.apk
+*.aab
+*.keystore
+

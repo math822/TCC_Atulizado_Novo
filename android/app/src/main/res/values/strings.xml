@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lá da Vendinha</string>
+    <string name="title_activity_main">Lá da Vendinha</string>
+    <string name="package_name">com.ladavendinha.app</string>
+    <string name="custom_url_scheme">com.ladavendinha.app</string>
+</resources>
