@@ -162,10 +162,10 @@ export default function NegocioPage({
                     event.currentTarget.onerror = null
                     event.currentTarget.src = "/categorias/alimentacao-futuro-v2.png"
                   }}
-                  className="aspect-square w-full rounded-[28px] object-cover"
+                  className="aspect-[4/3] w-full rounded-[28px] object-cover"
                 />
               ) : (
-                <div className="flex aspect-square w-full items-center justify-center rounded-[28px] bg-gradient-to-br from-orange-200 to-cyan-100 text-8xl dark:from-slate-800 dark:to-slate-700">
+                <div className="flex aspect-[4/3] w-full items-center justify-center rounded-[28px] bg-gradient-to-br from-orange-200 to-cyan-100 text-8xl dark:from-slate-800 dark:to-slate-700">
                   🏪
                 </div>
               )}
@@ -255,8 +255,20 @@ export default function NegocioPage({
                     key={produto.id_produto}
                     className="border border-orange-100 dark:border-slate-700 rounded-3xl p-5 hover:shadow-xl transition"
                   >
-                    <div className="h-40 rounded-2xl bg-gradient-to-br from-orange-300 to-orange-500 flex items-center justify-center text-6xl">
-                      🛒
+                    <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-orange-100 to-cyan-100 dark:from-slate-700 dark:to-slate-600 flex items-center justify-center">
+                      {produto.imagem ? (
+                        <img
+                          src={produto.imagem}
+                          alt={produto.nome}
+                          onError={(event) => {
+                            event.currentTarget.onerror = null
+                            event.currentTarget.style.display = "none"
+                          }}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-6xl">🛒</span>
+                      )}
                     </div>
 
                     <h3 className="text-2xl font-black text-gray-900 dark:text-white mt-5">
@@ -269,10 +281,10 @@ export default function NegocioPage({
 
                     <div className="flex items-center justify-between mt-6">
                       <p className="text-3xl font-black text-orange-600">
-                        R$ {produto.preco}
+                        {Number(produto.preco).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                       </p>
 
-                      <span className="bg-green-100 text-green-700 px-4 py-2 rounded-2xl font-bold">
+                      <span className="bg-green-100 text-green-700 px-4 py-2 rounded-2xl font-bold capitalize">
                         {produto.status || "disponivel"}
                       </span>
                     </div>

@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
+import SearchBar from "./SearchBar"
 
 interface NavbarProps {
     busca?: string
@@ -14,8 +15,9 @@ export default function Navbar({
 }: NavbarProps) {
 
     const [usuario, setUsuario] = useState<any>(null)
-    const [temNotificacao, setTemNotificacao] = useState(true)
     const [naoLidas, setNaoLidas] = useState(0)
+    const [notifAberto, setNotifAberto] = useState(false)
+    const notifRef = useRef<HTMLDivElement>(null)
 
     const { resolvedTheme, setTheme } = useTheme()
     const [montado, setMontado] = useState(false)
@@ -54,6 +56,39 @@ export default function Navbar({
             .catch(() => {})
     }, [usuario])
 
+    // Fecha o painel de notificações ao clicar fora
+    useEffect(() => {
+        function aoClicarFora(e: MouseEvent) {
+            if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+                setNotifAberto(false)
+            }
+        }
+        document.addEventListener("mousedown", aoClicarFora)
+        return () => document.removeEventListener("mousedown", aoClicarFora)
+    }, [])
+
+    // Monta a lista de notificações ativas (mensagens + verificação)
+    const notificacoes: { icone: string; texto: string; href: string }[] = []
+    if (usuario) {
+        if (naoLidas > 0) {
+            notificacoes.push({
+                icone: "💬",
+                texto: `Você tem ${naoLidas} mensagem${naoLidas > 1 ? "ns" : ""} não lida${naoLidas > 1 ? "s" : ""}`,
+                href: "/mensagens"
+            })
+        }
+        if (usuario.tipo === "empreendedor") {
+            if (usuario.status_verificacao === "pendente") {
+                notificacoes.push({ icone: "⏳", texto: "Seu negócio está em análise de verificação", href: "/dashboard" })
+            } else if (usuario.status_verificacao === "aprovado") {
+                notificacoes.push({ icone: "✅", texto: "Seu negócio foi aprovado na verificação!", href: "/dashboard" })
+            } else if (usuario.status_verificacao === "rejeitado") {
+                notificacoes.push({ icone: "⚠️", texto: "A verificação do seu negócio foi recusada", href: "/perfil" })
+            }
+        }
+    }
+    const temNotificacao = notificacoes.length > 0
+
     // Alterna o tema usando o next-themes
     function alternarTema() {
         setTheme(temaEscuro ? "light" : "dark")
@@ -87,29 +122,12 @@ export default function Navbar({
                 </a>
 
                 {/* BUSCA */}
-                {setBusca && (
-                    <div className="order-3 mt-3 basis-full sm:order-none sm:mx-2 sm:mt-0 sm:max-w-md sm:basis-auto flex-1">
-                        <div className="relative">
-                            <label htmlFor="busca-navegacao" className="sr-only">
-                                Buscar lojas, serviços ou produtos
-                            </label>
-                            <input
-                                id="busca-navegacao"
-                                type="search"
-                                value={busca}
-                                onChange={(e) =>
-                                    setBusca(e.target.value)
-                                }
-                                placeholder="Buscar no site..."
-                                className="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 py-3 pl-12 pr-4 text-base font-semibold text-slate-900 placeholder-slate-500 transition-all focus:border-cyan-600 focus:bg-white focus:outline-none dark:border-cyan-300/10 dark:bg-slate-900 dark:text-white dark:placeholder-slate-400 dark:focus:bg-slate-900"
-                            />
-
-                            <span aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-cyan-700 dark:text-cyan-300">
-                                ⌕
-                            </span>
-                        </div>
-                    </div>
-                )}
+                <SearchBar
+                    busca={setBusca ? busca : undefined}
+                    setBusca={setBusca}
+                    className="order-3 mt-3 basis-full sm:order-none sm:mx-2 sm:mt-0 sm:max-w-md sm:basis-auto flex-1"
+                    inputClassName="min-h-12 w-full rounded-2xl border border-cyan-900/10 bg-slate-50/90 py-3 pl-12 pr-4 text-base font-semibold text-slate-900 placeholder-slate-500 transition-all focus:border-cyan-600 focus:bg-white focus:outline-none dark:border-cyan-300/10 dark:bg-slate-900 dark:text-white dark:placeholder-slate-400 dark:focus:bg-slate-900"
+                />
 
                 {/* ÍCONES */}
                 <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
@@ -139,21 +157,50 @@ export default function Navbar({
                     </a>
 
                     {/* NOTIFICAÇÕES */}
-                    <button
-                        type="button"
-                        title="Notificações"
-                        aria-label={temNotificacao ? "Abrir notificações, há novidades" : "Abrir notificações"}
-                        onClick={() =>
-                            setTemNotificacao(false)
-                        }
-                        className="relative flex h-11 w-11 items-center justify-center rounded-2xl text-xl text-slate-700 transition hover:bg-cyan-50 hover:text-cyan-800 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-cyan-200"
-                    >
-                        🔔
+                    <div ref={notifRef} className="relative">
+                        <button
+                            type="button"
+                            title="Notificações"
+                            aria-label={temNotificacao ? "Abrir notificações, há novidades" : "Abrir notificações"}
+                            aria-expanded={notifAberto}
+                            onClick={() => setNotifAberto((v) => !v)}
+                            className="relative flex h-11 w-11 items-center justify-center rounded-2xl text-xl text-slate-700 transition hover:bg-cyan-50 hover:text-cyan-800 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-cyan-200"
+                        >
+                            🔔
 
-                        {temNotificacao && (
-                            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-orange-600 rounded-full ring-2 ring-white dark:ring-slate-900 animate-pulse" />
+                            {temNotificacao && (
+                                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-orange-600 rounded-full ring-2 ring-white dark:ring-slate-900 animate-pulse" />
+                            )}
+                        </button>
+
+                        {notifAberto && (
+                            <div className="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl border border-cyan-900/10 bg-white text-slate-900 shadow-2xl dark:border-cyan-300/10 dark:bg-slate-900 dark:text-white">
+                                <p className="border-b border-cyan-900/10 px-4 py-2.5 text-sm font-black dark:border-cyan-300/10">
+                                    Notificações
+                                </p>
+                                {notificacoes.length === 0 ? (
+                                    <p className="px-4 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                        Nenhuma notificação nova. 🙂
+                                    </p>
+                                ) : (
+                                    <ul className="py-1">
+                                        {notificacoes.map((n, i) => (
+                                            <li key={i}>
+                                                <a
+                                                    href={n.href}
+                                                    onClick={() => setNotifAberto(false)}
+                                                    className="flex items-start gap-3 px-4 py-2.5 text-sm transition hover:bg-orange-50 dark:hover:bg-slate-800"
+                                                >
+                                                    <span aria-hidden="true" className="text-lg leading-none">{n.icone}</span>
+                                                    <span className="min-w-0 flex-1 font-semibold leading-snug">{n.texto}</span>
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
                         )}
-                    </button>
+                    </div>
 
                     {/* TEMA */}
                     <button

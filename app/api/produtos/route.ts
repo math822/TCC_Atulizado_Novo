@@ -56,6 +56,7 @@ export async function POST(req: Request) {
         descricao: body.descricao,
         preco: Number(body.preco),
         status: body.status || "disponivel",
+        imagem: body.imagem || null,
         id_negocio: body.id_negocio
       }
     })

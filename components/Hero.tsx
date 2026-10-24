@@ -1,5 +1,7 @@
 "use client"
 
+import SearchBar from "./SearchBar"
+
 type Props = {
   busca: string
   setBusca: (valor: string) => void
@@ -28,27 +30,25 @@ export default function Hero({ busca, setBusca }: Props) {
             fácil, informações claras e avaliações de outros clientes.
           </p>
 
-          <div className="future-surface mt-8 max-w-2xl rounded-[26px] p-3 sm:flex sm:items-center sm:gap-3">
-            <label htmlFor="busca-principal" className="sr-only">
-              Buscar lojas, serviços ou produtos
-            </label>
-            <div className="flex min-w-0 flex-1 items-center gap-3 px-3">
-              <span aria-hidden="true" className="text-2xl">⌕</span>
-              <input
-                id="busca-principal"
-                type="search"
-                value={busca}
-                onChange={(e) => setBusca(e.target.value)}
-                placeholder="O que você procura?"
-                className="min-h-12 w-full bg-transparent text-lg font-semibold text-slate-900 outline-none placeholder:text-slate-500 dark:text-white dark:placeholder:text-slate-400"
-              />
-            </div>
-            <a
-              href="#negocios"
-              className="press mt-3 flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-7 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700 sm:mt-0"
+          <div className="future-surface mt-8 flex max-w-2xl flex-col gap-3 rounded-[26px] p-3 sm:flex-row sm:items-center">
+            <SearchBar
+              busca={busca}
+              setBusca={setBusca}
+              id="busca-principal"
+              placeholder="O que você procura?"
+              className="min-w-0 flex-1"
+              inputClassName="min-h-12 w-full rounded-2xl bg-white/80 py-3 pl-12 pr-4 text-lg font-semibold text-slate-900 outline-none placeholder:text-slate-500 focus:bg-white dark:bg-slate-900/80 dark:text-white dark:placeholder:text-slate-400 dark:focus:bg-slate-900"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setBusca(busca)
+                document.getElementById("negocios")?.scrollIntoView({ behavior: "smooth" })
+              }}
+              className="press flex min-h-12 items-center justify-center rounded-2xl bg-orange-600 px-7 font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700"
             >
               Buscar agora
-            </a>
+            </button>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3 text-base font-bold text-slate-700 dark:text-slate-200">

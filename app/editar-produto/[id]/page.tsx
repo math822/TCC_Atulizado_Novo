@@ -22,6 +22,7 @@ export default function EditarProdutoPage({
   const [descricao, setDescricao] = useState("")
   const [preco, setPreco] = useState("")
   const [status, setStatus] = useState("disponivel")
+  const [imagem, setImagem] = useState("")
 
   const [mensagem, setMensagem] = useState("")
 
@@ -42,6 +43,7 @@ export default function EditarProdutoPage({
           setNome(dados.nome || "")
           setDescricao(dados.descricao || "")
           setPreco(dados.preco || "")
+          setImagem(dados.imagem || "")
           setStatus(
             dados.status || "disponivel"
           )
@@ -86,7 +88,8 @@ export default function EditarProdutoPage({
           nome,
           descricao,
           preco,
-          status
+          status,
+          imagem: imagem.trim() || null
 
         })
 
@@ -156,6 +159,13 @@ export default function EditarProdutoPage({
                 Descrição
               </label>
               <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} className={`${campo} h-40`} />
+            </div>
+
+            <div>
+              <label className="mb-2 block font-bold text-slate-700 dark:text-slate-200">
+                Imagem (URL) <span className="font-normal text-slate-400">— opcional</span>
+              </label>
+              <input type="url" value={imagem} onChange={(e) => setImagem(e.target.value)} placeholder="https://exemplo.com/foto.jpg" className={campo} />
             </div>
 
             <div className="grid gap-5 md:grid-cols-2">

@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const busca = searchParams.get("busca") || ""
     const categoria = searchParams.get("categoria") || ""
+    const cidade = searchParams.get("cidade") || ""
     const ordenar = searchParams.get("ordenar") || "recentes"
     const destaques = searchParams.get("destaques") === "true"
 
@@ -21,6 +22,12 @@ export async function GET(req: Request) {
 
     if (categoria) {
       where.categoria = { nome: categoria }
+    }
+
+    if (cidade) {
+      where.endereco = {
+        cidade: { contains: cidade, mode: "insensitive" }
+      }
     }
 
     const negocios = await prisma.negocio.findMany({

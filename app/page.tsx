@@ -15,31 +15,123 @@ export default function Home() {
   const [busca, setBusca] = useState("")
   const [favoritos, setFavoritos] = useState<string[]>([])
 
+  // Geolocalização: cidade detectada do usuário (para "perto de você")
+  const [cidadeUsuario, setCidadeUsuario] = useState<string | null>(null)
+  const [geoStatus, setGeoStatus] = useState<"ocioso" | "pedindo" | "ok" | "negado" | "erro">("ocioso")
+
+  useEffect(() => {
+    const salva = localStorage.getItem("gd_cidade")
+    if (salva) {
+      setCidadeUsuario(salva)
+      setGeoStatus("ok")
+    }
+  }, [])
+
   useEffect(() => {
     buscarNegocios()
     buscarFavoritos()
-  }, [busca])
+  }, [busca, cidadeUsuario])
 
   async function buscarNegocios() {
     try {
       setCarregando(true)
 
-      const resposta = await fetch(
-        `/api/negocios?busca=${encodeURIComponent(busca)}&ordenar=avaliacao&destaques=true`
-      )
-
-      const dados = await resposta.json()
-
-      if (resposta.ok) {
-        setNegocios(dados)
-      } else {
-        setNegocios([])
+      // Busca com texto: mostra resultados filtrados (ignora recorte regional)
+      if (busca.trim()) {
+        const resposta = await fetch(
+          `/api/negocios?busca=${encodeURIComponent(busca)}&ordenar=avaliacao`
+        )
+        const dados = await resposta.json()
+        setNegocios(resposta.ok && Array.isArray(dados) ? dados : [])
+        setCarregando(false)
+        return
       }
+
+      // Sem busca: destaques (um por categoria). Região primeiro, geral preenche.
+      const geralResposta = await fetch(
+        `/api/negocios?ordenar=avaliacao&destaques=true`
+      )
+      const geral = geralResposta.ok ? await geralResposta.json() : []
+
+      if (!cidadeUsuario) {
+        setNegocios(Array.isArray(geral) ? geral : [])
+        setCarregando(false)
+        return
+      }
+
+      const regiaoResposta = await fetch(
+        `/api/negocios?ordenar=avaliacao&destaques=true&cidade=${encodeURIComponent(cidadeUsuario)}`
+      )
+      const regiao = regiaoResposta.ok ? await regiaoResposta.json() : []
+
+      setNegocios(mesclarPorCategoria(regiao, geral))
     } catch (error) {
       setNegocios([])
     }
 
     setCarregando(false)
+  }
+
+  // Junta lista priorizada + lista de backup garantindo 1 por categoria
+  function mesclarPorCategoria(prioritaria: any[], backup: any[]) {
+    const vistos = new Set<string>()
+    const resultado: any[] = []
+
+    for (const item of [...prioritaria, ...backup]) {
+      const chave = item.id_categoria || item.id_negocio
+      if (vistos.has(chave)) continue
+      vistos.add(chave)
+      resultado.push(item)
+    }
+
+    return resultado
+  }
+
+  function ativarLocalizacao() {
+    if (!("geolocation" in navigator)) {
+      setGeoStatus("erro")
+      toast.error("Seu navegador não suporta localização")
+      return
+    }
+
+    setGeoStatus("pedindo")
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords
+          const r = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pt`
+          )
+          const dados = await r.json()
+          const cidade = dados.city || dados.locality || dados.principalSubdivision
+
+          if (cidade) {
+            setCidadeUsuario(cidade)
+            localStorage.setItem("gd_cidade", cidade)
+            setGeoStatus("ok")
+            toast.success(`Mostrando negócios de ${cidade}`)
+          } else {
+            setGeoStatus("erro")
+            toast.error("Não foi possível identificar sua cidade")
+          }
+        } catch {
+          setGeoStatus("erro")
+          toast.error("Erro ao identificar sua localização")
+        }
+      },
+      () => {
+        setGeoStatus("negado")
+        toast.error("Permissão de localização negada")
+      },
+      { timeout: 10000 }
+    )
+  }
+
+  function limparLocalizacao() {
+    setCidadeUsuario(null)
+    localStorage.removeItem("gd_cidade")
+    setGeoStatus("ocioso")
   }
 
   async function buscarFavoritos() {
@@ -111,7 +203,7 @@ export default function Home() {
 
       <section id="negocios" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
-        <div className="mb-10 flex items-end justify-between gap-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="section-label">Bem avaliados na região</span>
             <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">
@@ -121,6 +213,31 @@ export default function Home() {
             <p className="mt-3 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
               Um negócio de cada categoria, escolhido pelas melhores avaliações.
             </p>
+
+            {/* Controle de localização */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {geoStatus === "ok" && cidadeUsuario ? (
+                <div className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-4 py-2 text-sm font-black text-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-200">
+                  📍 Perto de você: {cidadeUsuario}
+                  <button
+                    type="button"
+                    onClick={limparLocalizacao}
+                    className="ml-1 text-cyan-700 underline-offset-2 hover:underline dark:text-cyan-300"
+                  >
+                    limpar
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={ativarLocalizacao}
+                  disabled={geoStatus === "pedindo"}
+                  className="press inline-flex min-h-10 items-center gap-2 rounded-full border border-cyan-600/40 bg-white px-4 py-2 text-sm font-black text-cyan-800 transition hover:bg-cyan-50 disabled:opacity-60 dark:bg-slate-900 dark:text-cyan-200 dark:hover:bg-slate-800"
+                >
+                   {geoStatus === "pedindo" ? "Localizando..." : "Usar minha localização"}
+                </button>
+              )}
+            </div>
           </div>
 
           <a
@@ -158,9 +275,9 @@ export default function Home() {
               className="future-card shine hover-rise group flex h-full flex-col overflow-hidden rounded-[30px]"
             >
               <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-orange-100 to-cyan-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
-                {negocio.imagem || negocio.fotos?.length > 0 ? (
+                {negocio.fotos?.length > 0 ? (
                   <img
-                    src={negocio.imagem || negocio.fotos[0].url}
+                    src={negocio.fotos[0].url}
                     alt={negocio.nome}
                     onError={(event) => {
                       event.currentTarget.onerror = null
