@@ -1,51 +1,7 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
+import { validarCNPJ } from "../../../lib/auth"
 import bcrypt from "bcryptjs"
-
-function validarCNPJ(cnpj: string): boolean {
-  const numeros = cnpj.replace(/\D/g, "")
-
-  if (numeros.length !== 14) {
-    return false
-  }
-
-  if (/^(\d)\1{13}$/.test(numeros)) {
-    return false
-  }
-
-  const calcularDigito = (base: string): number => {
-    const pesos =
-      base.length === 12
-        ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-        : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-
-    let soma = 0
-
-    for (let i = 0; i < base.length; i++) {
-      soma += Number(base[i]) * pesos[i]
-    }
-
-    const resto = soma % 11
-
-    return resto < 2 ? 0 : 11 - resto
-  }
-
-  const base12 = numeros.substring(0, 12)
-  const primeiroDigito = calcularDigito(base12)
-
-  if (primeiroDigito !== Number(numeros[12])) {
-    return false
-  }
-
-  const base13 = numeros.substring(0, 13)
-  const segundoDigito = calcularDigito(base13)
-
-  if (segundoDigito !== Number(numeros[13])) {
-    return false
-  }
-
-  return true
-}
 
 export async function POST(req: Request) {
   try {
@@ -156,13 +112,20 @@ export async function POST(req: Request) {
       foto_perfil: usuario.foto_perfil
     }
 
-    return NextResponse.json({
+    const resposta = NextResponse.json({
       message:
         tipo === "empreendedor"
           ? "Cadastro realizado. Seu CNPJ está pendente de verificação."
           : "Usuário cadastrado com sucesso",
       usuario: usuarioSeguro
     })
+
+    resposta.cookies.set("usuario", JSON.stringify(usuarioSeguro), {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7
+    })
+
+    return resposta
   } catch (error) {
     console.error("ERRO AO CADASTRAR USUÁRIO:", error)
 

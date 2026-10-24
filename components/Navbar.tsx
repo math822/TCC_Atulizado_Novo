@@ -186,6 +186,17 @@ export default function Navbar({
 
                         <div className="flex items-center gap-2">
 
+                            {/* PAINEL DO EMPREENDEDOR */}
+                            {(usuario.tipo === "empreendedor" || usuario.tipo === "admin") && (
+                                <a
+                                    href="/dashboard"
+                                    title="Painel do empreendedor"
+                                    className="press hidden items-center rounded-full bg-cyan-600 px-4 py-2.5 text-sm font-black text-white transition hover:bg-cyan-700 sm:inline-flex"
+                                >
+                                    📊 Painel
+                                </a>
+                            )}
+
                             {/* PERFIL */}
                             <a
                                 href="/perfil"

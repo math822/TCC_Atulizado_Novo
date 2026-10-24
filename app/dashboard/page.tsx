@@ -23,7 +23,7 @@ export default function Dashboard() {
     setUsuario(usuarioLogado)
 
     buscarNegocios(usuarioLogado.id_usuario)
-    buscarProdutos()
+    buscarProdutos(usuarioLogado.id_usuario)
   }, [])
 
   async function buscarNegocios(id_usuario: string) {
@@ -48,9 +48,9 @@ export default function Dashboard() {
     setCarregando(false)
   }
 
-  async function buscarProdutos() {
+  async function buscarProdutos(id_usuario: string) {
     try {
-      const resposta = await fetch("/api/produtos")
+      const resposta = await fetch(`/api/produtos?id_usuario=${id_usuario}`)
       const dados = await resposta.json()
 
       if (resposta.ok) {
@@ -166,6 +166,16 @@ export default function Dashboard() {
 
           </div>
         </section>
+
+        {usuario?.tipo === "empreendedor" && usuario?.status_verificacao === "pendente" && (
+          <section className="mt-6 rounded-3xl border border-amber-300 bg-amber-50 p-6 text-amber-900 dark:border-amber-700/50 dark:bg-amber-950/30 dark:text-amber-200">
+            <p className="font-black">⏳ Verificação pendente</p>
+            <p className="mt-2 text-sm font-semibold">
+              Seu CNPJ está em análise pela equipe da Vendinha. Você já pode cadastrar negócios,
+              mas sua conta será destacada como verificada assim que a análise for concluída.
+            </p>
+          </section>
+        )}
 
         <section className="mt-8 grid gap-6 md:grid-cols-3">
           <div className="future-card rounded-3xl p-8">

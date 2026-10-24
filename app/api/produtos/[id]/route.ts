@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../lib/prisma"
+import { exigirDonoNegocio } from "../../../lib/auth"
 
 export async function GET(
   req: Request,
@@ -38,9 +39,26 @@ export async function PUT(
   try {
     const { id } = await params
 
+    const produto = await prisma.produto.findUnique({
+      where: { id_produto: id }
+    })
+
+    if (!produto) {
+      return NextResponse.json(
+        { error: "Produto não encontrado" },
+        { status: 404 }
+      )
+    }
+
+    const bloqueado = await exigirDonoNegocio(produto.id_negocio)
+
+    if (bloqueado) {
+      return bloqueado
+    }
+
     const body = await req.json()
 
-    const produto = await prisma.produto.update({
+    const atualizado = await prisma.produto.update({
       where: {
         id_produto: id
       },
@@ -49,12 +67,13 @@ export async function PUT(
         nome: body.nome,
         descricao: body.descricao,
         preco: Number(body.preco),
+        status: body.status
       }
     })
 
     return NextResponse.json({
       message: "Produto atualizado com sucesso",
-      produto
+      produto: atualizado
     })
 
   } catch (error) {
@@ -71,6 +90,23 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params
+
+    const produto = await prisma.produto.findUnique({
+      where: { id_produto: id }
+    })
+
+    if (!produto) {
+      return NextResponse.json(
+        { error: "Produto não encontrado" },
+        { status: 404 }
+      )
+    }
+
+    const bloqueado = await exigirDonoNegocio(produto.id_negocio)
+
+    if (bloqueado) {
+      return bloqueado
+    }
 
     await prisma.produto.delete({
       where: {

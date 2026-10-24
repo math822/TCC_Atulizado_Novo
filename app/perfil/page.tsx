@@ -214,12 +214,14 @@ export default function PerfilPage() {
                                         {editarAberto ? "Fechar edição" : "Editar perfil"}
                                     </button>
 
-                                    <a
-                                        href="/dashboard"
-                                        className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
-                                    >
-                                        Dashboard
-                                    </a>
+                                    {(usuario.tipo === "empreendedor" || usuario.tipo === "admin") && (
+                                        <a
+                                            href="/dashboard"
+                                            className="press rounded-2xl bg-white/15 px-6 py-4 font-black transition hover:bg-white/25"
+                                        >
+                                            Dashboard
+                                        </a>
+                                    )}
 
                                     <a
                                         href="/mensagens"

@@ -65,6 +65,15 @@ export default function GoogleSuccess() {
           const origem =
             params.get("origem")
 
+          const completar =
+            params.get("completar")
+
+          if (completar === "1") {
+            window.location.href =
+              "/completar-cadastro"
+            return
+          }
+
           if (
             dados.usuario.tipo ===
             "empreendedor"

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../lib/prisma"
+import { exigirEmpreendedor } from "../../lib/auth"
 
 export async function GET(req: Request) {
   try {
@@ -71,6 +72,12 @@ export async function POST(req: Request) {
         { error: "Usuário não identificado" },
         { status: 401 }
       )
+    }
+
+    const bloqueado = await exigirEmpreendedor(id_usuario)
+
+    if (bloqueado) {
+      return bloqueado
     }
 
     const negocio = await prisma.negocio.create({

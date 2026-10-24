@@ -31,6 +31,16 @@ export async function GET(req: Request) {
         ? "cadastro"
         : "login"
 
+    const tipoMatch = cookieHeader.match(
+      /(?:^|;\s*)google_oauth_tipo=([^;]+)/
+    )
+
+    const tipoSolicitado =
+      tipoMatch &&
+      decodeURIComponent(tipoMatch[1]) === "empreendedor"
+        ? "empreendedor"
+        : "cliente"
+
     // =====================================================
     // GOOGLE RETORNOU ERRO
     // =====================================================
@@ -218,6 +228,8 @@ export async function GET(req: Request) {
         }
       })
 
+    let precisaCompletarCadastro = false
+
     // =====================================================
     // CRIAR SE NÃO EXISTIR
     // =====================================================
@@ -232,16 +244,26 @@ export async function GET(req: Request) {
           10
         )
 
+      const ehNovoEmpreendedor =
+        origem === "cadastro" &&
+        tipoSolicitado === "empreendedor"
+
       usuario =
         await prisma.usuario.create({
           data: {
             nome,
             email,
             senha: senhaHash,
-            tipo: "cliente",
-            foto_perfil: fotoPerfil
+            tipo: ehNovoEmpreendedor ? "empreendedor" : "cliente",
+            foto_perfil: fotoPerfil,
+            status_verificacao: ehNovoEmpreendedor
+              ? "pendente"
+              : "nao_solicitada"
           }
         })
+
+      // Empreendedor criado pelo Google ainda precisa informar o CNPJ.
+      precisaCompletarCadastro = ehNovoEmpreendedor
 
       console.log(
         "USUÁRIO CRIADO PELO GOOGLE:",
@@ -295,6 +317,12 @@ export async function GET(req: Request) {
       tipo:
         usuario.tipo,
 
+      cnpj:
+        usuario.cnpj,
+
+      status_verificacao:
+        usuario.status_verificacao,
+
       foto_perfil:
         usuario.foto_perfil
     }
@@ -303,10 +331,14 @@ export async function GET(req: Request) {
     // REDIRECIONAR
     // =====================================================
 
+    const destino = precisaCompletarCadastro
+      ? `/auth/google-success?origem=${origem}&completar=1`
+      : `/auth/google-success?origem=${origem}`
+
     const resposta =
       NextResponse.redirect(
         new URL(
-          `/auth/google-success?origem=${origem}`,
+          destino,
           req.url
         )
       )

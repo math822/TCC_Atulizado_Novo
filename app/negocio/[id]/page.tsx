@@ -191,6 +191,15 @@ export default function NegocioPage({
                   ♥ Favoritar
                 </button>
 
+                {usuario?.id_usuario === negocio.id_usuario && (
+                  <a
+                    href={`/editar-negocio/${negocio.id_negocio}`}
+                    className="press inline-flex min-h-12 items-center rounded-2xl border-2 border-cyan-600/40 px-6 font-black text-cyan-700 transition hover:bg-cyan-50 dark:text-cyan-200 dark:hover:bg-slate-800"
+                  >
+                    ✏️ Editar negócio
+                  </a>
+                )}
+
                 {usuario?.id_usuario !== negocio.id_usuario && (
                   <button
                     type="button"

@@ -32,7 +32,11 @@ export async function POST(req: Request) {
       id_usuario: usuario.id_usuario,
       nome: usuario.nome,
       email: usuario.email,
-      tipo: usuario.tipo
+      telefone: usuario.telefone,
+      tipo: usuario.tipo,
+      cnpj: usuario.cnpj,
+      status_verificacao: usuario.status_verificacao,
+      foto_perfil: usuario.foto_perfil
     }
 
     const resposta = NextResponse.json({

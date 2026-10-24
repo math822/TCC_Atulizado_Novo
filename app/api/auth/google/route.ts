@@ -21,6 +21,11 @@ export async function GET(req: Request) {
         ? "cadastro"
         : "login"
 
+    const tipo =
+      searchParams.get("tipo") === "empreendedor"
+        ? "empreendedor"
+        : "cliente"
+
     const redirectUri =
       process.env.GOOGLE_REDIRECT_URI ||
       "http://localhost:3000/api/auth/google/callback"
@@ -51,6 +56,14 @@ export async function GET(req: Request) {
     })
 
     resposta.cookies.set("google_oauth_origem", origem, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 600,
+      path: "/",
+    })
+
+    resposta.cookies.set("google_oauth_tipo", tipo, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
