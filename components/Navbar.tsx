@@ -135,9 +135,13 @@ export default function Navbar({
                     aria-label="Lá da Vendinha — página inicial"
                     className="group flex flex-shrink-0 items-center gap-3 rounded-2xl"
                 >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-xl font-black text-white shadow-lg shadow-orange-600/20 transition-transform group-hover:scale-105">
-                        LV
-                    </div>
+                    <img
+                        src="/marca.png"
+                        alt=""
+                        width={44}
+                        height={44}
+                        className="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-orange-600/20 transition-transform group-hover:scale-105"
+                    />
 
                     <span className="hidden text-xl font-black tracking-tight text-slate-950 dark:text-white sm:inline-block">
                         Lá da <span className="text-orange-600">Vendinha</span>

@@ -81,9 +81,13 @@ export default function CompletarCadastro() {
 
       <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="future-surface w-full max-w-xl rounded-[40px] p-10">
-          <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-4xl">
-            🏪
-          </div>
+          <img
+            src="/marca.png"
+            alt=""
+            width={64}
+            height={64}
+            className="mb-8 h-16 w-16 rounded-2xl object-cover shadow-lg shadow-orange-700/20"
+          />
 
           <span className="section-label">● Último passo</span>
 

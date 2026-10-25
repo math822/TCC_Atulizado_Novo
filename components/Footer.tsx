@@ -59,7 +59,7 @@ export default function Footer() {
           <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.25fr_1fr]">
             <div>
               <Link href="/" className="inline-flex items-center gap-3 rounded-2xl" aria-label="Lá da Vendinha — página inicial">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 text-lg font-black shadow-lg shadow-orange-700/20">LV</span>
+                <img src="/marca.png" alt="" width={48} height={48} className="h-12 w-12 rounded-2xl object-cover shadow-lg shadow-orange-700/20" />
                 <span className="text-2xl font-black">Lá da Vendinha</span>
               </Link>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-300">
@@ -116,7 +116,7 @@ export default function Footer() {
                 >
                   ⬇ Baixar para Android
                 </a>
-                <span className="text-sm text-slate-400">Arquivo .apk · ~5 MB · só para celular Android</span>
+                <span className="text-sm text-slate-400">Arquivo .apk · ~6,5 MB · só para celular Android</span>
               </div>
             </div>
 
