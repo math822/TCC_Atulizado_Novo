@@ -1,8 +1,22 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export default function Footer() {
+  const [emApp, setEmApp] = useState(false)
+
+  // Dentro do app Android o instalador não faz sentido: a casca já É o app e abre este
+  // mesmo site. Em URL remota a ponte do Capacitor só existe se o WebView injetou o bridge,
+  // então androidBridge entra como segunda evidência do shell nativo.
+  useEffect(() => {
+    const janela = window as {
+      Capacitor?: { isNativePlatform?: () => boolean }
+      androidBridge?: unknown
+    }
+    if (janela.Capacitor?.isNativePlatform?.() || janela.androidBridge) setEmApp(true)
+  }, [])
+
   function voltarAoTopo() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -87,6 +101,7 @@ export default function Footer() {
             ))}
           </nav>
 
+          {!emApp && (
           <div className="grid gap-8 border-t border-white/10 py-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
             <div>
               <h2 className="text-lg font-black text-white">App para celular</h2>
@@ -114,6 +129,7 @@ export default function Footer() {
               </ol>
             </div>
           </div>
+          )}
 
           <div className="flex flex-col gap-3 border-t border-white/10 pt-7 text-base text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 Lá da Vendinha.</p>
