@@ -87,6 +87,34 @@ export default function Footer() {
             ))}
           </nav>
 
+          <div className="grid gap-8 border-t border-white/10 py-10 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+            <div>
+              <h2 className="text-lg font-black text-white">App para celular</h2>
+              <p className="mt-2 max-w-xl text-base leading-relaxed text-slate-300">
+                Baixe o Lá da Vendinha no seu Android e tenha o mural da sua região sempre na tela inicial.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center gap-3">
+                <a
+                  href="/LaDaVendinha.apk"
+                  download
+                  className="press inline-flex min-h-12 items-center gap-2 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-700 px-6 font-black text-white shadow-lg shadow-orange-700/20 transition hover:from-orange-600 hover:to-orange-800"
+                >
+                  ⬇ Baixar para Android
+                </a>
+                <span className="text-sm text-slate-400">Arquivo .apk · ~5 MB · só para celular Android</span>
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur">
+              <p className="text-base font-black text-white">Como instalar</p>
+              <ol className="mt-3 space-y-2 text-base leading-relaxed text-slate-300">
+                <li>1. Toque em <span className="font-bold text-orange-300">Baixar para Android</span> no celular.</li>
+                <li>2. Abra o arquivo baixado e autorize <span className="font-bold text-orange-300">instalar apps desconhecidos</span> quando o Android pedir.</li>
+                <li>3. Pronto: o app abre direto no mural. Também dá para usar sem instalar, pelo Chrome.</li>
+              </ol>
+            </div>
+          </div>
+
           <div className="flex flex-col gap-3 border-t border-white/10 pt-7 text-base text-slate-400 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2026 Lá da Vendinha.</p>
             <p>Projeto educacional desenvolvido no SENAI.</p>
